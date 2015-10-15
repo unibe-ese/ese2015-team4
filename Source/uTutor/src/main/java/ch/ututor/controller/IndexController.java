@@ -28,22 +28,30 @@ public class IndexController {
     	model.addObject("signUpForm", new SignUpForm() );
         return model;
     }
-
+	
+	 @RequestMapping( value = "/signup", method = RequestMethod.GET )
+	 public ModelAndView signup() {
+	    	ModelAndView model = new ModelAndView("signup");
+	    	model.addObject("signUpForm", new SignUpForm() );
+	        return model;
+	 }
+	
     @RequestMapping( value = "/signup", method = RequestMethod.POST )
     public ModelAndView signup(@Valid SignUpForm signupForm, BindingResult result, RedirectAttributes redirectAttributes){
     	ModelAndView model;
-    	
+    	model = new ModelAndView("signup");
     	if (!result.hasErrors()) {
             try{
             	User user = loginService.saveForm( signupForm );
-            	model = new ModelAndView( "profile" );
-            	model.addObject("user", user);
+            	model.addObject("redirectUrl","/profile?userId="+user.getId());
+            	//model = new ModelAndView( "profile" );
+            	//model.addObject("user", user);
             } catch ( UserAlreadyExistsException e ){
-            	model = new ModelAndView("index");
+            	//model = new ModelAndView("index");
             	model.addObject("page_error", e.getMessage());
             }
         } else {
-        	model = new ModelAndView("index");
+        	//model = new ModelAndView("index");
         }   	
     	
     	return model;
