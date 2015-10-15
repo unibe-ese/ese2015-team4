@@ -1,5 +1,10 @@
 <form:form method="post" class="form-box" modelAttribute="signUpForm" action="signup" id="signUpForm" autocomplete="off">
 	<h1>Sign up</h1>
+	<c:if test="${signup_exception != null}">
+		<div class="exception">
+			<c:out value="${signup_exception}" />
+		</div>
+	</c:if>
 	<label>
 		<form:input path="firstName" id="field-firstName" placeholder="First name"/>
     	<form:errors path="firstName" element="div" class="error"/>
@@ -11,7 +16,7 @@
 	</label>
 	
 	<label>
-		<form:input path="email" id="field-email" tabindex="1" maxlength="45" placeholder="Email"/>
+		<form:input path="email" id="field-email" placeholder="Email"/>
     	<form:errors path="email" element="div" class="error"/>
 	</label>
 	

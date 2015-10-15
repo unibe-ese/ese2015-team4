@@ -1,4 +1,3 @@
-/*@import url(https://fonts.googleapis.com/css?family=Indie+Flower|Droid+Sans:400,700);*/
 @import url(https://fonts.googleapis.com/css?family=Bree+Serif|Droid+Sans:400,700);
 
 *:
@@ -291,6 +290,10 @@ input:-moz-placeholder {
 
 .form-box .error{
 	font-size:12px;
+	font-weight:bold;
+	color:rgb(255,0,0);
+}
+.form-box .exception{
 	font-weight:bold;
 	color:rgb(255,0,0);
 }
