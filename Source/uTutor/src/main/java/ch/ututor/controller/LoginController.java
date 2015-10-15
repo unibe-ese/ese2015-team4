@@ -1,5 +1,6 @@
 package ch.ututor.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,13 @@ public class LoginController {
 	 }
 	
     @RequestMapping( value = "/login", method = RequestMethod.POST )
-    public ModelAndView signup(@Valid LoginForm loginForm, BindingResult result, RedirectAttributes redirectAttributes){
+    public ModelAndView signup(@Valid LoginForm loginForm, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest request){
     	ModelAndView model=new ModelAndView("login");
     	if (!result.hasErrors()) {
             try{
             	User user = loginService.login( loginForm );
             	model=new ModelAndView("redirect:/profile?userId="+user.getId());
+            	request.getSession().setAttribute("loggedInUserId", user.getId());
             } catch (FormException e ){
             	model.addObject("login_exception", e.getMessage());
             }
