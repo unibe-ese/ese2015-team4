@@ -19,12 +19,10 @@ public class SignUpForm {
 	    message = "Please enter valid email!")
 	private String email;
 	
-	@NotBlank(message = "Please enter a password!")
 	@Size(min = 8, message = "Your password should contain at least 8 characters!")
 	private String password;
 	
-	@NotBlank(message = "Please reenter your password!")
-	@Size(min = 8, message = "Your password should contain at least 8 characters!")
+	
 	private String passwordRepeat;
 
 	public Long getId() {
