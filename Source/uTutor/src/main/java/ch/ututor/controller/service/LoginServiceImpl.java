@@ -3,8 +3,9 @@ package ch.ututor.controller.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.ututor.controller.exceptions.UserAlreadyExistsException;
-import ch.ututor.controller.pojos.SignUpForm;
+import ch.ututor.controller.exceptions.FormException;
+import ch.ututor.controller.exceptions.form.LoginCredentialsException;
+import ch.ututor.controller.pojos.LoginForm;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
 
@@ -13,23 +14,13 @@ public class LoginServiceImpl implements LoginService {
 	
 	@Autowired    UserDao userDao;
 	
-	public User saveForm(SignUpForm signUpForm) throws UserAlreadyExistsException{
+	public User login(LoginForm loginForm) throws FormException {
 		
-		String email = signUpForm.getEmail();
+		String email = loginForm.getEmail();
 		User user = userDao.findByEmail( email );
 		
-		if ( user != null ){
-			throw new UserAlreadyExistsException( "There's already a user registered "
-					+ "with this email address!" );
-		} else {
-			user = new User();
-			
-			user.setFirstName( signUpForm.getFirstName() );
-			user.setLastName( signUpForm.getLastName() );
-			user.setEmail( signUpForm.getEmail() );
-			user.setPassword( signUpForm.getPassword() );
-			
-			user = userDao.save( user );
+		if ( user == null || !user.getPassword().equals(loginForm.getPassword())){
+			throw new LoginCredentialsException( "Email or password not correct." );
 		}
 		
 		return user;

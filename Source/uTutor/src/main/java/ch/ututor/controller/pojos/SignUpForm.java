@@ -6,9 +6,6 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class SignUpForm {
-	
-	private Long id;
-	
 	@NotBlank(message = "Please enter your first name!")
 	private String firstName;
 	
@@ -24,14 +21,6 @@ public class SignUpForm {
 	
 	
 	private String passwordRepeat;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getFirstName() {
 		return firstName;

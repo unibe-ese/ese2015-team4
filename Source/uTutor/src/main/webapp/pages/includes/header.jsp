@@ -5,9 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<c:if test="${redirectUrl!=null}">
-<meta http-equiv="refresh" content="0; URL=<c:out value="${redirectUrl}" />">
-</c:if>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>uTutor</title>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/style.css">
@@ -18,7 +15,7 @@
 <a href="<%=request.getContextPath()%>"><img id="logo" src="img/logo.png"></a>
 <form class="search-small" method="GET"><label><input type="text" name="query" placeholder="lecture"><input type="submit"></label></form>
 <div id="header-actions"><a href="<%=request.getContextPath()%>/login" class="button">Login</a><a href="<%=request.getContextPath()%>/signup" class="button">Sign up</a></div>
-<div class="clear"/>
+<div class="clear"></div>
 </div>
 </div>
 <div id="content-container">
