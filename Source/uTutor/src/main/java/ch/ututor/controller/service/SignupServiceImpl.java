@@ -18,7 +18,7 @@ public class SignupServiceImpl implements SignupService {
 	public User saveForm(SignUpForm signUpForm) throws FormException{
 		
 		String email = signUpForm.getEmail();
-		User user = userDao.findByEmail( email );
+		User user = userDao.findByUsername( email );
 		
 		if ( user != null ){
 			throw new UserAlreadyExistsException( "There's already a user registered "
@@ -30,7 +30,7 @@ public class SignupServiceImpl implements SignupService {
 			
 			user.setFirstName( signUpForm.getFirstName() );
 			user.setLastName( signUpForm.getLastName() );
-			user.setEmail( signUpForm.getEmail() );
+			user.setUsername( signUpForm.getEmail() );
 			user.setPassword( signUpForm.getPassword() );
 			
 			user = userDao.save( user );

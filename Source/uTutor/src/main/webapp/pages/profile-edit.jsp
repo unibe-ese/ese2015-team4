@@ -1,5 +1,3 @@
 <%@include file="includes/header.jsp"%>
-<div class="center top">
-	<%@include file="includes/forms/login.jsp"%>
-</div>
+<div class="center"><%@include file="includes/forms/profile-edit.jsp"%></div>
 <%@include file="includes/footer.jsp"%>

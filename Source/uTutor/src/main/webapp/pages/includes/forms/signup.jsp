@@ -1,8 +1,8 @@
 <form:form method="post" class="form-box" modelAttribute="signUpForm" action="signup" id="signUpForm" autocomplete="off">
 	<h1>Sign up</h1>
-	<c:if test="${signup_exception != null}">
+	<c:if test="${exception_message != null}">
 		<div class="exception">
-			<c:out value="${signup_exception}" />
+			<c:out value="${exception_message}" />
 		</div>
 	</c:if>
 	<label>

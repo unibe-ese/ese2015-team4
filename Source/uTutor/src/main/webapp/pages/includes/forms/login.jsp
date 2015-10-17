@@ -1,21 +1,10 @@
-<form:form method="post" class="form-box" modelAttribute="loginForm" action="login" id="loginForm" autocomplete="off">
-	<h1>Login</h1>
-	<c:if test="${login_exception != null}">
-		<div class="exception">
-			<c:out value="${login_exception}" />
-		</div>
-	</c:if>
-	<label>
-		<form:input path="email" id="field-email" placeholder="Email"/>
-    	<form:errors path="email" element="div" class="error"/>
-	</label>
-	
-	<label>
-		<form:input type="password" path="password" id="field-password" placeholder="Password"/>
-    	<form:errors path="password" element="div" class="error"/>
-	</label>	
-	<label>
-		<input type="submit" value="Login" />
-	</label>
-	
-</form:form>
+	<form class="form-box" action="j_spring_security_check" method="post" >
+			<h1>Login</h1>
+			<c:if test="${param.error}" >
+			<div class="exception">Username or password not correct.</div>
+			</c:if>
+			<label for="j_username"><input id="j_username" name="j_username" type="text" placeholder="Email"<c:if test="${param.username!=null}"> value="<c:out value="${param.username}"/>"</c:if>/></label>
+			<label><input id="j_password" name="j_password" type="password" placeholder="Password"<c:if test="${param.username!=null}"> autofocus</c:if>/></label>
+			
+	<label><input type="submit" value="Login"/></label>
+</form>

@@ -11,9 +11,9 @@
 		</tr>
 		<tr>
 			<td>E-Mail:</td>
-			<td><c:out value="${user.email}" /></td>
+			<td><c:out value="${user.username}" /></td>
 		</tr>
 </table>
-<button id="edit" onclick="document.location.href='/ututor/edit?userId=${user.id}'">Edit</button>
+<a class="button" href="/ututor/user/profile/edit">Edit</a>
 </div>
 <%@include file="includes/footer.jsp"%>
