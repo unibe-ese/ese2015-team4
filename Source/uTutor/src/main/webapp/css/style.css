@@ -22,12 +22,28 @@ img{
 	border:none;
 }
 h1{
+	display:inline-block;
 	font-family:'Bree Serif',serif;
 	font-weight:'normal';
 	font-size:64px;
 	margin-top:0px;
 	margin-bottom:0.2em;
 	color:rgb(83,95,146);
+}
+.action-icon{
+	cursor:pointer;
+	-webkit-transition: opacity 250ms linear;
+    -moz-transition: opacity 250ms linear;
+    -o-transition: opacity 250ms linear;
+    -ms-transition: opacity 250ms linear;
+    transition: opacity 250ms linear;
+	opacity:0.5;
+}
+.action-icon:hover{
+	opacity:1;
+}
+h1 img.action-icon{
+	float:right; margin:47px 0px 0px 15px;
 }
 h2{
 	font-family:'Bree Serif',serif;
@@ -124,14 +140,13 @@ blockquote cite:before {
 	margin-top:-88px;
 }
 
-input[type=text],input[type=password],input[type=submit],input[type=button],select{
+input[type=text],input[type=password],input[type=submit],input[type=button],input[type=file],select{
 	margin:5px;
 	padding:10px;
 	font-family:'Droid',sans-serif;
 	font-size:24px;
 	border-radius:10px;
 	border:none;
-	background:rgb(237, 239, 244);
 	-webkit-transition: background-color 250ms linear;
     -moz-transition: background-color 250ms linear;
     -o-transition: background-color 250ms linear;
@@ -139,6 +154,7 @@ input[type=text],input[type=password],input[type=submit],input[type=button],sele
     transition: background-color 250ms linear;
 }
 input[type=text],input[type=password],select{
+	background:rgb(237, 239, 244);
 	border:1px solid rgb(169, 175, 200);
 }
 input[type=text]:focus,input[type=password]:focus{
@@ -154,6 +170,16 @@ input[type=submit]{
 	margin-top:1.5em;
 	width:100%;
 }
+input[type=button].submit{
+	width:100%;
+}
+input.grey{
+	background:rgb(130,130,130);
+}
+input.red{
+	background:rgb(255,0,0);
+}
+
 input[type=submit]:hover,input[type=button]:hover{
 	background:rgb(83,95,146);
 
@@ -293,7 +319,59 @@ input:-moz-placeholder {
 	font-weight:bold;
 	color:rgb(255,0,0);
 }
-.form-box .exception{
+div.exception{
 	font-weight:bold;
 	color:rgb(255,0,0);
+	margin-bottom:15px;
+}
+img.profile-picture{
+	max-width:350px;
+	max-height:350px;
+}
+.hidden-container{
+	height:1px;
+	overflow:hidden;
+}
+.profile-data div.profile-picture{
+	position:relative;
+	float:left;
+	margin:0px 30px 0px 0px;
+}
+.profile-data img.profile-picture{
+	max-width:175px;
+	max-height:350px;
+}
+.float-left{
+	float:left;
+}
+.table{
+	display:table;
+}
+.row{
+	display:table-row;
+}
+.cell{
+	display:table-cell;
+}
+.hashMap.cell{
+	padding:10px;
+	vertical-align:bottom;
+}
+.hashMap.cell.key{
+	font-size:12px;
+	padding-bottom:11px;
+}
+.hashMap.cell.value{
+	font-weight:bold;
+}
+.hashMap.cell.icon{
+	padding:0px;
+	float:right;
+	margin:4px 0px 0px 15px;
+}
+.private{
+	font-weight:normal;
+	font-style:italic;
+	color:rgba(2,5,15,0.5);
+	font-size:12px;
 }

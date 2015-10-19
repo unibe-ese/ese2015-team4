@@ -1,5 +1,5 @@
 <form:form method="post" class="form-box" modelAttribute="profileEditForm" id="profileEditForm" autocomplete="off">
-<h1>Edit Your Profile</h1>
+<h1>Edit profile</h1>
 	<c:if test="${exception_message != null}">
 		<div class="exception">
 			<c:out value="${exception_message}" />
@@ -18,5 +18,7 @@
 	<label>
 		<input type="submit" value="Save" />
 	</label>
-	
+	<label>
+		<input class="grey submit" type="button" value="Cancel" onClick="document.location.href='<%=request.getContextPath()%>/user/profile';">
+	</label>
 </form:form>

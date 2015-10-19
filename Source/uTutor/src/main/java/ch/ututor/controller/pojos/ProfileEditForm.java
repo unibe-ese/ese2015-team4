@@ -1,10 +1,8 @@
 package ch.ututor.controller.pojos;
 
-import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.NotBlank;
 
-public class ProfileEditForm {
+public class ProfileEditForm {	
 	@NotBlank(message = "Please enter your first name!")
 	private String firstName;
 	
@@ -25,5 +23,5 @@ public class ProfileEditForm {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}	
+	}
 }

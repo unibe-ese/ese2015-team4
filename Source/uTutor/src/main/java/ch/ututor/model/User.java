@@ -1,14 +1,14 @@
 package ch.ututor.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
-public class User {
+public class User{
 	
 	@Id
 	@GeneratedValue
@@ -18,6 +18,9 @@ public class User {
 	private String password;
 	private String firstName;
 	private String lastName;
+	@Column(length=512000)
+	private byte[] profilePic;
+	
 	
 	public Long getId(){
 		return id;
@@ -59,4 +62,22 @@ public class User {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+    public byte[] getProfilePic() {
+        return profilePic;
+    }
+ 
+    public void setProfilePic(byte[] profilePic) {
+        this.profilePic = profilePic;
+    }
+    public boolean hasProfilePic(){
+    	if(profilePic==null){
+    		return false;
+    	}else{
+    		return true;
+    	}
+    }
+    
+    public boolean getIsTutor(){
+    	return false;
+    }
 }
