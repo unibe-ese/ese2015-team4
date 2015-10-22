@@ -14,7 +14,7 @@
 <div id="header-container">
 <div id="header-inner">
 <a href="<%=request.getContextPath()%>"><img id="logo" src="<%=request.getContextPath()%>/img/logo.png"></a>
-<form class="search-small" method="GET"><label><input type="text" name="query" placeholder="lecture"><input type="submit"></label></form>
+<form class="search-small" method="GET" action="<%=request.getContextPath()%>/search"><label><input type="text" name="query" placeholder="Search lecture"><input type="submit"></label></form>
 <div id="header-actions">
 <sec:authorize access="not isAuthenticated()">
 <a href="<%=request.getContextPath()%>/login" class="button">Login</a><a href="<%=request.getContextPath()%>/signup" class="button">Sign up</a>

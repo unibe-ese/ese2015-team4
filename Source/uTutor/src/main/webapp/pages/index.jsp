@@ -1,8 +1,8 @@
 <%@include file="includes/header.jsp"%>
 <div class="center">
-	<form id="search-big" class="form-box search-big" method="GET">
+	<form id="search-big" action="<%=request.getContextPath()%>/search" class="form-box search-big" method="GET">
 	<h1>Find a tutor</h1>
-	<label><input type="text" name="query" placeholder="lecture name"><input type="submit"></label>
+	<label><input type="text" name="query" placeholder="Search lecture"><input type="submit"></label>
 	</form>
 </div>
 <sec:authorize access="not isAuthenticated()">

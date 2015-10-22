@@ -7,11 +7,11 @@ import ch.ututor.controller.pojos.SignUpForm;
 
 @Controller
 public class IndexController {
-	
 	@RequestMapping("/")
     public ModelAndView index() {
     	ModelAndView model = new ModelAndView("index");
     	model.addObject("signUpForm", new SignUpForm() );
+    	model.addObject("isHome", true);
         return model;
     }
 }

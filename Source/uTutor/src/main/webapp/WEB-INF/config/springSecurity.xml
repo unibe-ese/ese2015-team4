@@ -14,11 +14,11 @@
 		<security:intercept-url pattern="/search" access="permitAll" />		
 		<security:intercept-url pattern="/user/**" access="hasRole('ROLE_USER')" />			
 		<security:form-login login-page="/login" authentication-failure-url="/login?error=true" default-target-url="/user/profile" />
-		<security:logout invalidate-session="true" logout-success-url="/login" logout-url="/logout" />
+		<security:logout invalidate-session="true" logout-success-url="/" logout-url="/logout" />
 	</security:http>
 
 
-<security:authentication-manager>
+	<security:authentication-manager>
 						<security:authentication-provider user-service-ref="customUserDetailsService">
 						 <security:password-encoder ref="bcryptEncoder"/>
 						</security:authentication-provider>

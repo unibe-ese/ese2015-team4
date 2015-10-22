@@ -279,6 +279,7 @@ input:-moz-placeholder {
 	padding:50px;
 	position:relative;
 	width:960px;
+	overflow-x:hidden;
 	min-height: -moz-calc(100% - 125px);
 	min-height: -webkit-calc(100% - 125px);
 	min-height: -o-calc(100% - 125px);
@@ -374,4 +375,73 @@ img.profile-picture{
 	font-style:italic;
 	color:rgba(2,5,15,0.5);
 	font-size:12px;
+}
+
+.search-result{
+	display:table;
+	width:100%;
+}
+
+.search-result .item{
+	display:table-row;
+	-webkit-transition: background-color 250ms linear;
+    -moz-transition: background-color 250ms linear;
+    -o-transition: background-color 250ms linear;
+    -ms-transition: background-color 250ms linear;
+    transition: background-color 250ms linear;
+    color:rgb(8,18,60);
+    background-color:rgb(250,251,252);
+    cursor:pointer;
+}
+.search-result .item:hover{
+    background-color:rgb(212, 215, 228);
+}
+
+.search-result .cell{
+	display:table-cell;
+	vertical-align:top;
+	padding:15px;
+}
+
+.search-result .picture{
+	width:200px;
+}
+
+.search-result .picture img{
+	max-width:150px;
+	max-width:150px;
+	border-radius:75px;
+}
+.search-result .lecture{
+	font-family:'Bree Serif',serif;
+	font-weight:'normal';
+	font-size:36px;
+	max-width:600px;
+	line-height:36px;
+	margin:0px;
+	float:left;
+}
+.search-result .grade{
+	font-family:'Bree Serif',serif;
+	font-weight:'normal';
+	font-size:36px;
+	line-height:36px;
+	margin:0px;
+	float:right;
+}
+.search-result .tutor{
+	font-size:24px;
+	line-height:24px;
+	float:left;
+	max-width:580px;
+}
+
+.search-result .price{
+	font-size:24px;
+	line-height:24px;
+	float:right;
+}
+
+.search-result .data .line{
+	margin-bottom:15px;	
 }
