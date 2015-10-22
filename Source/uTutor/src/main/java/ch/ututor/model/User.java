@@ -1,5 +1,7 @@
 package ch.ututor.model;
 
+import java.util.HashMap;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +22,10 @@ public class User{
 	private String lastName;
 	@Column(length=512000)
 	private byte[] profilePic;
+	private boolean isTutor;
 	
+	private String description;	
+	private float price;
 	
 	public Long getId(){
 		return id;
@@ -78,6 +83,26 @@ public class User{
     }
     
     public boolean getIsTutor(){
-    	return false;
+    	return isTutor;
     }
+
+    public void setIsTutor(boolean isTutor){
+    	this.isTutor = isTutor;
+    }
+    
+    public String getDescription(){
+    	return description;
+    }
+    
+    public void setDescription(String description){
+    	this.description = description;
+    }
+    
+    public float getPrice() {
+		return price;
+	}
+	public void setPrice(float price) {
+		this.price = price;
+	}
+	
 }

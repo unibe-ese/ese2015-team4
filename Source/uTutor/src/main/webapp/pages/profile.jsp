@@ -38,5 +38,10 @@
 </div>
 <div class="clear"></div>
 </div>
+<c:if test="${!user.isTutor && ownProfile}">	
+	<div>
+		<a href="<%=request.getContextPath()%>/user/become-tutor" class="button">Become Tutor!</a>
+	</div>
+</c:if>
 </c:if>
 <%@include file="includes/footer.jsp"%>

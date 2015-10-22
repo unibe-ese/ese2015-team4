@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.ututor.controller.exceptions.FormException;
+import ch.ututor.controller.pojos.BecomeTutorForm;
 import ch.ututor.controller.pojos.ProfileEditForm;
 import ch.ututor.controller.service.AuthenticatedUserService;
 import ch.ututor.model.User;
@@ -26,7 +27,7 @@ public class ProfileEditController {
     	User user = authenticatedUserService.getAuthenticatedUser();
     	model.addObject(user);
     	model.addObject(new ProfileEditForm());
-        return model;
+    	return model;
     }
     
     @RequestMapping( value = {"/user/profile/edit"}, method = RequestMethod.POST )
