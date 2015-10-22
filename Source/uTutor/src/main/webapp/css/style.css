@@ -140,7 +140,11 @@ blockquote cite:before {
 	margin-top:-88px;
 }
 
-input[type=text],input[type=password],input[type=submit],input[type=button],input[type=file],select{
+textarea{
+	min-width:300px;font-size:18px;min-height:72px
+}
+
+input[type=text],input[type=password],input[type=submit],input[type=button],input[type=file],textarea,select{
 	margin:5px;
 	padding:10px;
 	font-family:'Droid',sans-serif;
@@ -153,11 +157,11 @@ input[type=text],input[type=password],input[type=submit],input[type=button],inpu
     -ms-transition: background-color 250ms linear;
     transition: background-color 250ms linear;
 }
-input[type=text],input[type=password],select{
+input[type=text],input[type=password],textarea,select{
 	background:rgb(237, 239, 244);
 	border:1px solid rgb(169, 175, 200);
 }
-input[type=text]:focus,input[type=password]:focus{
+input[type=text]:focus,input[type=password]:focus,textarea:focus,select:focus{
 	background:white;
 }
 input[type=submit],input[type=button]{

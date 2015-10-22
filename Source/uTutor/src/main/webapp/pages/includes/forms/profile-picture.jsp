@@ -7,7 +7,7 @@
 		<c:out value="${exception_message}" />
 	</div>
 </c:if>
-<img src="<%=request.getContextPath()%>/user/img/avatar.jpg?userId=<c:out value="${userId}"/>" class="profile-picture"/>
+<img src="<%=request.getContextPath()%>/img/user.jpg?userId=<c:out value="${userId}"/>" class="profile-picture"/>
 <label><input type="file" name="picture" accept="image/jpeg,image/jpg,.jpg" onChange="document.frmPicture.submit();"></label>
 <c:if test="${hasProfilePic}"><label><input class="red submit" type="button" value="Delete" onClick="document.getElementById('action').value='delete';document.frmPicture.submit();"></label></c:if>
 <label><input class="grey submit" type="button" value="Cancel" onClick="document.location.href='<%=request.getContextPath()%>/user/profile';"></label>

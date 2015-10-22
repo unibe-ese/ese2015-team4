@@ -9,7 +9,12 @@
 	</c:if>
 	
 	<label>
-		<form:input path="price" id="field-price" placeholder="Price"/>
+		<form:textarea path="description" id="field-description" placeholder="Describe yourself here..."></form:textarea>
+    	<form:errors path="description" element="div" class="error"/>
+	</label>
+	
+	<label>
+		<form:input path="price" id="field-price" placeholder="Price per hour"/>
     	<form:errors path="price" element="div" class="error"/>
 	</label>
 	
@@ -19,12 +24,8 @@
 	</label>
 	
 	<label>
-		<form:textarea path="description" id="field-description"></form:textarea>
-    	<form:errors path="description" element="div" class="error"/>
-	</label>
-	
-	<label>
 		<div class="controls">
+		Grade: 
         		<form:select path="grade">
         			<form:option value="4">4</form:option>
         			<form:option value="4.5">4.5</form:option>

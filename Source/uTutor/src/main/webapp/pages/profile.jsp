@@ -9,7 +9,7 @@
 </h1>
 <div class="profile-data">
 <div class="profile-picture">
-<img class="profile-picture" src="<%=request.getContextPath()%>/user/img/avatar.jpg?userId=<c:out value="${user.id}"/>"/><br/>
+<img class="profile-picture" src="<%=request.getContextPath()%>/img/user.jpg?userId=<c:out value="${user.id}"/>"/><br/>
 <c:if test="${ownProfile}"><a href="<%=request.getContextPath()%>/user/profile/picture/"><img class="action-icon" src="<%=request.getContextPath()%>/img/edit.png"></a></c:if>
 </div>
 <div class="float-left">

@@ -1,19 +1,22 @@
 <%@include file="includes/header.jsp"%>
-<c:set var="rating" scope="page" value="${2}"/>
+<c:set var="rating" scope="page" value="${4}"/>
 <h1>Searched for &quot;<c:out value="${query}" />&quot;</h1>
+<c:if test="${exception_message!=null}">
+	<div class="exception"><c:out value="${exception_message}"/></div>
+</c:if>
 <div class="search-result">
-<%--<c:forEach items="${results}" var="result">--%>
-		<div class="item">
-			<div class="cell picture"><img src="<%=request.getContextPath()%>/img/default_avatar.jpg"/></div>
+<c:forEach items="${results}" var="result">
+		<div class="item" onClick="document.location.href='<%=request.getContextPath()%>/user/profile/?userId=<c:out value="${result.tutor.id}"/>';">
+			<div class="cell picture"><img src="<%=request.getContextPath()%>/img/user.jpg?userId=<c:out value="${result.tutor.id}"/>"/></div>
 			<div class="cell data">
 				<div class="line">
-					<div class="lecture"><%-- ${result.lecture.name} --%>Einführung in Software Engineering</div>
-					<div class="grade"><%-- ${result.grade} --%>5.0</div>
+					<div class="lecture"><c:out value="${result.lecture.name}"/></div>
+					<div class="grade"><c:out value="${result.grade}"/></div>
 					<div class="clear"></div>
 				</div>
 				<div class="line">
-					<div class="tutor"><%-- ${result.tutor.name} --%>Fritz Muster</div>
-					<div class="price"><%-- ${result.tutor.price} --%>CHF 29.50/h</div>
+					<div class="tutor"><c:out value="${result.tutor.firstName} ${result.tutor.lastName}"/></div>
+					<div class="price">CHF <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${result.tutor.price}" />/h</div>
 					<div class="clear"></div>
 				</div>
 				<c:forEach var="i" begin="1" end="5">
@@ -26,29 +29,6 @@
 				</c:forEach>
 			</div>
 		</div>
-		<div class="item">
-			<div class="cell picture"><img src="<%=request.getContextPath()%>/img/default_avatar.jpg"/></div>
-			<div class="cell data">
-				<div class="line">
-					<div class="lecture"><%-- ${result.lecture.name} --%>Einführung in Software Engineering</div>
-					<div class="grade"><%-- ${result.grade} --%>5.0</div>
-					<div class="clear"></div>
-				</div>
-				<div class="line">
-					<div class="tutor"><%-- ${result.tutor.name} --%>Fritz Muster</div>
-					<div class="price"><%-- ${result.tutor.price} --%>CHF 29.50/h</div>
-					<div class="clear"></div>
-				</div>
-				<c:forEach var="i" begin="1" end="5">
-					<c:if test="${i <= rating}">
-						<img src="<%=request.getContextPath()%>/img/star_full.png"/>
-					</c:if>
-					<c:if test="${i > rating}">
-						<img src="<%=request.getContextPath()%>/img/star_empty.png"/>
-					</c:if>
-				</c:forEach>
-			</div>
-		</div>
-<%--</c:forEach>--%>
+</c:forEach>
 	</div>
 <%@include file="includes/footer.jsp"%>
