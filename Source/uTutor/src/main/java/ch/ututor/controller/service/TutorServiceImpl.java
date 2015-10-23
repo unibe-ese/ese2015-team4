@@ -1,9 +1,14 @@
 package ch.ututor.controller.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.ututor.controller.exceptions.FormException;
+import ch.ututor.controller.exceptions.NoLecturesFoundException;
+import ch.ututor.controller.exceptions.form.InvalidPriceException;
+import ch.ututor.controller.exceptions.form.TutorLectureAlreadyExistsException;
+import ch.ututor.controller.pojos.AddLectureForm;
 import ch.ututor.controller.pojos.BecomeTutorForm;
 import ch.ututor.model.Lecture;
 import ch.ututor.model.TutorLecture;
@@ -34,11 +39,11 @@ public class TutorServiceImpl implements TutorService {
 		try{
 			price = Float.parseFloat( priceEntered );
 		} catch (NumberFormatException e){
-			throw new FormException("Please enter a valid price!");
+			throw new InvalidPriceException("Please enter a valid price!");
 		}
 		
 		if ( price <= 0.0 ){
-			throw new FormException("Please enter a valid price!");
+			throw new InvalidPriceException("Please enter a valid price!");
 		}
 		
 		// update user
@@ -49,26 +54,64 @@ public class TutorServiceImpl implements TutorService {
 		user.setIsTutor( true );
 		user = userDao.save( user );
 		
-		// create or get lecture
-		Lecture lecture = lectureDao.findByName( becomeTutorForm.getLecture() );
-		if ( lecture == null ){
-			lecture = new Lecture();
-			lecture.setName( becomeTutorForm.getLecture() );
-			lecture = lectureDao.save( lecture );
-		}
+		// create or get lecture if it exists already
+		Lecture lecture = createOrGetLecture( becomeTutorForm.getLecture() );
 		
-		// create relation
-		TutorLecture tutorLecture = new TutorLecture();
-		tutorLecture.setLecture( lecture );
-		tutorLecture.setTutor( user );
-		tutorLecture.setGrade( becomeTutorForm.getGrade() );
-		tutorLecture = tutorLectureDao.save( tutorLecture );
+		// create relation between tutor and lecture
+		TutorLecture tutorlecture = createTutorLectureDataset( lecture, user, becomeTutorForm.getGrade() );
 		
 		return user;
-		
 	}
 	
+	public TutorLecture addLecture( AddLectureForm addLectureForm ){
+		
+		User user = authenticatedUserService.getAuthenticatedUser();
+		Lecture lecture = createOrGetLecture( addLectureForm.getLecture() );
+				
+		TutorLecture tutorLecture = tutorLectureDao.findByTutorAndLecture( user, lecture );
+		
+		if ( tutorLecture != null ){
+			throw new TutorLectureAlreadyExistsException("You've already registered this lecutre!");			
+		}
+		
+		tutorLecture = createTutorLectureDataset( lecture, user, addLectureForm.getGrade() );
+		
+		return tutorLecture;
+	}
 	
+	public List<TutorLecture> findLectures( User user ){
+		List<TutorLecture> lectures = tutorLectureDao.findByTutor( user );
+		
+		if ( lectures.size() == 0 ){
+			throw new NoLecturesFoundException("No lectures found for this tutor!");
+		} 
+		return lectures;		
+	}
 	
+	public void deleteLecture( Long lectureId ){
+		User user = authenticatedUserService.getAuthenticatedUser();
+		Lecture lecture = lectureDao.findById( lectureId );
+		
+		TutorLecture tutorLecture = tutorLectureDao.findByTutorAndLecture( user, lecture);
+		tutorLectureDao.delete( tutorLecture );
+	}
+	
+	private Lecture createOrGetLecture( String lectureName ){
+		Lecture lecture = lectureDao.findByName( lectureName );
+		if ( lecture == null ){
+			lecture = new Lecture();
+			lecture.setName( lectureName );
+			lecture = lectureDao.save( lecture );
+		}
+		return lecture;
+	}
+	
+	private TutorLecture createTutorLectureDataset( Lecture lecture, User tutor, Float grade ){
+		TutorLecture tutorLecture = new TutorLecture();
+		tutorLecture.setLecture( lecture );
+		tutorLecture.setTutor( tutor );
+		tutorLecture.setGrade( grade );
+		return tutorLectureDao.save( tutorLecture );
+	}
 	
 }

@@ -25,7 +25,11 @@ public class ProfileEditController {
     	ModelAndView model = new ModelAndView("profile-edit");
     	User user = authenticatedUserService.getAuthenticatedUser();
     	model.addObject(user);
-    	model.addObject(new ProfileEditForm());
+    	ProfileEditForm profileEditForm = new ProfileEditForm();
+    	model.addObject(profileEditForm);
+    	if ( user.getIsTutor() ){
+    		profileEditForm.setDescription( user.getDescription() );
+    	}
     	return model;
     }
     
@@ -34,7 +38,7 @@ public class ProfileEditController {
     	ModelAndView model=new ModelAndView("profile-edit");
     	if (!result.hasErrors()) {
             try{
-            	authenticatedUserService.updateData( profileEditForm);
+            	authenticatedUserService.updateData( profileEditForm );
             	model=new ModelAndView("redirect:/user/profile");
             } catch (FormException e ){
             	model.addObject("exception_message", e.getMessage());

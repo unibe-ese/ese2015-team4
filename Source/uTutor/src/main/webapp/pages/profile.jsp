@@ -33,15 +33,50 @@
 		<div class="hashMap row">
 			<div class="hashMap cell key">State</div>
 		    <div class="hashMap cell value"><c:if test="${!user.isTutor}">Student</c:if><c:if test="${user.isTutor}">Tutor</c:if></div>
-		</div>		
+		</div>
+		<c:if test="${user.isTutor}">
+		<div class="hashMap row">
+			<div class="hashMap cell key">Price per hour</div>
+		    <div class="hashMap cell value"><c:out value="${user.price}" /></div>
+		</div>
+		</c:if>	
 	</div>
 </div>
 <div class="clear"></div>
 </div>
+
+<c:if test="${user.isTutor}">
+	<div>
+		<div>Description:</div>
+		<div><c:out value="${user.description}" /></div>				
+	</div>
+	<div><c:if test="${ownProfile}"><a href="<%=request.getContextPath()%>/user/profile/edit/"><img class="action-icon" src="<%=request.getContextPath()%>/img/edit.png"></a></c:if></div>
+	
+	<h2>Lectures:</h2>
+		<form name="frmLectures" class="form-box" enctype="multipart/form-data" method="POST">
+		<input type="hidden" name="action" id="action" value="0">	
+			
+			<c:forEach items="${lectures}" var="result">
+				<div class="hashMap table">
+					<div class="hashMap row">
+						<div class="hashMap cell key"><c:out value="${result.lecture.name}" /></div>
+		    			<div class="hashMap cell value"><c:out value="${result.grade}" /></div>
+		    			<label><input class="red submit" type="button" value="Delete" onClick="document.getElementById('action').value='<c:out value="${result.lecture.id}" />';document.frmLectures.submit();"></label>
+					</div>
+				</div>
+			</c:forEach>
+		</form>
+	<div>
+		<a href="<%=request.getContextPath()%>/user/add-lecture" class="button">Add a lecture!</a>
+	</div>
+
+</c:if>
+
 <c:if test="${!user.isTutor && ownProfile}">	
 	<div>
 		<a href="<%=request.getContextPath()%>/user/become-tutor" class="button">Become Tutor!</a>
 	</div>
+	
 </c:if>
 </c:if>
 <%@include file="includes/footer.jsp"%>

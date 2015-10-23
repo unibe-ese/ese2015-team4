@@ -28,6 +28,10 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 		user.setFirstName(profileEditForm.getFirstName());
 		user.setLastName(profileEditForm.getLastName());
 		
+		if ( user.getIsTutor() ){
+			user.setDescription(profileEditForm.getDescription());
+		}
+		
 		return userDao.save( user );
 	}
 	

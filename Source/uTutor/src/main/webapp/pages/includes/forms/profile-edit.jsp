@@ -15,6 +15,12 @@
     	<form:errors path="lastName" element="div" class="error"/>
 	</label>
 	
+	<c:if test="${user.isTutor}">
+		<form:textarea path="description" id="field-description"></form:textarea>
+		<form:errors path="description" element="div" class="error"/>
+		
+	</c:if>
+	
 	<label>
 		<input type="submit" value="Save" />
 	</label>
