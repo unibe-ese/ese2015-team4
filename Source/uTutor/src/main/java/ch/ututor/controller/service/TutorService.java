@@ -17,4 +17,8 @@ public interface TutorService {
 	
 	public void deleteLecture( Long lectureId );
 	
+	public boolean hasLectures(User tutor);
+
+	public void checkTutorState(User authenticatedUser);
+	
 }

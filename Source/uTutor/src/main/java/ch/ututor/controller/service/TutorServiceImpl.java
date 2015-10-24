@@ -51,7 +51,7 @@ public class TutorServiceImpl implements TutorService {
 		
 		user.setPrice( price );
 		user.setDescription( becomeTutorForm.getDescription() );
-		user.setIsTutor( true );
+		user.setIsTutor(true);
 		user = userDao.save( user );
 		
 		// create or get lecture if it exists already
@@ -94,6 +94,11 @@ public class TutorServiceImpl implements TutorService {
 		
 		TutorLecture tutorLecture = tutorLectureDao.findByTutorAndLecture( user, lecture);
 		tutorLectureDao.delete( tutorLecture );
+		
+		if(!this.hasLectures(user)){
+			user.setIsTutor(false);
+			user = userDao.save(user);
+		}
 	}
 	
 	private Lecture createOrGetLecture( String lectureName ){
@@ -112,6 +117,25 @@ public class TutorServiceImpl implements TutorService {
 		tutorLecture.setTutor( tutor );
 		tutorLecture.setGrade( grade );
 		return tutorLectureDao.save( tutorLecture );
+	}
+
+	public boolean hasLectures(User tutor) {
+		if(tutorLectureDao.findByTutor(tutor).isEmpty())
+			return false;
+		else
+			return true;
+	}
+	/*
+	 * Checks if User was once a tutor.
+	 */
+	public void checkTutorState(User user) {
+		if(!user.getIsTutor()){
+			if(user.getPrice() != 0){
+				user.setIsTutor(true);
+				user = userDao.save(user);
+			}
+		}
+		
 	}
 	
 }

@@ -25,24 +25,29 @@ public class TutorController {
 	
 	@RequestMapping(value={"/user/become-tutor"}, method = RequestMethod.GET)
     public ModelAndView becomeTutor() {
-		if(authenticatedUserService.getAuthenticatedUser().getIsTutor()){
+		User user = authenticatedUserService.getAuthenticatedUser();
+		if(user.getIsTutor()){
 			return new ModelAndView("redirect:/user/profile");
 		}
-    	ModelAndView model = new ModelAndView("become-tutor");
-    	model.addObject("becomeTutorForm", new BecomeTutorForm() );
-        return model;
+		tutorService.checkTutorState(user);
+		if(!user.getIsTutor()){
+			ModelAndView model = new ModelAndView("become-tutor");
+			model.addObject("becomeTutorForm", new BecomeTutorForm() );
+			return model;
+		}else return new ModelAndView("redirect:/user/add-lecture");
     }
 	
 	@RequestMapping(value={"/user/become-tutor"}, method = RequestMethod.POST)
     public ModelAndView becomeTutor(@Valid BecomeTutorForm becomeTutorForm, BindingResult result, RedirectAttributes redirectAttributes) {
-		if(authenticatedUserService.getAuthenticatedUser().getIsTutor()){
+		User user = authenticatedUserService.getAuthenticatedUser();
+		if(user.getIsTutor()){
 			return new ModelAndView("redirect:/user/profile");
 		}
     	ModelAndView model = new ModelAndView("become-tutor");
 		if (!result.hasErrors()) {
 			try{
-				tutorService.saveForm( becomeTutorForm );
-				return new ModelAndView("redirect:/user/profile");
+					tutorService.saveForm( becomeTutorForm );
+					return new ModelAndView("redirect:/user/profile");
 			} catch ( FormException e ){
 				model.addObject("exception_message", e.getMessage());
 			}

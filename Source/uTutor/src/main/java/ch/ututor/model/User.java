@@ -83,11 +83,11 @@ public class User{
     public boolean getIsTutor(){
     	return isTutor;
     }
-
+    
     public void setIsTutor(boolean isTutor){
     	this.isTutor = isTutor;
     }
-    
+
     public String getDescription(){
     	return description;
     }
