@@ -11,14 +11,11 @@ public interface TutorService {
 	
 	public User saveForm( BecomeTutorForm becomeTutorForm );
 
-	public TutorLecture addLecture(AddLectureForm addLectureForm);
+	public TutorLecture addTutorLecture(AddLectureForm addLectureForm);
 	
 	public List<TutorLecture> findLectures( User user );
 	
-	public void deleteLecture( Long lectureId );
-	
-	public boolean hasLectures(User tutor);
+	public void deleteTutorLecture( Long lectureId );
 
-	public void checkTutorState(User authenticatedUser);
-	
+	public boolean hasLectures(User tutor);
 }

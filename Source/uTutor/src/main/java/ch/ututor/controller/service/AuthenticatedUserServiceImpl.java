@@ -22,6 +22,20 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	@Autowired    UserDao userDao;
 	@Autowired    UserService userService;
 	@Autowired    ProfilePictureService profilePictureService;
+	@Autowired    TutorService tutorService;
+	
+	public ProfileEditForm fillEditForm(ProfileEditForm profileEditForm){
+		User user = getAuthenticatedUser();
+		profileEditForm.setFirstName(user.getFirstName());
+		profileEditForm.setLastName(user.getLastName());
+		if(user.getIsTutor()){
+			profileEditForm.setDescription(user.getDescription());
+		}else{
+			profileEditForm.setDescription(null);
+		}
+		
+		return profileEditForm;
+	}
 
 	public User updateData(ProfileEditForm profileEditForm) throws FormException {
 		User user = getAuthenticatedUser();
@@ -59,6 +73,18 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	public User removeProfilePicture(){
 		User user = getAuthenticatedUser();
 		user.setProfilePic(null);
+		userDao.save( user );
+		return user;
+	}
+
+	public boolean getIsTutor() {
+		User user = getAuthenticatedUser();
+		return user.getIsTutor();
+	}
+	
+	public User updateTutor(){
+		User user = getAuthenticatedUser();
+		user.setIsTutor(tutorService.hasLectures(user));
 		userDao.save( user );
 		return user;
 	}

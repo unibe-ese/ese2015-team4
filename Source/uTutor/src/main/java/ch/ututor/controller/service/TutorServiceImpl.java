@@ -51,19 +51,18 @@ public class TutorServiceImpl implements TutorService {
 		
 		user.setPrice( price );
 		user.setDescription( becomeTutorForm.getDescription() );
-		user.setIsTutor(true);
 		user = userDao.save( user );
 		
 		// create or get lecture if it exists already
 		Lecture lecture = createOrGetLecture( becomeTutorForm.getLecture() );
 		
 		// create relation between tutor and lecture
-		TutorLecture tutorlecture = createTutorLectureDataset( lecture, user, becomeTutorForm.getGrade() );
+		createTutorLectureDataset( lecture, user, becomeTutorForm.getGrade() );
 		
 		return user;
 	}
 	
-	public TutorLecture addLecture( AddLectureForm addLectureForm ){
+	public TutorLecture addTutorLecture( AddLectureForm addLectureForm ){
 		
 		User user = authenticatedUserService.getAuthenticatedUser();
 		Lecture lecture = createOrGetLecture( addLectureForm.getLecture() );
@@ -88,17 +87,11 @@ public class TutorServiceImpl implements TutorService {
 		return lectures;		
 	}
 	
-	public void deleteLecture( Long lectureId ){
+	public void deleteTutorLecture( Long lectureId ){
 		User user = authenticatedUserService.getAuthenticatedUser();
-		Lecture lecture = lectureDao.findById( lectureId );
-		
-		TutorLecture tutorLecture = tutorLectureDao.findByTutorAndLecture( user, lecture);
-		tutorLectureDao.delete( tutorLecture );
-		
-		if(!this.hasLectures(user)){
-			user.setIsTutor(false);
-			user = userDao.save(user);
-		}
+		TutorLecture tutorLecture = tutorLectureDao.findByTutorAndId(user, lectureId);
+		tutorLectureDao.delete(tutorLecture);
+		authenticatedUserService.updateTutor();
 	}
 	
 	private Lecture createOrGetLecture( String lectureName ){
@@ -125,17 +118,4 @@ public class TutorServiceImpl implements TutorService {
 		else
 			return true;
 	}
-	/*
-	 * Checks if User was once a tutor.
-	 */
-	public void checkTutorState(User user) {
-		if(!user.getIsTutor()){
-			if(user.getPrice() != 0){
-				user.setIsTutor(true);
-				user = userDao.save(user);
-			}
-		}
-		
-	}
-	
 }

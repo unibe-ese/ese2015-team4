@@ -8,15 +8,15 @@
 		</div>
 	</c:if>
 	<label>
-		<form:input path="oldPassword" type="password" id="field-oldPassword" value="${oldPassword}" placeholder="Actual password"/>
+		<form:input path="oldPassword" type="password" id="field-oldPassword" placeholder="Actual password"/>
     	<form:errors path="oldPassword" element="div" class="error"/>
 	</label>
 	<label>
-		<form:input path="newPassword" type="password" id="field-newPassword" value="${newPassword}" placeholder="New password"/>
+		<form:input path="newPassword" type="password" id="field-newPassword" placeholder="New password"/>
     	<form:errors path="newPassword" element="div" class="error"/>
 	</label>
 	<label>
-		<form:input path="newPasswordRepeat" type="password" id="field-newPasswordRepeat" value="${newPasswordRepeat}" placeholder="Repeat new password"/>
+		<form:input path="newPasswordRepeat" type="password" id="field-newPasswordRepeat" placeholder="Repeat new password"/>
     	<form:errors path="newPasswordRepeat" element="div" class="error"/>
 	</label>
 	

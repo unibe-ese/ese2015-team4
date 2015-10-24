@@ -4,8 +4,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<c:set var="contextUrl" value="${fn:replace(requestScope['javax.servlet.forward.request_uri'], pageContext.request.contextPath, '')}"/> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="contextUrl" value="${fn:replace(requestScope['javax.servlet.forward.request_uri'], pageContext.request.contextPath, '')}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,6 +32,7 @@
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="msapplication-TileImage" content="<%=request.getContextPath()%>/favicon/mstile-144x144.png">
 <meta name="theme-color" content="#ffffff">
+
 </head>
 <body>
 <div id="header-container">

@@ -28,40 +28,39 @@ public class ProfileViewController {
 	
     @RequestMapping(value={"/user/profile"}, method = RequestMethod.GET)
     public ModelAndView profile(@RequestParam(value = "userId", required=false) Long userId) {
-    	ModelAndView model = new ModelAndView("profile");
+    	ModelAndView model = new ModelAndView("user/profile");
     	User user = null;
-    	if(userId==null){
+    	User authUser = authenticatedUserService.getAuthenticatedUser();
+    	if(userId==null || authUser.getId()==userId){
     		model.addObject("ownProfile",true);
-    		user = authenticatedUserService.getAuthenticatedUser();
+    		user=authUser;
     	}else{
-    		if(authenticatedUserService.getAuthenticatedUser().getId()==userId){
-    			model.addObject("ownProfile",true);
-    		}else{
-    			model.addObject("ownProfile",false);
-    		}
+    		model.addObject("ownProfile",false);
     		try{
     			user = userService.load(userId);
     		}catch(UserNotFoundException e){
     			model.addObject("exception_message",e.getMessage());
     		}
     	}
-    	model.addObject("user", user);
     	
-    	if ( user.getIsTutor() ){
-    		try{
-        		model.addObject("lectures", tutorService.findLectures( user ) );
-        	}catch( NoLecturesFoundException e ){
-        		model.addObject("exception_message", e.getMessage());
-        	}
+    	if(user!=null){
+    		model.addObject(user);
+    		if ( user.getIsTutor() ){
+    			try{
+    				model.addObject("lectures", tutorService.findLectures( user ) );
+    			}catch( NoLecturesFoundException e ){
+    				model.addObject("exception_message", e.getMessage());
+    			}
+    		}
     	}
         return model;
     }
     
     @RequestMapping(value="/user/profile", method = RequestMethod.POST)
-    public ModelAndView deleteLecture(@RequestParam("action") String action){
-    	
-    	Long id = Long.parseLong( action );
-    	tutorService.deleteLecture( id );
+    public ModelAndView deleteLecture(@RequestParam("action") String action, @RequestParam("objectId") String objectId){
+    	if(action.equals("deleteLecture")){
+    		tutorService.deleteTutorLecture(Long.parseLong(objectId));
+    	}
     	
     	ModelAndView model = new ModelAndView("redirect:/user/profile");
     	return model;

@@ -23,13 +23,7 @@ public class ProfileEditController {
     @RequestMapping(value={"/user/profile/edit"}, method = RequestMethod.GET)
     public ModelAndView edit() {
     	ModelAndView model = new ModelAndView("user/profile-edit");
-    	User user = authenticatedUserService.getAuthenticatedUser();
-    	model.addObject(user);
-    	ProfileEditForm profileEditForm = new ProfileEditForm();
-    	model.addObject(profileEditForm);
-    	if ( user.getIsTutor() ){
-    		profileEditForm.setDescription( user.getDescription() );
-    	}
+    	model.addObject(authenticatedUserService.fillEditForm(new ProfileEditForm()));
     	return model;
     }
     
@@ -45,5 +39,5 @@ public class ProfileEditController {
             }
         }
     	return model;
-    }   
+    } 
 }

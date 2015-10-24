@@ -5,11 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
+
+import ch.ututor.controller.exceptions.NoLecturesFoundException;
+import ch.ututor.controller.service.TutorService;
+import ch.ututor.controller.service.UserService;
 
 @Entity
 public class User{
-	
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -20,10 +25,11 @@ public class User{
 	private String lastName;
 	@Column(length=512000)
 	private byte[] profilePic;
-	private boolean isTutor;
 	
+	private boolean isTutor;
 	private String description;	
 	private float price;
+	
 	
 	public Long getId(){
 		return id;
@@ -80,16 +86,26 @@ public class User{
     	}
     }
     
+    public void setIsTutor(boolean isTutor){
+    	this.isTutor=isTutor;
+    }
+    
     public boolean getIsTutor(){
     	return isTutor;
     }
-    
-    public void setIsTutor(boolean isTutor){
-    	this.isTutor = isTutor;
-    }
 
     public String getDescription(){
-    	return description;
+    	if(getIsTutor()){
+    		if(description==null){
+    			description="";
+    		}
+    		return description;
+    	}
+    	return null;
+    }
+    
+    public String getDescriptionHtml(){
+    	return getDescription().replace("\n", "<br/>");
     }
     
     public void setDescription(String description){

@@ -8,19 +8,18 @@
 		</div>
 	</c:if>
 	<label>
-		<form:input path="firstName" id="field-firstName" value="${user.firstName}"/>
+		<form:input path="firstName" id="field-firstName"/>
     	<form:errors path="firstName" element="div" class="error"/>
 	</label>
 	
 	<label>
-		<form:input path="lastName" id="field-lastName" value="${user.lastName}"/>
+		<form:input path="lastName" id="field-lastName"/>
     	<form:errors path="lastName" element="div" class="error"/>
 	</label>
 	
-	<c:if test="${user.isTutor}">
+	<c:if test="${profileEditForm.description!=null}">
 		<form:textarea path="description" id="field-description"></form:textarea>
 		<form:errors path="description" element="div" class="error"/>
-		
 	</c:if>
 	
 	<label>
