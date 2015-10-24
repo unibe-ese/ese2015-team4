@@ -31,7 +31,7 @@ public class TutorController {
 		}
 		tutorService.checkTutorState(user);
 		if(!user.getIsTutor()){
-			ModelAndView model = new ModelAndView("become-tutor");
+			ModelAndView model = new ModelAndView("user/become-tutor");
 			model.addObject("becomeTutorForm", new BecomeTutorForm() );
 			return model;
 		}else return new ModelAndView("redirect:/user/add-lecture");
@@ -43,7 +43,7 @@ public class TutorController {
 		if(user.getIsTutor()){
 			return new ModelAndView("redirect:/user/profile");
 		}
-    	ModelAndView model = new ModelAndView("become-tutor");
+    	ModelAndView model = new ModelAndView("user/become-tutor");
 		if (!result.hasErrors()) {
 			try{
 					tutorService.saveForm( becomeTutorForm );
@@ -60,7 +60,7 @@ public class TutorController {
     public ModelAndView addLecture() {
 		ModelAndView model;
 		if(authenticatedUserService.getAuthenticatedUser().getIsTutor()){
-			model = new ModelAndView("add-lecture");
+			model = new ModelAndView("user/add-lecture");
 			model.addObject("addLectureForm", new AddLectureForm() );
 		} else{
 			model = new ModelAndView("redirect:/user/become-tutor");
@@ -76,7 +76,7 @@ public class TutorController {
 			model = new ModelAndView("redirect:/user/become-tutor");
 		}
 		
-		model = new ModelAndView("add-lecture");
+		model = new ModelAndView("user/add-lecture");
 		if (!result.hasErrors()) {
 			try{
 				tutorService.addLecture( addLectureForm );
@@ -89,5 +89,4 @@ public class TutorController {
 		
     	return model;
 	}
-	
 }

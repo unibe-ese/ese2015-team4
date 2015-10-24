@@ -1,3 +1,5 @@
+<%@include file="../includes/header.jsp"%>
+	<div class="center">
 <form:form method="post" class="form-box" modelAttribute="profileEditForm" id="profileEditForm" autocomplete="off">
 <h1>Edit profile</h1>
 	<c:if test="${exception_message != null}">
@@ -28,3 +30,7 @@
 		<input class="grey submit" type="button" value="Cancel" onClick="document.location.href='<%=request.getContextPath()%>/user/profile';">
 	</label>
 </form:form>
+
+	
+	</div>
+<%@include file="../includes/footer.jsp"%>

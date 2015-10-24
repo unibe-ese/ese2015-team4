@@ -21,14 +21,14 @@ public class PasswordChangeController {
     
     @RequestMapping(value={"/user/password"}, method = RequestMethod.GET)
     public ModelAndView password() {
-    	ModelAndView model = new ModelAndView("profile-password");
+    	ModelAndView model = new ModelAndView("user/change-password");
     	model.addObject(new ChangePasswordForm());    	
         return model;
     }
     
     @RequestMapping( value = {"/user/password"}, method = RequestMethod.POST )
     public ModelAndView password(@Valid ChangePasswordForm changePasswordForm, BindingResult result, RedirectAttributes redirectAttributes){
-    	ModelAndView model=new ModelAndView("profile-password");
+    	ModelAndView model=new ModelAndView("user/change-password");
     	if (!result.hasErrors()) {
             try{
             	authenticatedUserService.updatePassword(changePasswordForm);

@@ -22,7 +22,7 @@ public class ProfileEditController {
     
     @RequestMapping(value={"/user/profile/edit"}, method = RequestMethod.GET)
     public ModelAndView edit() {
-    	ModelAndView model = new ModelAndView("profile-edit");
+    	ModelAndView model = new ModelAndView("user/profile-edit");
     	User user = authenticatedUserService.getAuthenticatedUser();
     	model.addObject(user);
     	ProfileEditForm profileEditForm = new ProfileEditForm();
@@ -35,7 +35,7 @@ public class ProfileEditController {
     
     @RequestMapping( value = {"/user/profile/edit"}, method = RequestMethod.POST )
     public ModelAndView edit(@Valid ProfileEditForm profileEditForm, BindingResult result, RedirectAttributes redirectAttributes){
-    	ModelAndView model=new ModelAndView("profile-edit");
+    	ModelAndView model=new ModelAndView("user/profile-edit");
     	if (!result.hasErrors()) {
             try{
             	authenticatedUserService.updateData( profileEditForm );

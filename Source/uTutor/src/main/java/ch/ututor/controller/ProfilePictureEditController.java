@@ -20,7 +20,7 @@ public class ProfilePictureEditController {
     
     @RequestMapping(value="/user/profile/picture", method = RequestMethod.GET)
     public ModelAndView picture(){
-    	ModelAndView model=new ModelAndView("profile-picture");
+    	ModelAndView model=new ModelAndView("user/profile-picture");
     	User user=authenticatedUserService.getAuthenticatedUser();
     	model.addObject("userId",user.getId());
     	model.addObject("hasProfilePic",user.hasProfilePic());
@@ -30,22 +30,22 @@ public class ProfilePictureEditController {
     @RequestMapping(value="/user/profile/picture", method = RequestMethod.POST)
     public ModelAndView uploadPicture(@RequestParam("action") String action, @RequestParam("picture") MultipartFile file){
     	User user=authenticatedUserService.getAuthenticatedUser();
-    	String exceptionMessage=null;
+    	String exceptionMessage = null;
     	if(action.equals("upload")){
     		try{
     			authenticatedUserService.updateProfilePicture(file);
+        		return new ModelAndView("redirect:/user/profile");
             } catch (FormException e){
                	exceptionMessage=e.getMessage(); 
             } catch (Exception e){
               	exceptionMessage="Unknown Exception: "+e.getMessage();
             }
-    		return new ModelAndView("redirect:/user/profile");
     	}else if(action.equals("delete")){
     		authenticatedUserService.removeProfilePicture();
     		return new ModelAndView("redirect:/user/profile");
     	}
     	
-    	ModelAndView model=new ModelAndView("profile-picture");
+    	ModelAndView model=new ModelAndView("user/profile-picture");
     	model.addObject("userId",user.getId());
     	model.addObject("hasProfilePic",user.hasProfilePic());
     	model.addObject("exception_message",exceptionMessage);

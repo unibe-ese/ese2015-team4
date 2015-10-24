@@ -4,12 +4,34 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<c:set var="contextUrl" value="${fn:replace(requestScope['javax.servlet.forward.request_uri'], pageContext.request.contextPath, '')}"/> 
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>uTutor</title>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/style.css">
+
+<link rel="apple-touch-icon" sizes="57x57" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="<%=request.getContextPath()%>/favicon/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="<%=request.getContextPath()%>/favicon/favicon-194x194.png" sizes="194x194">
+<link rel="icon" type="image/png" href="<%=request.getContextPath()%>/favicon/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="<%=request.getContextPath()%>/favicon/android-chrome-192x192.png" sizes="192x192">
+<link rel="icon" type="image/png" href="<%=request.getContextPath()%>/favicon/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="<%=request.getContextPath()%>/manifest.json">
+<link rel="mask-icon" href="<%=request.getContextPath()%>/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-TileImage" content="<%=request.getContextPath()%>/favicon/mstile-144x144.png">
+<meta name="theme-color" content="#ffffff">
 </head>
 <body>
 <div id="header-container">

@@ -1,4 +1,5 @@
-
+<%@include file="../includes/header.jsp"%>
+<div class="center">
 <form:form method="post" class="form-box" modelAttribute="becomeTutorForm" action="become-tutor" id="becomeTutor" autocomplete="off">
 	<h1>Become a tutor!</h1>	
 	
@@ -18,10 +19,12 @@
     	<form:errors path="price" element="div" class="error"/>
 	</label>
 	
-	<%@include file="./add-lecture-skeleton.jsp" %>
+	<%@include file="includes/add-lecture.jsp" %>
 	
 	<label>
 		<input type="submit" value="Become tutor!" />
 	</label>
 	
 </form:form>
+</div>
+<%@include file="../includes/footer.jsp"%>

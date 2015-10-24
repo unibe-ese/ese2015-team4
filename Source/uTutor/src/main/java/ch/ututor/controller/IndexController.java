@@ -11,7 +11,6 @@ public class IndexController {
     public ModelAndView index() {
     	ModelAndView model = new ModelAndView("index");
     	model.addObject("signUpForm", new SignUpForm() );
-    	model.addObject("isHome", true);
         return model;
     }
 }
