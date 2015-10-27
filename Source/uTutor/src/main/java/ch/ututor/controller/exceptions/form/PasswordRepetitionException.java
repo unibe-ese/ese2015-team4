@@ -8,6 +8,5 @@ public class PasswordRepetitionException extends FormException {
 
 	public PasswordRepetitionException( String s ) {
         super( s );
-    }
-	
+    }	
 }

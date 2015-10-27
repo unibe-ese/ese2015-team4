@@ -9,5 +9,4 @@ public class TutorLectureAlreadyExistsException extends FormException {
 	public TutorLectureAlreadyExistsException( String s ) {
         super( s );
     }
-	
 }

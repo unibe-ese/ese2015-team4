@@ -9,5 +9,4 @@ public class NoResultFoundException extends FormException {
 	public NoResultFoundException( String s ) {
         super( s );
     }
-	
 }

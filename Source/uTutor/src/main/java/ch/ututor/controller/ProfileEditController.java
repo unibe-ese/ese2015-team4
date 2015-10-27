@@ -29,11 +29,11 @@ public class ProfileEditController {
     
     @RequestMapping( value = {"/user/profile/edit"}, method = RequestMethod.POST )
     public ModelAndView edit(@Valid ProfileEditForm profileEditForm, BindingResult result, RedirectAttributes redirectAttributes){
-    	ModelAndView model=new ModelAndView("user/profile-edit");
+    	ModelAndView model = new ModelAndView("user/profile-edit");
     	if (!result.hasErrors()) {
             try{
             	authenticatedUserService.updateData( profileEditForm );
-            	model=new ModelAndView("redirect:/user/profile");
+            	model = new ModelAndView("redirect:/user/profile");
             } catch (FormException e ){
             	model.addObject("exception_message", e.getMessage());
             }

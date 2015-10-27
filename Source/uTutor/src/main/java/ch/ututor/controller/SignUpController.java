@@ -29,7 +29,7 @@ public class SignUpController {
 	 
 	@RequestMapping( value = "/signup", method = RequestMethod.POST )
     public ModelAndView signup(@Valid SignUpForm signupForm, BindingResult result, RedirectAttributes redirectAttributes){
-    	ModelAndView model=new ModelAndView("signup");
+    	ModelAndView model = new ModelAndView("signup");
     	if (!result.hasErrors()) {
             try{
             	signupService.saveForm(signupForm);

@@ -15,13 +15,14 @@ import ch.ututor.model.User;
 
 @Controller
 public class ProfilePictureEditController {
+	
 	@Autowired 	  AuthenticatedUserService authenticatedUserService;
 	@Autowired 	  ProfilePictureService profilePictureService;
     
     @RequestMapping(value="/user/profile/picture", method = RequestMethod.GET)
     public ModelAndView picture(){
-    	ModelAndView model=new ModelAndView("user/profile-picture");
-    	User user=authenticatedUserService.getAuthenticatedUser();
+    	ModelAndView model = new ModelAndView("user/profile-picture");
+    	User user = authenticatedUserService.getAuthenticatedUser();
     	model.addObject("userId",user.getId());
     	model.addObject("hasProfilePic",user.hasProfilePic());
     	return model;

@@ -32,12 +32,12 @@ public class TutorServiceImpl implements TutorService {
 	@Autowired
 	TutorLectureDao tutorLectureDao;
 	
-	public User saveForm( BecomeTutorForm becomeTutorForm ) {
+	public User saveForm(BecomeTutorForm becomeTutorForm) {
 		
 		String priceEntered = becomeTutorForm.getPrice();
 		float price;
 		try{
-			price = Float.parseFloat( priceEntered );
+			price = Float.parseFloat(priceEntered);
 		} catch (NumberFormatException e){
 			throw new InvalidPriceException("Please enter a valid price!");
 		}
@@ -49,67 +49,67 @@ public class TutorServiceImpl implements TutorService {
 		// update user
 		User user = authenticatedUserService.getAuthenticatedUser();
 		
-		user.setPrice( price );
-		user.setDescription( becomeTutorForm.getDescription() );
-		user = userDao.save( user );
+		user.setPrice(price);
+		user.setDescription(becomeTutorForm.getDescription());
+		user = userDao.save(user);
 		
 		// create or get lecture if it exists already
-		Lecture lecture = createOrGetLecture( becomeTutorForm.getLecture() );
+		Lecture lecture = createOrGetLecture(becomeTutorForm.getLecture());
 		
 		// create relation between tutor and lecture
-		createTutorLectureDataset( lecture, user, becomeTutorForm.getGrade() );
+		createTutorLectureDataset(lecture, user, becomeTutorForm.getGrade());
 		
 		return user;
 	}
 	
-	public TutorLecture addTutorLecture( AddLectureForm addLectureForm ){
+	public TutorLecture addTutorLecture(AddLectureForm addLectureForm){
 		
 		User user = authenticatedUserService.getAuthenticatedUser();
-		Lecture lecture = createOrGetLecture( addLectureForm.getLecture() );
+		Lecture lecture = createOrGetLecture(addLectureForm.getLecture());
 				
-		TutorLecture tutorLecture = tutorLectureDao.findByTutorAndLecture( user, lecture );
+		TutorLecture tutorLecture = tutorLectureDao.findByTutorAndLecture(user, lecture);
 		
-		if ( tutorLecture != null ){
+		if (tutorLecture != null){
 			throw new TutorLectureAlreadyExistsException("You've already registered this lecutre!");			
 		}
 		
-		tutorLecture = createTutorLectureDataset( lecture, user, addLectureForm.getGrade() );
+		tutorLecture = createTutorLectureDataset(lecture, user, addLectureForm.getGrade());
 		
 		return tutorLecture;
 	}
 	
-	public List<TutorLecture> findLectures( User user ){
-		List<TutorLecture> lectures = tutorLectureDao.findByTutor( user );
+	public List<TutorLecture> findLectures(User user){
+		List<TutorLecture> lectures = tutorLectureDao.findByTutor(user);
 		
-		if ( lectures.size() == 0 ){
+		if (lectures.size() == 0){
 			throw new NoLecturesFoundException("No lectures found for this tutor!");
 		} 
 		return lectures;		
 	}
 	
-	public void deleteTutorLecture( Long lectureId ){
+	public void deleteTutorLecture(Long lectureId){
 		User user = authenticatedUserService.getAuthenticatedUser();
 		TutorLecture tutorLecture = tutorLectureDao.findByTutorAndId(user, lectureId);
 		tutorLectureDao.delete(tutorLecture);
 		authenticatedUserService.updateTutor();
 	}
 	
-	private Lecture createOrGetLecture( String lectureName ){
-		Lecture lecture = lectureDao.findByName( lectureName );
-		if ( lecture == null ){
+	private Lecture createOrGetLecture(String lectureName){
+		Lecture lecture = lectureDao.findByName(lectureName);
+		if (lecture == null){
 			lecture = new Lecture();
-			lecture.setName( lectureName );
-			lecture = lectureDao.save( lecture );
+			lecture.setName(lectureName);
+			lecture = lectureDao.save(lecture);
 		}
 		return lecture;
 	}
 	
-	private TutorLecture createTutorLectureDataset( Lecture lecture, User tutor, Float grade ){
+	private TutorLecture createTutorLectureDataset(Lecture lecture, User tutor, Float grade){
 		TutorLecture tutorLecture = new TutorLecture();
-		tutorLecture.setLecture( lecture );
-		tutorLecture.setTutor( tutor );
-		tutorLecture.setGrade( grade );
-		return tutorLectureDao.save( tutorLecture );
+		tutorLecture.setLecture(lecture);
+		tutorLecture.setTutor(tutor);
+		tutorLecture.setGrade(grade);
+		return tutorLectureDao.save(tutorLecture);
 	}
 
 	public boolean hasLectures(User tutor) {

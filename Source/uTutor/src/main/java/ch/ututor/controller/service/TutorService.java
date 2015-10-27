@@ -10,12 +10,8 @@ import ch.ututor.model.User;
 public interface TutorService {
 	
 	public User saveForm( BecomeTutorForm becomeTutorForm );
-
 	public TutorLecture addTutorLecture(AddLectureForm addLectureForm);
-	
 	public List<TutorLecture> findLectures( User user );
-	
 	public void deleteTutorLecture( Long lectureId );
-
 	public boolean hasLectures(User tutor);
 }

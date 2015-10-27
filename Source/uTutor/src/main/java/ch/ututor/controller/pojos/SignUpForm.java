@@ -6,6 +6,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class SignUpForm {
+	
 	@NotBlank(message = "Please enter your first name!")
 	private String firstName;
 	
@@ -18,7 +19,6 @@ public class SignUpForm {
 	
 	@Size(min = 8, message = "Your password should contain at least 8 characters!")
 	private String password;
-	
 	
 	private String passwordRepeat;
 
@@ -61,7 +61,4 @@ public class SignUpForm {
 	public void setPasswordRepeat(String passwordRepeat) {
 		this.passwordRepeat = passwordRepeat;
 	}
-	
-	
-	
 }

@@ -15,8 +15,8 @@ public class SearchServiceImpl implements SearchService {
 	@Autowired    TutorLectureDao tutorLectureDao;
 
 	public List<TutorLecture> searchByLecture(String query) throws NoResultFoundException {
-		List<TutorLecture> lectures = tutorLectureDao.findByLectureNameLike('%'+query+'%');
-		if(lectures.size()==0){
+		List<TutorLecture> lectures = tutorLectureDao.findByLectureNameLike('%' + query + '%');
+		if(lectures.size() == 0){
 			throw new NoResultFoundException("No lectures found.");
 		}
 		return lectures;

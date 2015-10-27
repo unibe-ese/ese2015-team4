@@ -11,7 +11,9 @@ import ch.ututor.controller.service.SearchService;
 
 @Controller
 public class SearchController {
+	
 	@Autowired    SearchService searchService;
+	
 	@RequestMapping("/search")
     public ModelAndView search(@RequestParam(value = "query") String query) {
     	ModelAndView model = new ModelAndView("search");
@@ -23,5 +25,4 @@ public class SearchController {
     	}
         return model;
     }
-	
 }

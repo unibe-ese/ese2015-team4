@@ -7,6 +7,7 @@ import ch.ututor.controller.pojos.SignUpForm;
 
 @Controller
 public class IndexController {
+	
 	@RequestMapping("/")
     public ModelAndView index() {
     	ModelAndView model = new ModelAndView("index");

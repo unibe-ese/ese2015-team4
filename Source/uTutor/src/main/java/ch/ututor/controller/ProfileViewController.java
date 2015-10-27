@@ -4,14 +4,11 @@ import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.ututor.controller.exceptions.FormException;
 import ch.ututor.controller.exceptions.NoLecturesFoundException;
 import ch.ututor.controller.exceptions.UserNotFoundException;
 import ch.ututor.controller.service.AuthenticatedUserService;
@@ -21,6 +18,7 @@ import ch.ututor.model.User;
 
 @Controller
 public class ProfileViewController {
+	
 	@Autowired 	  AuthenticatedUserService authenticatedUserService;
 	@Autowired 	  UserService userService;
 	@Autowired	  ServletContext servletContext;
@@ -31,9 +29,9 @@ public class ProfileViewController {
     	ModelAndView model = new ModelAndView("user/profile");
     	User user = null;
     	User authUser = authenticatedUserService.getAuthenticatedUser();
-    	if(userId==null || authUser.getId()==userId){
+    	if(userId == null || authUser.getId()==userId){
     		model.addObject("ownProfile",true);
-    		user=authUser;
+    		user = authUser;
     	}else{
     		model.addObject("ownProfile",false);
     		try{
@@ -45,10 +43,10 @@ public class ProfileViewController {
     	
     	if(user!=null){
     		model.addObject(user);
-    		if ( user.getIsTutor() ){
+    		if (user.getIsTutor()){
     			try{
-    				model.addObject("lectures", tutorService.findLectures( user ) );
-    			}catch( NoLecturesFoundException e ){
+    				model.addObject("lectures", tutorService.findLectures(user));
+    			}catch(NoLecturesFoundException e){
     				model.addObject("exception_message", e.getMessage());
     			}
     		}
@@ -65,5 +63,4 @@ public class ProfileViewController {
     	ModelAndView model = new ModelAndView("redirect:/user/profile");
     	return model;
     }
-    
 }

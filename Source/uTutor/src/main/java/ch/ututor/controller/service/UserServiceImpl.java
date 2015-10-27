@@ -13,16 +13,16 @@ public class UserServiceImpl implements UserService {
 	@Autowired    UserDao userDao;
 	
 	public User load(long id) throws UserNotFoundException{
-		User user=userDao.findById(id);
-		if(user==null){
+		User user = userDao.findById(id);
+		if(user == null){
 			throw new UserNotFoundException("User not found.");
 		}
 		return user;
 	}
 	
 	public User load(String username){
-		User user=userDao.findByUsername(username);
-		if(user==null){
+		User user = userDao.findByUsername(username);
+		if(user == null){
 			throw new UserNotFoundException("User not found.");
 		}
 		return user;

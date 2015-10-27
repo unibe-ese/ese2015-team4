@@ -1,7 +1,5 @@
 package ch.ututor.controller.pojos;
 
-import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class BecomeTutorForm extends AddLectureForm {
@@ -26,5 +24,4 @@ public class BecomeTutorForm extends AddLectureForm {
 	public void setDescription(String description){
 		this.description = description;
 	}
-	
 }

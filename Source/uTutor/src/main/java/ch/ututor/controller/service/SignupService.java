@@ -7,5 +7,4 @@ import ch.ututor.model.User;
 public interface SignupService {
 	
 	public User saveForm(SignUpForm signupForm) throws FormException;
-	
 }

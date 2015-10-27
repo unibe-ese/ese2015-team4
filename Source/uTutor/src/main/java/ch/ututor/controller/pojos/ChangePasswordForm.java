@@ -5,6 +5,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class ChangePasswordForm {	
+	
 	@NotBlank(message = "Please enter your actual password!")
 	private String oldPassword;
 	

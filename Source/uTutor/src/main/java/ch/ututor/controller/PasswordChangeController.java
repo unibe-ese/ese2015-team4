@@ -28,11 +28,11 @@ public class PasswordChangeController {
     
     @RequestMapping( value = {"/user/password"}, method = RequestMethod.POST )
     public ModelAndView password(@Valid ChangePasswordForm changePasswordForm, BindingResult result, RedirectAttributes redirectAttributes){
-    	ModelAndView model=new ModelAndView("user/change-password");
+    	ModelAndView model = new ModelAndView("user/change-password");
     	if (!result.hasErrors()) {
             try{
             	authenticatedUserService.updatePassword(changePasswordForm);
-            	model=new ModelAndView("redirect:/user/profile");
+            	model = new ModelAndView("redirect:/user/profile");
             } catch (FormException e ){
             	model.addObject("exception_message", e.getMessage());
             }

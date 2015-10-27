@@ -24,5 +24,4 @@ public class AddLectureForm {
 	public void setGrade(Float grade) {
 		this.grade = grade;
 	}
-	
 }

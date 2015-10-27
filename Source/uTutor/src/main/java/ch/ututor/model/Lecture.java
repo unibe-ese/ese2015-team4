@@ -28,5 +28,4 @@ public class Lecture {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
 }

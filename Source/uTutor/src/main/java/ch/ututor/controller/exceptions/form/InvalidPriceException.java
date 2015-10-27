@@ -8,6 +8,5 @@ public class InvalidPriceException extends FormException {
 
 	public InvalidPriceException( String s ) {
         super( s );
-    }
-	
+    }	
 }

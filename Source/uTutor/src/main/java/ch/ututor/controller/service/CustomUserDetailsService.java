@@ -22,7 +22,6 @@ public class CustomUserDetailsService implements UserDetailsService{
 	@Autowired
 	UserDao userDao;
 	
-	
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userDao.findByUsername(username);
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthorities());

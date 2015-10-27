@@ -19,6 +19,7 @@ import ch.ututor.controller.exceptions.form.ProfilePictureException;
 
 @Service
 public class ProfilePictureServiceImpl implements ProfilePictureService{
+	
 	final static int PROFILE_PICTURE_MAX_WIDTH = 350;
 	final static int PROFILE_PICTURE_MAX_HEIGHT = 350;
 
@@ -59,16 +60,16 @@ public class ProfilePictureServiceImpl implements ProfilePictureService{
 	private BufferedImage resizeImage(BufferedImage originalImage, int type){
 		int newW=PROFILE_PICTURE_MAX_WIDTH;
 		int newH=PROFILE_PICTURE_MAX_HEIGHT;
-		if(originalImage.getWidth()<newW && originalImage.getHeight()<newH){
+		if(originalImage.getWidth() < newW && originalImage.getHeight() < newH){
 			newW=originalImage.getWidth();
 			newH=originalImage.getHeight();
 		}else{
-			if(originalImage.getWidth()>originalImage.getHeight()){
-				float ratio=(float) newW/(float) originalImage.getWidth();
-				newH=(int)((float) originalImage.getHeight() * ratio);
+			if(originalImage.getWidth() > originalImage.getHeight()){
+				float ratio = (float) newW / (float) originalImage.getWidth();
+				newH = (int) ((float) originalImage.getHeight() * ratio);
 			}else{
-				float ratio=(float) newH/(float) originalImage.getHeight();
-				newW=(int)((float) originalImage.getWidth() * ratio);
+				float ratio = (float) newH / (float) originalImage.getHeight();
+				newW = (int) ((float) originalImage.getWidth() * ratio);
 			}
 		}
 		BufferedImage resizedImage = new BufferedImage(newW, newH, type);

@@ -5,7 +5,7 @@
 	<div class="exception"><c:out value="${exception_message}"/></div>
 </c:if>
 <div class="search-result">
-<c:forEach items="${results}" var="result">
+	<c:forEach items="${results}" var="result">
 		<div class="item" onClick="document.location.href='<%=request.getContextPath()%>/user/profile/?userId=<c:out value="${result.tutor.id}"/>';">
 			<div class="cell picture"><img src="<%=request.getContextPath()%>/img/user.jpg?userId=<c:out value="${result.tutor.id}"/>"/></div>
 			<div class="cell data">
@@ -29,6 +29,6 @@
 				</c:forEach>
 			</div>
 		</div>
-</c:forEach>
-	</div>
+	</c:forEach>
+</div>
 <%@include file="includes/footer.jsp"%>

@@ -18,26 +18,24 @@ public class SignupServiceImpl implements SignupService {
 	public User saveForm(SignUpForm signUpForm) throws FormException{
 		
 		String email = signUpForm.getEmail();
-		User user = userDao.findByUsername( email );
+		User user = userDao.findByUsername(email);
 		
-		if ( user != null ){
-			throw new UserAlreadyExistsException( "There's already a user registered "
-					+ "with this email address!" );
-		} else if(!signUpForm.getPassword().equals(signUpForm.getPasswordRepeat())){
+		if(user != null){
+			throw new UserAlreadyExistsException("There's already a user registered "
+					+ "with this email address!");
+		}else if(!signUpForm.getPassword().equals(signUpForm.getPasswordRepeat())){
 			throw new PasswordRepetitionException("The password repetition did not match.");
-		} else{
+		}else{
 			user = new User();
 			
-			user.setFirstName( signUpForm.getFirstName() );
-			user.setLastName( signUpForm.getLastName() );
-			user.setUsername( signUpForm.getEmail() );
-			user.setPassword( signUpForm.getPassword() );
+			user.setFirstName(signUpForm.getFirstName());
+			user.setLastName(signUpForm.getLastName());
+			user.setUsername(signUpForm.getEmail());
+			user.setPassword(signUpForm.getPassword());
 			
-			user = userDao.save( user );
+			user = userDao.save(user);
 		}
 		
 		return user;
-		
 	}
-	
 }

@@ -3,6 +3,7 @@ package ch.ututor.controller.pojos;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class ProfileEditForm {	
+	
 	@NotBlank(message = "Please enter your first name!")
 	private String firstName;
 	
@@ -34,5 +35,4 @@ public class ProfileEditForm {
 	public void setDescription(String description){
 		this.description = description;
 	}
-	
 }

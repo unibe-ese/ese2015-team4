@@ -7,5 +7,4 @@ public class NoLecturesFoundException extends RuntimeException {
 	public NoLecturesFoundException( String s ){
 		super(s);
 	}
-	
 }
