@@ -15,7 +15,6 @@ import ch.ututor.controller.pojos.AddLectureForm;
 import ch.ututor.controller.pojos.BecomeTutorForm;
 import ch.ututor.controller.service.AuthenticatedUserService;
 import ch.ututor.controller.service.TutorService;
-import ch.ututor.model.User;
 
 @Controller
 public class TutorController {

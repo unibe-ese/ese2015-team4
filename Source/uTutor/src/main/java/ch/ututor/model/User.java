@@ -101,10 +101,6 @@ public class User{
     	return null;
     }
     
-    public String getDescriptionHtml(){
-    	return getDescription().replace("\n", "<br/>");
-    }
-    
     public void setDescription(String description){
     	this.description = description;
     }

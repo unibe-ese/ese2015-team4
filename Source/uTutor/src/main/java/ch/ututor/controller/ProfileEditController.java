@@ -13,7 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ch.ututor.controller.exceptions.FormException;
 import ch.ututor.controller.pojos.ProfileEditForm;
 import ch.ututor.controller.service.AuthenticatedUserService;
-import ch.ututor.model.User;
 
 @Controller
 public class ProfileEditController {
