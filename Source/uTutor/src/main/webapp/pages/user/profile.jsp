@@ -17,9 +17,14 @@
 	<div class="profile-data">
 		<div class="profile-picture">
 			<img class="profile-picture" src="<%=request.getContextPath()%>/img/user.jpg?userId=<c:out value="${user.id}"/>"/><br/>
-			<c:if test="${ownProfile}">
-				<a href="<%=request.getContextPath()%>/user/profile/picture/"><img class="action-icon" src="<%=request.getContextPath()%>/img/edit.png"></a>
-			</c:if>
+			<c:choose>	
+				<c:when test="${ownProfile}">
+					<a href="<%=request.getContextPath()%>/user/profile/picture/"><img class="action-icon" src="<%=request.getContextPath()%>/img/edit.png"></a>
+				</c:when>
+				<c:otherwise>
+					<a href="<%=request.getContextPath()%>/user/message/new?receiverId=<c:out value="${user.id}"/>" class="button action">+ new message</a>
+				</c:otherwise>
+			</c:choose>
 		</div>
 		<div class="float-left">
 			<div class="hashMap table" style="max-width:560px;overflow:hidden">
