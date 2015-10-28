@@ -7,13 +7,13 @@
 		</div>
 	</c:if>
 	
-	<form:form method="post" class="form-box" modelAttribute="newMessageForm" action="new" id="newMessageForm" autocomplete="off">
+	<form:form method="post" class="form-box" modelAttribute="newMessageForm" id="newMessageForm" autocomplete="off">
 		
 		<h1>New message:</h1>
 		<div class="hashMap table" style="max-width:560px;overflow:hidden">
 				<div class="row">
 					<div class="cell key">To</div>
-		    		<div class="cell value"><c:out value="${newMessageForm.receiver.firstName}" /> <c:out value="${newMessageForm.receiver.lastName}" /></div>
+		    		<div class="cell value"><c:out value="${receiverName}" /></div>
 				</div>		
 		</div>
 		

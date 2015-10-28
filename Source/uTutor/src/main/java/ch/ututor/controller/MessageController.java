@@ -27,51 +27,53 @@ public class MessageController {
      
     @Autowired    UserService userService;
     @Autowired 	  AuthenticatedUserService authenticatedUserService;
+    
      
     @RequestMapping(value={"/user/message/new"}, method = RequestMethod.GET)
     public ModelAndView newMessage(@RequestParam(value = "receiverId") Long receiverId) {
+        ModelAndView model = new ModelAndView("/user/new-message");
         
+        addReceiverNameAndFormToModel(model, receiverId, new NewMessageForm());
+        
+        return model;
+    }
+     
+    @RequestMapping(value={"/user/message/new"}, method = RequestMethod.POST)
+    public ModelAndView send(@RequestParam(value = "receiverId") Long receiverId, @Valid NewMessageForm newMessageForm, BindingResult result, RedirectAttributes redirectAttributes ){
     	ModelAndView model;
+    	
+    	if ( !result.hasErrors() ){
+    		//TODO: get the receiver over receiverId. Create/Save message.
+    		
+    		
+    		//TODO: decide where to redirect after message is send
+    		model=new ModelAndView("redirect:/user/profile/");   		
+    	} else {
+    		model = new ModelAndView( "/user/new-message");
+    		addReceiverNameAndFormToModel(model, receiverId, newMessageForm);
+    	}
+    	return model;
+    }
+    
+    
+    
+    
+    //TODO: DAS HIER GEHÖRT WOHL EHER IN EINEN SERVICE
+    private void addReceiverNameAndFormToModel(ModelAndView model, Long receiverId, NewMessageForm newMessageForm){
         User receiver;
         
         if ( receiverId == null ){
         	model = new ModelAndView("exception");
 			model.addObject("exception_message","Receiver not found!");
-			return model; 
         }
         
         try{
 			receiver = userService.load( receiverId );
+			model.addObject("receiverName",receiver.getFirstName() + " " + receiver.getLastName());
+	        model.addObject("newMessageForm", newMessageForm );
 		}catch(UserNotFoundException e){
 			model = new ModelAndView("exception");
 			model.addObject("exception_message","Receiver not found!");
-			return model;
 		}
-        
-        model = new ModelAndView("/user/new-message");
-        
-        NewMessageForm newMessageForm = new NewMessageForm();
-        newMessageForm.setReceiver( receiver );
-        
-        model.addObject("newMessageForm", newMessageForm );
-         
-        return model;
     }
-     
-    @RequestMapping(value={"/user/message/new"}, method = RequestMethod.POST)
-    public ModelAndView send( @Valid NewMessageForm newMessageForm, BindingResult result, RedirectAttributes redirectAttributes ){
-    	ModelAndView model;
-    	User receiver = newMessageForm.getReceiver();
-    	
-    	if ( !result.hasErrors() ){
-    		
-    		
-    		//TODO: decide where to redirect after message is send
-    		model = new ModelAndView( "/user/profile" );    		
-    	} else {
-    		model = new ModelAndView( "/user/message/new?receiverId=" + receiver.getId() );
-    	}
-    	return model;
-    }
-     
 }
