@@ -428,6 +428,10 @@ img.profile-picture{
 	font-weight: normal;
 }
 
+.pre{
+	white-space: pre-wrap;
+}
+
 .hashMap .icon{
 	padding:0px;
 	float:right;

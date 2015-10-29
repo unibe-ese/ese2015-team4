@@ -9,10 +9,12 @@ import ch.ututor.model.User;
  
 public interface MessageDao extends CrudRepository<Message, Long> {
      
-    public List<Message> findBySenderAndSenderDeletedOrderByDateTimeDesc( User sender, boolean deleted );
+    public List<Message> findBySenderAndSenderDeletedOrderByDateAndTimeDesc( User sender, boolean senderDeleted );
      
-    public List<Message> findByReceiverAndReceiverDeletedOrderByDateTimeDesc( User receiver, boolean deleted );
+    public List<Message> findByReceiverAndReceiverDeletedOrderByDateAndTimeDesc( User receiver, boolean receiverDeleted );
     
-    public List<Message> findBySenderOrReceiverOrderByDateTimeDesc( User user );
+    public List<Message> findBySenderAndSenderDeletedOrReceiverAndReceiverDeletedOrderByDateAndTimeDesc( User sender, boolean senderDeleted, User receiver, boolean userDeleted );
+    
+    public Message findById( Long id );
     
 }

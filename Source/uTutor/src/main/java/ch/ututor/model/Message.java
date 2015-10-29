@@ -22,7 +22,7 @@ public class Message {
     private User receiver;
      
     @NotNull
-    private Date dateTime;
+    private Date dateAndTime;
      
     @NotNull
     private String subject;
@@ -30,7 +30,7 @@ public class Message {
     @NotNull
     private String message;
     
-    private boolean read;
+    private boolean isRead;
     private boolean senderDeleted;
     private boolean receiverDeleted;
  
@@ -58,12 +58,12 @@ public class Message {
         this.receiver = receiver;
     }
  
-    public Date getDateTime() {
-        return dateTime;
+    public Date getDateAndTime() {
+        return dateAndTime;
     }
  
-    public void setDateTime(Date dateTime) {
-        this.dateTime = dateTime;
+    public void setDateAndTime(Date dateAndTime) {
+        this.dateAndTime = dateAndTime;
     }
  
     public String getSubject() {
@@ -82,12 +82,12 @@ public class Message {
         this.message = message;
     } 
     
-    public boolean isRead() {
-		return read;
+    public boolean getIsRead() {
+		return isRead;
 	}
 
-	public void setRead(boolean read) {
-		this.read = read;
+	public void setIsRead(boolean isRead) {
+		this.isRead = isRead;
 	}
 
 	public boolean isSenderDeleted() {

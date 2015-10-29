@@ -47,6 +47,7 @@
 				<select style="max-width:250px;font-size:16px;height:48px;" onChange="var url=this.options[this.selectedIndex].value;if(url!=''){document.location.href='<%=request.getContextPath()%>'+url;}">
 					<option value=""><sec:authentication property="principal.username" /></option>
 					<option value="/user/profile">My profile</option>
+					<option value="/user/message">Messages</option>
 					<option value="/user/password">Change password</option>
 					<option value="/logout">Logout</option>
 				</select>

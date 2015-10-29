@@ -12,8 +12,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired    UserDao userDao;
 	
-	public User load(long id) throws UserNotFoundException{
+	public User load(Long id) throws UserNotFoundException{
 		User user = userDao.findById(id);
+		
 		if(user == null){
 			throw new UserNotFoundException("User not found.");
 		}
