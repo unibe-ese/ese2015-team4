@@ -29,10 +29,10 @@ public class MessageController {
     @Autowired	  MessageService messageService;
     
     @RequestMapping(value={"/user/message/new"}, method = RequestMethod.GET)
-    public ModelAndView newMessage(@RequestParam(value = "receiverId") Long receiverId) {
+    public ModelAndView newMessage(@RequestParam(value = "receiverId") Long receiverId, @RequestParam(value = "messageSubject", required = false) String messageSubject) {
         ModelAndView model = new ModelAndView("/user/new-message");
-        
-        model = messageService.addReceiverNameAndFormToModel( model, receiverId, new NewMessageForm() );
+
+        model = messageService.addFormToModel( model, receiverId, messageSubject, new NewMessageForm() );
         
         return model;
     }
@@ -57,7 +57,7 @@ public class MessageController {
     		model=new ModelAndView( "redirect:/user/profile?userId=" + receiverId );   		
     	} else {
     		model = new ModelAndView( "/user/new-message");
-    		model = messageService.addReceiverNameAndFormToModel(model, receiverId, newMessageForm);
+    		model = messageService.addFormToModel(model, receiverId, newMessageForm.getSubject(), newMessageForm);
     	}
     	return model;
     }

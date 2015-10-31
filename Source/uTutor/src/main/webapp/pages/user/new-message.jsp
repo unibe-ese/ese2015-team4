@@ -22,8 +22,8 @@
 					<div class="cell key">Subject</div>
 		    		<div class="cell value">
 		    			<label>
-							<form:input path="subject" id="field-subject" placeholder="Subject"/>
- 						  	<form:errors path="subject" element="div" class="error"/>
+		    				<form:input path="subject" id="field-subject" placeholder="Subject" value="${messageSubject}" />
+ 						  	<form:errors path="subject" element="div" class="error"/> 						  	
 						</label>
 		    		</div>
 				</div>		

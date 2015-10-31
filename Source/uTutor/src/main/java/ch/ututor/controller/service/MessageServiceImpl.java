@@ -25,13 +25,17 @@ public class MessageServiceImpl implements MessageService {
 	@Autowired    
 	MessageDao messageDao;
 	
-	public ModelAndView addReceiverNameAndFormToModel( ModelAndView model, Long receiverId, NewMessageForm newMessageForm ) {
+	public ModelAndView addFormToModel( ModelAndView model, Long receiverId, String messageSubject, NewMessageForm newMessageForm ) {
 		User receiver;
         
+		if(messageSubject != null)
+        	messageSubject = "AW:" + messageSubject;
+		
         try{
 			receiver = userService.load( receiverId );
 			model.addObject( "receiverName" , receiver.getFirstName() + " " + receiver.getLastName());
 	        model.addObject( "newMessageForm" , newMessageForm );
+	        model.addObject("messageSubject", messageSubject);
 		}catch( UserNotFoundException e ){
 			model = new ModelAndView("exception");
 			model.addObject("exception_message","Receiver not found!");

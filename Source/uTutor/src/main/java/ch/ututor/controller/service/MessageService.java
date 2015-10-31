@@ -10,7 +10,7 @@ import ch.ututor.model.User;
 
 public interface MessageService {
 	
-	public ModelAndView addReceiverNameAndFormToModel( ModelAndView model, Long receiverId, NewMessageForm newMessageForm);
+	public ModelAndView addFormToModel( ModelAndView model, Long receiverId, String messageSubject, NewMessageForm newMessageForm);
 	
 	public Message saveMessage( NewMessageForm newMessageForm, User receiver );
 	

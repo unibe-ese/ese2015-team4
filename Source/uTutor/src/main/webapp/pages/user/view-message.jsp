@@ -10,7 +10,7 @@
 		<h1>Message:</h1>
 		<c:if test="${ userId == message.receiver.id && !message.receiverDeleted }">	
 			<div>
-				<a href="<%=request.getContextPath()%>/user/message/new?receiverId=<c:out value="${message.sender.id}" />" class="button">Reply</a>
+				<a href="<%=request.getContextPath()%>/user/message/new?receiverId=<c:out value="${message.sender.id}" />&messageSubject=<c:out value="${message.subject}" />" class="button">Reply</a>
 			</div>
 		</c:if>
 		<c:if test="${ ( userId == message.receiver.id && !message.receiverDeleted ) || ( userId == message.sender.id && !message.senderDeleted ) }">
