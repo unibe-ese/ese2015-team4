@@ -32,7 +32,7 @@ public class MessageController {
     public ModelAndView newMessage(@RequestParam(value = "receiverId") Long receiverId, @RequestParam(value = "messageSubject", required = false) String messageSubject) {
         ModelAndView model = new ModelAndView("/user/new-message");
 
-        model = messageService.addFormToModel( model, receiverId, messageSubject, new NewMessageForm() );
+        model = messageService.addFormToModel( model, receiverId, messageSubject, new NewMessageForm(), false );
         
         return model;
     }
@@ -57,7 +57,7 @@ public class MessageController {
     		model=new ModelAndView( "redirect:/user/profile?userId=" + receiverId );   		
     	} else {
     		model = new ModelAndView( "/user/new-message");
-    		model = messageService.addFormToModel(model, receiverId, newMessageForm.getSubject(), newMessageForm);
+    		model = messageService.addFormToModel(model, receiverId, newMessageForm.getSubject(), newMessageForm, result.hasErrors());
     	}
     	return model;
     }

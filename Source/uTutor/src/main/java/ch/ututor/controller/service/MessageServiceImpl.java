@@ -25,10 +25,10 @@ public class MessageServiceImpl implements MessageService {
 	@Autowired    
 	MessageDao messageDao;
 	
-	public ModelAndView addFormToModel( ModelAndView model, Long receiverId, String messageSubject, NewMessageForm newMessageForm ) {
+	public ModelAndView addFormToModel( ModelAndView model, Long receiverId, String messageSubject, NewMessageForm newMessageForm, boolean hasErrors ) {
 		User receiver;
         
-		if(messageSubject != null)
+		if(messageSubject != null && !hasErrors)
         	messageSubject = "AW:" + messageSubject;
 		
         try{
