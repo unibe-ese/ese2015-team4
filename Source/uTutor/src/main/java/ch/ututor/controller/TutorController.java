@@ -40,7 +40,7 @@ public class TutorController {
     	ModelAndView model = new ModelAndView("user/become-tutor");
 		if (!result.hasErrors()) {
 			try{
-				tutorService.saveForm( becomeTutorForm );
+				tutorService.becomeTutor( becomeTutorForm );
 				authenticatedUserService.updateTutor();
 				return new ModelAndView("redirect:/user/profile");
 			} catch ( FormException e ){

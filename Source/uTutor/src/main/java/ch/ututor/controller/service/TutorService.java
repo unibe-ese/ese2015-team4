@@ -9,9 +9,14 @@ import ch.ututor.model.User;
 
 public interface TutorService {
 	
-	public User saveForm( BecomeTutorForm becomeTutorForm );
+	public User becomeTutor( BecomeTutorForm becomeTutorForm );
+	
 	public TutorLecture addTutorLecture(AddLectureForm addLectureForm);
-	public List<TutorLecture> findLectures( User user );
+	
+	public List<TutorLecture> findLecturesFromTutor( User tutor );
+	
 	public void deleteTutorLecture( Long lectureId );
+	
 	public boolean hasLectures(User tutor);
+
 }

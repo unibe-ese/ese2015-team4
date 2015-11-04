@@ -45,7 +45,7 @@ public class ProfileViewController {
     		model.addObject(user);
     		if (user.getIsTutor()){
     			try{
-    				model.addObject("lectures", tutorService.findLectures(user));
+    				model.addObject("lectures", tutorService.findLecturesFromTutor(user));
     			}catch(NoLecturesFoundException e){
     				model.addObject("exception_message", e.getMessage());
     			}

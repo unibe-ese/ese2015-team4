@@ -7,6 +7,10 @@ import ch.ututor.controller.exceptions.UserNotFoundException;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
 
+/**
+ *	This class provides methods to find a specific user.
+ */
+
 @Service
 public class UserServiceImpl implements UserService {
 	
@@ -18,14 +22,17 @@ public class UserServiceImpl implements UserService {
 		if(user == null){
 			throw new UserNotFoundException("User not found.");
 		}
+		
 		return user;
 	}
 	
 	public User load(String username){
 		User user = userDao.findByUsername(username);
+		
 		if(user == null){
 			throw new UserNotFoundException("User not found.");
 		}
+		
 		return user;
 	}
 }

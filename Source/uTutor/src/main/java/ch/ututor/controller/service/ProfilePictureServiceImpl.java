@@ -17,12 +17,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ch.ututor.controller.exceptions.form.ProfilePictureException;
 
+/**
+ *	This class is responsible to provide the methods to upload a profile picture.
+ */
+
+// TODO: method comments
+
 @Service
 public class ProfilePictureServiceImpl implements ProfilePictureService{
 	
 	final static int PROFILE_PICTURE_MAX_WIDTH = 350;
 	final static int PROFILE_PICTURE_MAX_HEIGHT = 350;
-
+	
 	public boolean validateUploadedPicture(MultipartFile file) throws ProfilePictureException {
 		if(file.isEmpty()){
 			throw new ProfilePictureException("Please select a file.");
@@ -36,7 +42,13 @@ public class ProfilePictureServiceImpl implements ProfilePictureService{
 		try{
 			InputStream in = new ByteArrayInputStream(picture);
 			BufferedImage originalImage = ImageIO.read(in);
-			int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+			int type;
+			
+			if (originalImage.getType() == 0){
+				type = BufferedImage.TYPE_INT_ARGB;
+			} else {
+				type = originalImage.getType();
+			}
 				
 			BufferedImage resizeImageJpg = resizeImage(originalImage, type);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();

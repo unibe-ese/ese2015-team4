@@ -23,9 +23,11 @@ public class User{
 	private byte[] profilePic;
 
 	private boolean isTutor;
-	private String description;	
-	private float price;
 	
+	@Column(length=1048)
+	private String description;	
+	
+	private float price;
 	
 	public Long getId(){
 		return id;

@@ -32,7 +32,7 @@ public class SignUpController {
     	ModelAndView model = new ModelAndView("signup");
     	if (!result.hasErrors()) {
             try{
-            	signupService.saveForm(signupForm);
+            	signupService.createUserAccount(signupForm);
             	model=new ModelAndView("redirect:/login?username="+signupForm.getEmail());
             } catch (FormException e ){
             	model.addObject("exception_message", e.getMessage());

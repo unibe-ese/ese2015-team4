@@ -16,6 +16,11 @@ import ch.ututor.model.dao.UserDao;
 
 import java.io.IOException;
 
+/**
+ *	This class provides methods to update the basic profile data of the
+ *	currently logged-in user.  
+ */
+
 @Service
 public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	
@@ -24,10 +29,15 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	@Autowired    ProfilePictureService profilePictureService;
 	@Autowired    TutorService tutorService;
 	
-	public ProfileEditForm fillEditForm(ProfileEditForm profileEditForm){
+	/**
+	 * Pre-fills the profileEditForm with the information of the currently
+	 * logged in user.
+	 */
+	public ProfileEditForm preFillProfileEditForm(ProfileEditForm profileEditForm){
 		User user = getAuthenticatedUser();
 		profileEditForm.setFirstName(user.getFirstName());
 		profileEditForm.setLastName(user.getLastName());
+		
 		if(user.getIsTutor()){
 			profileEditForm.setDescription(user.getDescription());
 		}else{
@@ -36,8 +46,12 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 		
 		return profileEditForm;
 	}
-
-	public User updateData(ProfileEditForm profileEditForm) throws FormException {
+	
+	/**
+	 * Updates the profile of the currently logged in user with the data
+	 * from the ProfileEditForm.
+	 */
+	public User updateUserData(ProfileEditForm profileEditForm) throws FormException {
 		User user = getAuthenticatedUser();
 		user.setFirstName(profileEditForm.getFirstName());
 		user.setLastName(profileEditForm.getLastName());
@@ -51,30 +65,34 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	
 	public User updatePassword(ChangePasswordForm changePasswordForm){
 		User user = getAuthenticatedUser();
+
 		if(!BCrypt.checkpw(changePasswordForm.getOldPassword(), user.getPassword())){
 			throw new PasswordRepetitionException("Entered password doesn't match your actual password.");
 		}
+		
 		if(!changePasswordForm.getNewPassword().equals(changePasswordForm.getNewPasswordRepeat())){
 			throw new PasswordRepetitionException("The password repetition did not match.");
 		}
+		
 		user.setPassword(changePasswordForm.getNewPassword());
 		return userDao.save( user );
 	}
 	
 	public User updateProfilePicture(MultipartFile file) throws IOException{
 		User user = getAuthenticatedUser();
+		
 		if(profilePictureService.validateUploadedPicture(file)){
 			user.setProfilePic(profilePictureService.resizePicture(file.getBytes()));
 			userDao.save( user );
 		}
+		
 		return user;
 	}
 	
 	public User removeProfilePicture(){
 		User user = getAuthenticatedUser();
 		user.setProfilePic(null);
-		userDao.save( user );
-		return user;
+		return userDao.save( user );
 	}
 
 	public boolean getIsTutor() {
@@ -82,9 +100,13 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 		return user.getIsTutor();
 	}
 	
+	/**
+	 * Checks if the currently logged-in user is a tutor by 
+	 * checking if he has registered lectures in his profile.
+	 */
 	public User updateTutor(){
 		User user = getAuthenticatedUser();
-		user.setIsTutor(tutorService.hasLectures(user));
+		user.setIsTutor( tutorService.hasLectures(user) );
 		userDao.save( user );
 		return user;
 	}

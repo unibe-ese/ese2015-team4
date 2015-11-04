@@ -7,9 +7,10 @@ import org.hibernate.validator.constraints.NotBlank;
 public class ChangePasswordForm {	
 	
 	@NotBlank(message = "Please enter your actual password!")
+	@Size(min = 8, max = 30, message = "Passwords contain between 8 and 30 characters!")
 	private String oldPassword;
 	
-	@Size(min = 8, message = "Your password should contain at least 8 characters!")
+	@Size(min = 8, max = 30, message = "Your password should contain between 8 and 30 characters!")
 	private String newPassword;
 	
 	private String newPasswordRepeat;

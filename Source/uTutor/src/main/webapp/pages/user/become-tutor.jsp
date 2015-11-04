@@ -10,7 +10,7 @@
 		</c:if>
 		
 		<label>
-			<form:textarea path="description" id="field-description" placeholder="Describe yourself here..." maxlength="255"></form:textarea>
+			<form:textarea path="description" id="field-description" placeholder="Describe yourself here..." maxlength="1000"></form:textarea>
 	    	<form:errors path="description" element="div" class="error"/>
 		</label>
 		

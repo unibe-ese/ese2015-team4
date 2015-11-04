@@ -2,6 +2,8 @@ package ch.ututor.model;
  
 import java.util.Date;
  
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -28,6 +30,7 @@ public class Message {
     private String subject;
      
     @NotNull
+    @Column(length=1048)
     private String message;
     
     private boolean isRead;

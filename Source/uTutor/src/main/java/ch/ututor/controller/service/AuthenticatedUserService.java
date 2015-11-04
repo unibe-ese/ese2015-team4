@@ -10,8 +10,8 @@ import ch.ututor.controller.pojos.ChangePasswordForm;
 import ch.ututor.model.User;
 
 public interface AuthenticatedUserService {
-	public ProfileEditForm fillEditForm(ProfileEditForm profileEditForm);
-	public User updateData(ProfileEditForm profileEditForm) throws FormException;
+	public ProfileEditForm preFillProfileEditForm(ProfileEditForm profileEditForm);
+	public User updateUserData(ProfileEditForm profileEditForm) throws FormException;
 	public User updatePassword(ChangePasswordForm changePasswordForm) throws FormException;
 	public User updateProfilePicture(MultipartFile file) throws IOException;
 	public User removeProfilePicture();

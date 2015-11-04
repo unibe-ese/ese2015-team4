@@ -1,10 +1,13 @@
 package ch.ututor.controller.pojos;
 
+import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 public class BecomeTutorForm extends AddLectureForm {
 	
 	@NotBlank(message = "Please enter a valid price!")
+	@Size(max = 8, message = "No more than 8 digits allowed!")
 	private String price;
 	
 	private String description;

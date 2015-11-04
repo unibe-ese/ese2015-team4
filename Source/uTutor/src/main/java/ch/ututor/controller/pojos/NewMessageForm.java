@@ -1,14 +1,19 @@
 package ch.ututor.controller.pojos;
  
+import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.NotBlank;
  
-import ch.ututor.model.User;
- 
 public class NewMessageForm {
-    @NotBlank(message = "Please enter a subject!")
-    private String subject;
+    
+	//TODO: check correct display of long subjects and user names in message-view
+	
+	@NotBlank(message = "Please enter a subject!")
+	@Size(max = 50, message = "No more than 50 characters allowed!")
+	private String subject;
      
     @NotBlank(message = "Please enter a message body!")
+    @Size(max = 1000, message = "No more than 1000 characters allowed!")
     private String message;
  
     public String getSubject() {

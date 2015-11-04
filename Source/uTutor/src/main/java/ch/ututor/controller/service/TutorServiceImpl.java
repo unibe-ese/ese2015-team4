@@ -17,6 +17,10 @@ import ch.ututor.model.dao.LectureDao;
 import ch.ututor.model.dao.TutorLectureDao;
 import ch.ututor.model.dao.UserDao;
 
+/**
+ * 	This class provides methods to become tutor and add/delete lectures as a tutor.
+ */
+
 @Service
 public class TutorServiceImpl implements TutorService {
 
@@ -32,12 +36,35 @@ public class TutorServiceImpl implements TutorService {
 	@Autowired
 	TutorLectureDao tutorLectureDao;
 	
-	public User saveForm(BecomeTutorForm becomeTutorForm) {
+	//TODO: more comments needed?
+	
+	/**
+	 *	Adds the required information (price, description and first lecture)
+	 *	to the user profile so that he becomes a tutor.
+	 */
+	public User becomeTutor(BecomeTutorForm becomeTutorForm) {
+		User user = authenticatedUserService.getAuthenticatedUser();
+		user = updateUserProfile( user, becomeTutorForm );
 		
-		String priceEntered = becomeTutorForm.getPrice();
+		Lecture lecture = createOrGetLecture(becomeTutorForm.getLecture());
+		
+		createTutorLectureDataset(lecture, user, becomeTutorForm.getGrade());
+		
+		return user;
+	}
+	
+	private User updateUserProfile( User user, BecomeTutorForm becomeTutorForm ){
+		float price = validatePrice( becomeTutorForm.getPrice() );
+		user.setPrice(price);
+		user.setDescription(becomeTutorForm.getDescription());
+		return userDao.save(user);
+	}
+	
+	private float validatePrice( String priceEntered ){
 		float price;
+		
 		try{
-			price = Float.parseFloat(priceEntered);
+			price = Float.parseFloat( priceEntered );
 		} catch (NumberFormatException e){
 			throw new InvalidPriceException("Please enter a valid price!");
 		}
@@ -46,22 +73,13 @@ public class TutorServiceImpl implements TutorService {
 			throw new InvalidPriceException("Please enter a valid price!");
 		}
 		
-		// update user
-		User user = authenticatedUserService.getAuthenticatedUser();
-		
-		user.setPrice(price);
-		user.setDescription(becomeTutorForm.getDescription());
-		user = userDao.save(user);
-		
-		// create or get lecture if it exists already
-		Lecture lecture = createOrGetLecture(becomeTutorForm.getLecture());
-		
-		// create relation between tutor and lecture
-		createTutorLectureDataset(lecture, user, becomeTutorForm.getGrade());
-		
-		return user;
+		return price;
 	}
 	
+	/**
+	 *	Add a lecture to the tutor's profile by creating the entry
+	 *	in the table TutorLecture.
+	 */
 	public TutorLecture addTutorLecture(AddLectureForm addLectureForm){
 		
 		User user = authenticatedUserService.getAuthenticatedUser();
@@ -78,8 +96,8 @@ public class TutorServiceImpl implements TutorService {
 		return tutorLecture;
 	}
 	
-	public List<TutorLecture> findLectures(User user){
-		List<TutorLecture> lectures = tutorLectureDao.findByTutor(user);
+	public List<TutorLecture> findLecturesFromTutor(User tutor){
+		List<TutorLecture> lectures = tutorLectureDao.findByTutor(tutor);
 		
 		if (lectures.size() == 0){
 			throw new NoLecturesFoundException("No lectures found for this tutor!");
@@ -87,13 +105,20 @@ public class TutorServiceImpl implements TutorService {
 		return lectures;		
 	}
 	
-	public void deleteTutorLecture(Long lectureId){
+	/**
+	 *	Deletes a lecture from the tutor's profile
+	 */
+	public void deleteTutorLecture(Long tutorLectureId){
 		User user = authenticatedUserService.getAuthenticatedUser();
-		TutorLecture tutorLecture = tutorLectureDao.findByTutorAndId(user, lectureId);
+		TutorLecture tutorLecture = tutorLectureDao.findByTutorAndId(user, tutorLectureId);
 		tutorLectureDao.delete(tutorLecture);
 		authenticatedUserService.updateTutor();
 	}
 	
+	/**
+	 *	Checks if a lecture already exists or not and creates it
+	 *	if necessary.
+	 */
 	private Lecture createOrGetLecture(String lectureName){
 		Lecture lecture = lectureDao.findByName(lectureName);
 		if (lecture == null){
@@ -113,7 +138,7 @@ public class TutorServiceImpl implements TutorService {
 	}
 
 	public boolean hasLectures(User tutor) {
-		if(tutorLectureDao.findByTutor(tutor).isEmpty())
+		if( tutorLectureDao.findByTutor(tutor).isEmpty() )
 			return false;
 		else
 			return true;
