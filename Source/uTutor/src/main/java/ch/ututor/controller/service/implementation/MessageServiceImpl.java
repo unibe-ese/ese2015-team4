@@ -50,18 +50,18 @@ public class MessageServiceImpl implements MessageService {
 		assert ( model != null );
 		assert ( newMessageForm != null );
 		
-		if(messageSubject != null && !hasErrors){
+		if( messageSubject != null && !hasErrors ){
         	messageSubject = "AW:" + messageSubject;
 		}
         	
         try{
 			User receiver = userService.load( receiverId );
-			model.addObject( "receiverName" , receiver.getFirstName() + " " + receiver.getLastName());
+			model.addObject( "receiverName" , receiver.getFirstName() + " " + receiver.getLastName() );
 	        model.addObject( "newMessageForm" , newMessageForm );
-	        model.addObject("messageSubject", messageSubject);
+	        model.addObject("messageSubject", messageSubject );
 	        return model;
 		} catch ( UserNotFoundException e ){
-			return exceptionService.addException( null, "Receiver not found!");
+			return exceptionService.addException( null, "Receiver not found!" );
 		}
 	}
 	
@@ -98,7 +98,7 @@ public class MessageServiceImpl implements MessageService {
 		assert( user != null );
 		
 		view = validateView( view );
-		ModelAndView model = new ModelAndView("/user/message");
+		ModelAndView model = new ModelAndView( "/user/message" );
 		model.addObject( "view", view );
 		
 		if ( view.equalsIgnoreCase( "outbox" ) ){
@@ -113,7 +113,7 @@ public class MessageServiceImpl implements MessageService {
 	}
 	
 	/**
-	 *	@param user			Should not be null
+	 *	@param user			should not be null
 	 */
 	public void deleteMessage( Long messageId, User user ){
 		assert( user != null );
@@ -131,7 +131,7 @@ public class MessageServiceImpl implements MessageService {
 	}
 	
 	/**
-	 *	@param messageId	shall not be null
+	 *	@param messageId	should not be null
 	 *	
 	 *	@throws MessageNotFoundException	if the message with the required id doesn't exist
 	 */
