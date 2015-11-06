@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ch.ututor.controller.exceptions.FormException;
 import ch.ututor.controller.pojos.ProfileEditForm;
 import ch.ututor.controller.pojos.ChangePasswordForm;
+import ch.ututor.model.User;
 
 public interface AuthenticatedUserService {
 	public ProfileEditForm preFillProfileEditForm(ProfileEditForm profileEditForm);

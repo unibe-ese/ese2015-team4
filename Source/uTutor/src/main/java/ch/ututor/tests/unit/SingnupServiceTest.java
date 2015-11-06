@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import ch.ututor.controller.exceptions.form.PasswordRepetitionException;
 import ch.ututor.controller.exceptions.form.UserAlreadyExistsException;
@@ -41,10 +42,12 @@ public class SingnupServiceTest {
 	public void testCreateUserAccountSuccessfull(){
 		
 		User user = signupService.createUserAccount(signUpForm);
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		
 		assertEquals("Harry", user.getFirstName());
 		assertEquals("Potter", user.getLastName());
 		assertEquals("harry.potter@hogwarts.com", user.getUsername());
+		assertTrue(passwordEncoder.matches("12345678", user.getPassword()));
 	}
 	
 	@Test(expected = PasswordRepetitionException.class)
