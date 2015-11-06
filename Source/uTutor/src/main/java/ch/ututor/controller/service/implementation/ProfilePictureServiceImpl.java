@@ -33,7 +33,7 @@ public class ProfilePictureServiceImpl implements ProfilePictureService{
 	/**
 	 *	@throws	ProfilePictureException if file is null, empty or not an image
 	 */
-	public boolean validateUploadedPicture(MultipartFile file) throws ProfilePictureException {
+	public boolean validateUploadedPicture(MultipartFile file) {
 		if(file == null || file.isEmpty() ){
 			throw new ProfilePictureException("Please select a file.");
 		}else if(!file.getContentType().equals("image/jpeg") && !file.getContentType().equals("image/jpg")){
