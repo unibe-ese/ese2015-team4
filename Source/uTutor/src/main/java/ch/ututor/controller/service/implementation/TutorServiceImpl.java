@@ -1,4 +1,4 @@
-package ch.ututor.controller.service;
+package ch.ututor.controller.service.implementation;
 
 import java.util.List;
 
@@ -10,6 +10,8 @@ import ch.ututor.controller.exceptions.form.InvalidPriceException;
 import ch.ututor.controller.exceptions.form.TutorLectureAlreadyExistsException;
 import ch.ututor.controller.pojos.AddLectureForm;
 import ch.ututor.controller.pojos.BecomeTutorForm;
+import ch.ututor.controller.service.AuthenticatedUserService;
+import ch.ututor.controller.service.TutorService;
 import ch.ututor.model.Lecture;
 import ch.ututor.model.TutorLecture;
 import ch.ututor.model.User;
@@ -36,13 +38,15 @@ public class TutorServiceImpl implements TutorService {
 	@Autowired
 	TutorLectureDao tutorLectureDao;
 	
-	//TODO: more comments needed?
-	
 	/**
 	 *	Adds the required information (price, description and first lecture)
 	 *	to the user profile so that he becomes a tutor.
+	 *
+	 *	@param becomeTutorForm	Should not be null
 	 */
 	public User becomeTutor(BecomeTutorForm becomeTutorForm) {
+		assert( becomeTutorForm != null );
+		
 		User user = authenticatedUserService.getAuthenticatedUser();
 		user = updateUserProfile( user, becomeTutorForm );
 		
@@ -50,16 +54,29 @@ public class TutorServiceImpl implements TutorService {
 		
 		createTutorLectureDataset(lecture, user, becomeTutorForm.getGrade());
 		
+		authenticatedUserService.updateTutorState();
+		
 		return user;
 	}
 	
+	/**
+	 * @param user				Should not be null
+	 * @param becomeTutorForm	Should not be null
+	 */
 	private User updateUserProfile( User user, BecomeTutorForm becomeTutorForm ){
+		assert( user != null );
+		assert( becomeTutorForm != null );
+		
 		float price = validatePrice( becomeTutorForm.getPrice() );
 		user.setPrice(price);
 		user.setDescription(becomeTutorForm.getDescription());
 		return userDao.save(user);
 	}
 	
+	/**
+	 *	@throws InvalidPriceException if the parameter can't be parsed into a string
+	 *			or if the value is <= 0.
+	 */
 	private float validatePrice( String priceEntered ){
 		float price;
 		
@@ -70,7 +87,7 @@ public class TutorServiceImpl implements TutorService {
 		}
 		
 		if ( price <= 0.0 ){
-			throw new InvalidPriceException("Please enter a valid price!");
+			throw new InvalidPriceException("Please enter a price greater than zero!");
 		}
 		
 		return price;
@@ -79,8 +96,14 @@ public class TutorServiceImpl implements TutorService {
 	/**
 	 *	Add a lecture to the tutor's profile by creating the entry
 	 *	in the table TutorLecture.
+	 *
+	 *	@param addLectureForm	should not be null
+	 *
+	 *	@throws TutorLectureAlreadyExists if the tutor has already registered 
+	 *			the lecture he wants to add.
 	 */
 	public TutorLecture addTutorLecture(AddLectureForm addLectureForm){
+		assert( addLectureForm != null );
 		
 		User user = authenticatedUserService.getAuthenticatedUser();
 		Lecture lecture = createOrGetLecture(addLectureForm.getLecture());
@@ -96,7 +119,14 @@ public class TutorServiceImpl implements TutorService {
 		return tutorLecture;
 	}
 	
-	public List<TutorLecture> findLecturesFromTutor(User tutor){
+	/**
+	 *	@param tutor		Should not be null
+	 *
+	 *	@throws	NoLecturesFoundException if the user hasn't registered any lectures.
+	 */
+	public List<TutorLecture> findLecturesByTutor(User tutor){
+		assert( tutor != null );
+		
 		List<TutorLecture> lectures = tutorLectureDao.findByTutor(tutor);
 		
 		if (lectures.size() == 0){
@@ -106,13 +136,15 @@ public class TutorServiceImpl implements TutorService {
 	}
 	
 	/**
-	 *	Deletes a lecture from the tutor's profile
+	 *	Deletes the specified lecture from the tutor's profile
 	 */
 	public void deleteTutorLecture(Long tutorLectureId){
 		User user = authenticatedUserService.getAuthenticatedUser();
 		TutorLecture tutorLecture = tutorLectureDao.findByTutorAndId(user, tutorLectureId);
-		tutorLectureDao.delete(tutorLecture);
-		authenticatedUserService.updateTutor();
+		if ( tutorLecture != null ){
+			tutorLectureDao.delete(tutorLecture);
+			authenticatedUserService.updateTutorState();
+		}
 	}
 	
 	/**
@@ -136,11 +168,33 @@ public class TutorServiceImpl implements TutorService {
 		tutorLecture.setGrade(grade);
 		return tutorLectureDao.save(tutorLecture);
 	}
-
+	
+	/**
+	 *	@param tutor	Should not be null
+	 */
 	public boolean hasLectures(User tutor) {
+		assert( tutor != null );
+		
 		if( tutorLectureDao.findByTutor(tutor).isEmpty() )
 			return false;
 		else
 			return true;
 	}
+	
+	/**
+	 *	@param becomeTutorForm		Should not be null
+	 */
+	public BecomeTutorForm preFillBecomeTutorForm( BecomeTutorForm becomeTutorForm ){
+		assert( becomeTutorForm != null );
+		
+		User user = authenticatedUserService.getAuthenticatedUser();
+		
+		System.out.println( user );
+		System.out.println( user.getDescription() );
+		
+		becomeTutorForm.setDescription( user.getDescription() );		
+		becomeTutorForm.setPrice( Float.toString( user.getPrice() ) );
+		return becomeTutorForm;		
+	}
+	
 }

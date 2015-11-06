@@ -29,7 +29,7 @@
 		<c:otherwise>
 			
 			<form name="frmProfileActions" method="POST">
-				<input type="hidden" name="action" id="action" value="viewInbox" />
+				<input type="hidden" name="action" id="action" value="show" />
 				<input type="hidden" name="objectId" id="objectId" value="0" />
 			</form>
 			<script type="text/javascript" src="<%=request.getContextPath()%>/js/profile.js"></script>
@@ -46,7 +46,7 @@
 								<div class="cell"><c:out value="${result.sender.firstName}" /> <c:out value="${result.sender.lastName}" /></div>
 			    				<div class="cell"><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${result.dateAndTime}" /></div>
 								<div class="cell"><c:out value="${result.subject}" /></div>
-								<div class="cell icon"><img class="action-icon" src="<%=request.getContextPath()%>/img/search-big.png" onClick="profileAction('view',<c:out value="${result.id}"/>);" /></div>
+								<div class="cell icon"><img class="action-icon" src="<%=request.getContextPath()%>/img/search-big.png" onClick="profileAction('show',<c:out value="${result.id}"/>);" /></div>
 								<div class="cell icon"><img class="action-icon" src="<%=request.getContextPath()%>/img/delete.png" onClick="profileAction('delete',<c:out value="${result.id}"/>);" /></div>
 							</div>
 						</c:forEach>
@@ -65,7 +65,7 @@
 								<div class="cell"><c:out value="${result.receiver.firstName}" /> <c:out value="${result.receiver.lastName}" /></div>
 		    					<div class="cell"><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${result.dateAndTime}" /></div>
 								<div class="cell"><c:out value="${result.subject}" /></div>
-								<div class="cell icon"><img class="action-icon" src="<%=request.getContextPath()%>/img/search-big.png" onClick="profileAction('view',<c:out value="${result.id}"/>);" /></div>
+								<div class="cell icon"><img class="action-icon" src="<%=request.getContextPath()%>/img/search-big.png" onClick="profileAction('show',<c:out value="${result.id}"/>);" /></div>
 								<div class="cell icon"><img class="action-icon" src="<%=request.getContextPath()%>/img/delete.png" onClick="profileAction('delete',<c:out value="${result.id}"/>);" /></div>
 							</div>
 						</c:forEach>
@@ -86,7 +86,7 @@
 			    				<div class="cell"><c:out value="${result.receiver.firstName}" /> <c:out value="${result.receiver.lastName}" /></div>
 			    				<div class="cell"><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${result.dateAndTime}" /></div>
 								<div class="cell"><c:out value="${result.subject}" /></div>
-								<div class="cell icon"><img class="action-icon" src="<%=request.getContextPath()%>/img/search-big.png" onClick="profileAction('view',<c:out value="${result.id}"/>);" /></div>
+								<div class="cell icon"><img class="action-icon" src="<%=request.getContextPath()%>/img/search-big.png" onClick="profileAction('show',<c:out value="${result.id}"/>);" /></div>
 							</div>
 						</c:forEach>
 					</div>

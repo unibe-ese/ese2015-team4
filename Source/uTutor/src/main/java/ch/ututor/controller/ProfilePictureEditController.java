@@ -10,46 +10,56 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ch.ututor.controller.exceptions.FormException;
 import ch.ututor.controller.service.AuthenticatedUserService;
+import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.controller.service.ProfilePictureService;
 import ch.ututor.model.User;
+
+/**
+ *	This class handles all requests concerning the adaption of the user's profile picture.  
+ */
 
 @Controller
 public class ProfilePictureEditController {
 	
 	@Autowired 	  AuthenticatedUserService authenticatedUserService;
 	@Autowired 	  ProfilePictureService profilePictureService;
-    
+	@Autowired 	  ExceptionService exceptionService;
+	
+	/**
+	 *	@return a ModelAndView containing the needed information to display the profile picture.
+	 */
     @RequestMapping(value="/user/profile/picture", method = RequestMethod.GET)
-    public ModelAndView picture(){
-    	ModelAndView model = new ModelAndView("user/profile-picture");
+    public ModelAndView displayProfilePicturePage(){
+    	ModelAndView model = new ModelAndView( "user/profile-picture" );
     	User user = authenticatedUserService.getAuthenticatedUser();
-    	model.addObject("userId",user.getId());
-    	model.addObject("hasProfilePic",user.hasProfilePic());
+    	model = profilePictureService.addUserDataToModel( model, user );
     	return model;
     }
     
+    /**
+     *	@return A ModelAndView of the own profile if the update or the cleanup was successful.
+	 *			Else a ModelAndView to edit the profile picture.
+     */
     @RequestMapping(value="/user/profile/picture", method = RequestMethod.POST)
-    public ModelAndView uploadPicture(@RequestParam("action") String action, @RequestParam("picture") MultipartFile file){
-    	User user=authenticatedUserService.getAuthenticatedUser();
-    	String exceptionMessage = null;
-    	if(action.equals("upload")){
+    public ModelAndView uploadNewProfilePicture(@RequestParam("action") String action, @RequestParam("picture") MultipartFile file){
+    	User user = authenticatedUserService.getAuthenticatedUser();
+    	ModelAndView model = new ModelAndView("user/profile-picture");
+    	
+    	if( action.equals( "upload" )){
     		try{
-    			authenticatedUserService.updateProfilePicture(file);
-        		return new ModelAndView("redirect:/user/profile");
-            } catch (FormException e){
-               	exceptionMessage=e.getMessage(); 
-            } catch (Exception e){
-              	exceptionMessage="Unknown Exception: "+e.getMessage();
+    			authenticatedUserService.updateProfilePicture( file );
+        		return new ModelAndView( "redirect:/user/profile" );
+            }catch(FormException e){
+               	model = exceptionService.addException( model, e.getMessage() );
+            }catch(Exception e){
+            	model = exceptionService.addException( model, "Unknown Exception: " + e.getMessage() );
             }
-    	}else if(action.equals("delete")){
+    	} else if ( action.equals("delete" )){
     		authenticatedUserService.removeProfilePicture();
     		return new ModelAndView("redirect:/user/profile");
-    	}
+    	}   	
     	
-    	ModelAndView model=new ModelAndView("user/profile-picture");
-    	model.addObject("userId",user.getId());
-    	model.addObject("hasProfilePic",user.hasProfilePic());
-    	model.addObject("exception_message",exceptionMessage);
+    	model = profilePictureService.addUserDataToModel( model, user );
     	return model;
     }
 }

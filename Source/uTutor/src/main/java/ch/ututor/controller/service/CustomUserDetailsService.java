@@ -15,7 +15,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-//TODO: comment
+/**
+ *	This class provides needed methods for the spring security framework.
+ */
 
 @Component
 public class CustomUserDetailsService implements UserDetailsService{
@@ -23,6 +25,9 @@ public class CustomUserDetailsService implements UserDetailsService{
 	@Autowired
 	UserDao userDao;
 	
+	/**
+	 *	@throws UsernameNotFoundException if the username doesn't exist in the database
+	 */
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userDao.findByUsername(username);
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthorities());

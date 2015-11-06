@@ -92,15 +92,9 @@ public class User{
     public boolean getIsTutor(){
     	return isTutor;
     }
-
+    
     public String getDescription(){
-    	if(getIsTutor()){
-    		if(description == null){
-    			description = "";
-    		}
-    		return description;
-    	}
-    	return null;
+    	return description;
     }
     
     public void setDescription(String description){

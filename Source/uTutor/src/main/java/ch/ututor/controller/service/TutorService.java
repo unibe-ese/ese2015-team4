@@ -13,10 +13,12 @@ public interface TutorService {
 	
 	public TutorLecture addTutorLecture(AddLectureForm addLectureForm);
 	
-	public List<TutorLecture> findLecturesFromTutor( User tutor );
+	public List<TutorLecture> findLecturesByTutor( User tutor );
 	
 	public void deleteTutorLecture( Long lectureId );
 	
 	public boolean hasLectures(User tutor);
+	
+	public BecomeTutorForm preFillBecomeTutorForm( BecomeTutorForm becomeTutorForm );
 
 }

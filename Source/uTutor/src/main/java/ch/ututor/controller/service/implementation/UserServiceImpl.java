@@ -1,9 +1,10 @@
-package ch.ututor.controller.service;
+package ch.ututor.controller.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ch.ututor.controller.exceptions.UserNotFoundException;
+import ch.ututor.controller.service.UserService;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
 

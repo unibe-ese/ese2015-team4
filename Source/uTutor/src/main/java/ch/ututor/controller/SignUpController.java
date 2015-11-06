@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.ututor.controller.exceptions.FormException;
 import ch.ututor.controller.pojos.SignUpForm;
+import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.controller.service.SignupService;
 
 @Controller
@@ -20,24 +21,31 @@ public class SignUpController {
 	@Autowired
     SignupService signupService;
 	
-	 @RequestMapping( value = "/signup", method = RequestMethod.GET )
-	 public ModelAndView signup() {
+	@Autowired
+    ExceptionService exceptionService;
+	
+	@RequestMapping( value = "/signup", method = RequestMethod.GET )
+	public ModelAndView displaySignUpForm() {
 	    	ModelAndView model = new ModelAndView("signup");
 	    	model.addObject("signUpForm", new SignUpForm() );
 	        return model;
-	 }
-	 
+	}
+	
+	/**
+	 *	@return	A ModelAndView containing the login form if the registration has been successfully.
+	 *			Otherwise the sign up form with the exception messages.
+	 */
 	@RequestMapping( value = "/signup", method = RequestMethod.POST )
-    public ModelAndView signup(@Valid SignUpForm signupForm, BindingResult result, RedirectAttributes redirectAttributes){
+    public ModelAndView createUserAccount(@Valid SignUpForm signupForm, BindingResult result, RedirectAttributes redirectAttributes){
     	ModelAndView model = new ModelAndView("signup");
     	if (!result.hasErrors()) {
             try{
-            	signupService.createUserAccount(signupForm);
-            	model=new ModelAndView("redirect:/login?username="+signupForm.getEmail());
+            	signupService.createUserAccount( signupForm );
+            	model = new ModelAndView("redirect:/login?username="+signupForm.getEmail());
             } catch (FormException e ){
-            	model.addObject("exception_message", e.getMessage());
+            	model = exceptionService.addException( model, e.getMessage() );
             } catch (Exception e){
-            	model.addObject("exception_message", "Unknown exception: "+e.getMessage());
+            	model = exceptionService.addException( model, "Unknown exception: " + e.getMessage() );
             }
         }
     	return model;

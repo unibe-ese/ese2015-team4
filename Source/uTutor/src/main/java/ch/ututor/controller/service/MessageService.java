@@ -1,7 +1,5 @@
 package ch.ututor.controller.service;
 
-import java.util.List;
-
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.ututor.controller.pojos.NewMessageForm;
@@ -12,11 +10,11 @@ public interface MessageService {
 	
 	public ModelAndView addNewMessageDataToModel( ModelAndView model, Long receiverId, String messageSubject, NewMessageForm newMessageForm, boolean hasErrors);
 	
-	public Message sendMessage( NewMessageForm newMessageForm, User receiver );
+	public void sendMessage( NewMessageForm newMessageForm, User receiver );
 	
-	public List<Message> getMessagesByView( User user, String view );
+	public ModelAndView getMessagesByView( User user, String view );
 	
-	public Message getMessage( Long messageId );
+	public Message getMessageByMessageId( Long messageId );
 	
 	public void deleteMessage( Long messageId, User user );
 	

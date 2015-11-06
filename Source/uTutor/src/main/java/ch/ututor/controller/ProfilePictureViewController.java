@@ -25,8 +25,10 @@ public class ProfilePictureViewController {
     
     /** 
      * Returns the profile picture of a user saved in the database or the default picture if no profile picture was set before.
+     * 
      * @url /img/user.jpg?userId=<code>user.id</code>
-     * @param userId	the unique id of the user for wich the profile picture should be load, should not be null
+     * @param userId	the unique id of the user for which the profile picture should be loaded
+     * 
      * @return byte Array with the binary data of the profile pic (image/jpeg)
      * @throws IOException if default profile picture is not found/readable.
      */
@@ -34,7 +36,7 @@ public class ProfilePictureViewController {
     @ResponseBody
     public byte[] pictureJpeg(@RequestParam(value = "userId") Long userId) throws IOException {
     	User user = userDao.findById(userId);
-    	if(!user.hasProfilePic()){
+    	if( !user.hasProfilePic() ){
     		InputStream image = servletContext.getResourceAsStream("/img/default_avatar.jpg");
     		return IOUtils.toByteArray(image);
     	}

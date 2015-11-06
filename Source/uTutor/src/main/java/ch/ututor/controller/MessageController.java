@@ -12,47 +12,61 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.ututor.controller.exceptions.UserNotFoundException;
+import ch.ututor.controller.exceptions.form.MessageNotFoundException;
 import ch.ututor.controller.pojos.NewMessageForm;
 import ch.ututor.controller.service.AuthenticatedUserService;
+import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.controller.service.MessageService;
 import ch.ututor.controller.service.UserService;
-import ch.ututor.model.Message;
 import ch.ututor.model.User;
- 
+
+/**
+ *	This class handles requests concerning the message center and returns the
+ *	needed views by using the MessageService. 
+ */
+
 @Controller
 public class MessageController {
      
     @Autowired    UserService userService;
     @Autowired 	  AuthenticatedUserService authenticatedUserService;
     @Autowired	  MessageService messageService;
+    @Autowired	  ExceptionService exceptionService;
     
+    /**
+     * Returns a newMessageForm to send a message to the desired receiver with
+     * the desired subject.
+     */
     @RequestMapping(value={"/user/message/new"}, method = RequestMethod.GET)
     public ModelAndView newMessage(@RequestParam(value = "receiverId") Long receiverId, @RequestParam(value = "messageSubject", required = false) String messageSubject) {
         ModelAndView model = new ModelAndView("/user/new-message");
-
         model = messageService.addNewMessageDataToModel( model, receiverId, messageSubject, new NewMessageForm(), false );
-        
         return model;
     }
-     
+    
+    /**
+     *	Sends the message entered in the newMessageForm to the designated receiver.
+     *
+     *	@return	an error page, the profile of the receiver or again the 
+     *			newMessageForm if it isn't complete.
+     */
     @RequestMapping(value={"/user/message/new"}, method = RequestMethod.POST)
-    public ModelAndView send(@RequestParam(value = "receiverId") Long receiverId, @Valid NewMessageForm newMessageForm, BindingResult result, RedirectAttributes redirectAttributes ){
+    public ModelAndView sendMessage(@RequestParam(value = "receiverId") Long receiverId, @Valid NewMessageForm newMessageForm, BindingResult result, RedirectAttributes redirectAttributes ){
+    	
     	ModelAndView model;
     	User receiver;
     	
     	if ( !result.hasErrors() ){
+    		
     		try{
     			receiver = userService.load( receiverId );
     		}catch( UserNotFoundException e ){
-    			model = new ModelAndView("exception");
-    			model.addObject("exception_message","Receiver not found!");
-    			return model;
+    			return exceptionService.addException( null, "Receiver not found!");
     		}
     		
-    		Message message = messageService.sendMessage( newMessageForm, receiver );
-    		receiverId = message.getReceiver().getId();
-    		
-    		model=new ModelAndView( "redirect:/user/profile?userId=" + receiverId );   		
+    		messageService.sendMessage( newMessageForm, receiver );
+    		model = new ModelAndView( "redirect:/user/profile?userId=" + receiver.getId() );   		
+    	
     	} else {
     		model = new ModelAndView( "/user/new-message");
     		model = messageService.addNewMessageDataToModel(model, receiverId, newMessageForm.getSubject(), newMessageForm, result.hasErrors());
@@ -60,40 +74,49 @@ public class MessageController {
     	return model;
     }
     
+    /**
+     *	Displays the message center with the desired view (inbox, outbox or trash)
+     */
     @RequestMapping(value={"/user/message"}, method = RequestMethod.GET)
-    public ModelAndView message( @RequestParam(value = "view", required=false) String view ){
+    public ModelAndView displayMessageCenter( @RequestParam(value = "view", required=false) String view ){
     	User user = authenticatedUserService.getAuthenticatedUser();
-    	view = messageService.validateView( view );
-    	
-    	return getMessageView( user, view );
+    	return messageService.getMessagesByView( user, view );
     }
     
+    /**
+     * @param action	needs to be either 'delete' or 'view'
+     * @param objectId	must be a valid Long
+     * 
+     * @throws NumberFormatException if objectId is not a valid Long
+     * 
+     * @return	An error page if the messageId doesn't exist. Otherwise the desired message
+     * 			or the previous message center view.
+     */
     @RequestMapping(value={"/user/message"}, method = RequestMethod.POST)
-    public ModelAndView viewOrDelete( @RequestParam(value = "view", required=false) String view , @RequestParam("action") String action, @RequestParam("objectId") String objectId ){
+    public ModelAndView viewOrDeleteMessage( @RequestParam(value = "view", required=false) String view , @RequestParam("action") String action, @RequestParam("objectId") String objectId ){
+    	assert( action.equals("delete") || action.equals("show"));
+    	
     	User user = authenticatedUserService.getAuthenticatedUser();
     	view = messageService.validateView( view );
     	Long messageId = Long.parseLong( objectId );
     	
-    	if ( action.equals( "view" ) ){
+    	if ( action.equals( "show" ) ){
+    		
+    		try{
+    			messageService.getMessageByMessageId( messageId );
+    		} catch ( MessageNotFoundException e ){
+    			return exceptionService.addException( null, e.getMessage() );
+    		}
+    		
     		ModelAndView model = new ModelAndView( "/user/view-message" );
-    		model.addObject("message", messageService.getMessage( messageId ) );
+    		model.addObject("message", messageService.getMessageByMessageId( messageId ) );
     		model.addObject("userId", user.getId() );
     		return model;
-    	}
-    	if ( action.equals( "delete") ){
+    		
+    	} else {
     		messageService.deleteMessage( messageId, user );
-        	return getMessageView( user, view);
+        	return messageService.getMessagesByView( user, view);
     	}
-    	
-    	ModelAndView model = new ModelAndView( "redirect:/user/message?view=" + view );
-    	return model;
-    }
-    
-    private ModelAndView getMessageView( User user, String view ){
-    	ModelAndView model = new ModelAndView("/user/message");
-    	model.addObject( "view", view );
-    	model.addObject( "results", messageService.getMessagesByView( user, view ) );
-    	return model;
     }
     
 }

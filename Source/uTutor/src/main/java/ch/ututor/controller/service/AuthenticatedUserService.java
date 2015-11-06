@@ -11,11 +11,11 @@ import ch.ututor.model.User;
 
 public interface AuthenticatedUserService {
 	public ProfileEditForm preFillProfileEditForm(ProfileEditForm profileEditForm);
-	public User updateUserData(ProfileEditForm profileEditForm) throws FormException;
-	public User updatePassword(ChangePasswordForm changePasswordForm) throws FormException;
-	public User updateProfilePicture(MultipartFile file) throws IOException;
-	public User removeProfilePicture();
+	public void updateUserData(ProfileEditForm profileEditForm) throws FormException;
+	public void updatePassword(ChangePasswordForm changePasswordForm) throws FormException;
+	public void updateProfilePicture(MultipartFile file) throws IOException;
+	public void removeProfilePicture();
 	public User getAuthenticatedUser();
-	public User updateTutor();
+	public void updateTutorState();
 	public boolean getIsTutor();
 }

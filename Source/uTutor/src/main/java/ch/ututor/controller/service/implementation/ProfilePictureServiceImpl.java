@@ -1,4 +1,4 @@
-package ch.ututor.controller.service;
+package ch.ututor.controller.service.implementation;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -14,14 +14,15 @@ import javax.imageio.stream.ImageOutputStream;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import ch.ututor.controller.exceptions.form.ProfilePictureException;
+import ch.ututor.controller.service.ProfilePictureService;
+import ch.ututor.model.User;
 
 /**
- *	This class is responsible to provide the methods to upload a profile picture.
+ *	This class provides methods to handle uploaded profile pictures.
  */
-
-// TODO: method comments
 
 @Service
 public class ProfilePictureServiceImpl implements ProfilePictureService{
@@ -29,16 +30,27 @@ public class ProfilePictureServiceImpl implements ProfilePictureService{
 	final static int PROFILE_PICTURE_MAX_WIDTH = 350;
 	final static int PROFILE_PICTURE_MAX_HEIGHT = 350;
 	
+	/**
+	 *	@throws	ProfilePictureException if file is null, empty or not an image
+	 */
 	public boolean validateUploadedPicture(MultipartFile file) throws ProfilePictureException {
-		if(file.isEmpty()){
+		if(file == null || file.isEmpty() ){
 			throw new ProfilePictureException("Please select a file.");
 		}else if(!file.getContentType().equals("image/jpeg") && !file.getContentType().equals("image/jpg")){
 			throw new ProfilePictureException("Only JPG files allowed.");
 		}
 		return true;
 	}
-
-	public byte[] resizePicture(byte[] picture) {
+	
+	/**
+	 *	@param picture	Should not be null
+	 *
+	 *	@return		A byte array with the binary data of the resized picture
+	 * 				or null if an error occurs.
+	 */
+	public byte[] resizeProfilePicture(byte[] picture) {
+		assert( picture != null );
+		
 		try{
 			InputStream in = new ByteArrayInputStream(picture);
 			BufferedImage originalImage = ImageIO.read(in);
@@ -64,11 +76,11 @@ public class ProfilePictureServiceImpl implements ProfilePictureService{
 			byte[] imageInByte = baos.toByteArray();
 			baos.close();
 			return imageInByte;
-		}catch(IOException e){
+		} catch( IOException e ){
 			return null;
 		}		
 	}
-
+	
 	private BufferedImage resizeImage(BufferedImage originalImage, int type){
 		int newW=PROFILE_PICTURE_MAX_WIDTH;
 		int newH=PROFILE_PICTURE_MAX_HEIGHT;
@@ -91,4 +103,18 @@ public class ProfilePictureServiceImpl implements ProfilePictureService{
 	
 		return resizedImage;
 	}
+	
+	/**
+	 *	@param model	Should not be null
+	 *	@param user		Should not be null
+	 */
+	public ModelAndView addUserDataToModel( ModelAndView model, User user ){
+		assert( model != null );
+		assert( user != null );
+		
+		model.addObject( "userId", user.getId() );
+    	model.addObject( "hasProfilePic", user.hasProfilePic() );
+    	return model;
+	}
+	
 }

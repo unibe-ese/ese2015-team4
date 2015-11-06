@@ -1,4 +1,4 @@
-package ch.ututor.controller.service;
+package ch.ututor.controller.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,19 +7,24 @@ import ch.ututor.controller.exceptions.FormException;
 import ch.ututor.controller.exceptions.form.PasswordRepetitionException;
 import ch.ututor.controller.exceptions.form.UserAlreadyExistsException;
 import ch.ututor.controller.pojos.SignUpForm;
+import ch.ututor.controller.service.SignupService;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
 
 /**
- *	This class offers the method to create a new user account form a SignUpForm.
+ *	This class offers the method to create a new user account from a SignUpForm.
  */
 
 @Service
 public class SignupServiceImpl implements SignupService {
 	
 	@Autowired    UserDao userDao;
-	
+
+	/**
+	 *	@param signUpForm	should not be null
+	 */
 	public User createUserAccount(SignUpForm signUpForm) throws FormException{
+		assert( signUpForm != null );
 		
 		String email = signUpForm.getEmail();
 		User user = userDao.findByUsername(email);

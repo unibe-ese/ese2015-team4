@@ -1,4 +1,4 @@
-package ch.ututor.controller.service;
+package ch.ututor.controller.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -7,10 +7,13 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import ch.ututor.controller.exceptions.FormException;
 import ch.ututor.controller.exceptions.form.PasswordRepetitionException;
 import ch.ututor.controller.pojos.ProfileEditForm;
 import ch.ututor.controller.pojos.ChangePasswordForm;
+import ch.ututor.controller.service.AuthenticatedUserService;
+import ch.ututor.controller.service.ProfilePictureService;
+import ch.ututor.controller.service.TutorService;
+import ch.ututor.controller.service.UserService;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
 
@@ -30,15 +33,19 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	@Autowired    TutorService tutorService;
 	
 	/**
-	 * Pre-fills the profileEditForm with the information of the currently
+	 * Prefills the profileEditForm with the information of the currently
 	 * logged in user.
+	 * 
+	 * @param profileEditForm	Should not be null
 	 */
 	public ProfileEditForm preFillProfileEditForm(ProfileEditForm profileEditForm){
+		assert( profileEditForm != null );
+		
 		User user = getAuthenticatedUser();
 		profileEditForm.setFirstName(user.getFirstName());
 		profileEditForm.setLastName(user.getLastName());
 		
-		if(user.getIsTutor()){
+		if( user.getIsTutor() ){
 			profileEditForm.setDescription(user.getDescription());
 		}else{
 			profileEditForm.setDescription(null);
@@ -50,8 +57,12 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	/**
 	 * Updates the profile of the currently logged in user with the data
 	 * from the ProfileEditForm.
+	 * 
+	 * @param profileEditForm	should not be null
 	 */
-	public User updateUserData(ProfileEditForm profileEditForm) throws FormException {
+	public void updateUserData(ProfileEditForm profileEditForm){
+		assert( profileEditForm != null );
+		
 		User user = getAuthenticatedUser();
 		user.setFirstName(profileEditForm.getFirstName());
 		user.setLastName(profileEditForm.getLastName());
@@ -60,10 +71,15 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 			user.setDescription(profileEditForm.getDescription());
 		}
 		
-		return userDao.save( user );
+		userDao.save( user );
 	}
 	
-	public User updatePassword(ChangePasswordForm changePasswordForm){
+	/**
+	 *	@param changePasswordForm	Should not be null.
+	 */
+	public void updatePassword(ChangePasswordForm changePasswordForm){
+		assert( changePasswordForm != null );
+		
 		User user = getAuthenticatedUser();
 
 		if(!BCrypt.checkpw(changePasswordForm.getOldPassword(), user.getPassword())){
@@ -75,26 +91,29 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 		}
 		
 		user.setPassword(changePasswordForm.getNewPassword());
-		return userDao.save( user );
+		userDao.save( user );
 	}
 	
-	public User updateProfilePicture(MultipartFile file) throws IOException{
+	/**
+	 *	@param file		should not be null
+	 */
+	public void updateProfilePicture(MultipartFile file) throws IOException{
+		assert( file != null );
+		
 		User user = getAuthenticatedUser();
 		
 		if(profilePictureService.validateUploadedPicture(file)){
-			user.setProfilePic(profilePictureService.resizePicture(file.getBytes()));
+			user.setProfilePic(profilePictureService.resizeProfilePicture(file.getBytes()));
 			userDao.save( user );
 		}
-		
-		return user;
 	}
 	
-	public User removeProfilePicture(){
+	public void removeProfilePicture(){
 		User user = getAuthenticatedUser();
 		user.setProfilePic(null);
-		return userDao.save( user );
+		userDao.save( user );
 	}
-
+	
 	public boolean getIsTutor() {
 		User user = getAuthenticatedUser();
 		return user.getIsTutor();
@@ -104,11 +123,10 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	 * Checks if the currently logged-in user is a tutor by 
 	 * checking if he has registered lectures in his profile.
 	 */
-	public User updateTutor(){
+	public void updateTutorState(){
 		User user = getAuthenticatedUser();
 		user.setIsTutor( tutorService.hasLectures(user) );
 		userDao.save( user );
-		return user;
 	}
 	
 	public User getAuthenticatedUser(){
