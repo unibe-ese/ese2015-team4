@@ -1,6 +1,6 @@
 package ch.ututor.controller.exceptions;
 
-public class FormException extends RuntimeException {
+public abstract class FormException extends RuntimeException {
 
 	private static final long serialVersionUID = 8582603042239368291L;
 

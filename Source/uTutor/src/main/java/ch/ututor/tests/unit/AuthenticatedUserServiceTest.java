@@ -8,18 +8,12 @@ import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
-import javassist.bytecode.ByteArray;
-
-import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -59,12 +53,6 @@ public class AuthenticatedUserServiceTest {
 		profileEditForm.setLastName("Potter");
 		profileEditForm.setDescription("Harry first appears in Harry Potter and the Philosopher's Stone.");
 		return profileEditForm;
-	}
-	
-	private MultipartFile mockMultipartFileJpeg(String source) throws IOException{
-		File file = new File(source);
-	    FileInputStream input = new FileInputStream(file);
-	    return new MockMultipartFile("file", file.getName(), "image/jpeg", IOUtils.toByteArray(input));
 	}
 	
 	private void setupMockAuthenticatedUser(Boolean empty, Boolean isTutor){
@@ -160,7 +148,7 @@ public class AuthenticatedUserServiceTest {
 	@Test
 	public void updateProfilePictureTest() throws IOException{
 		setupMockAuthenticatedUser(true, false);
-		MultipartFile file = mockMultipartFileJpeg("src/main/webapp/WEB-INF/test/jpg/profile-pic-landscape-349.jpg");
+		MultipartFile file = MultipartFileMocker.mockJpeg("src/main/webapp/WEB-INF/test/images/350x100.jpg");
 		when(profilePictureService.validateUploadedPicture(any(MultipartFile.class))).thenReturn(true);
 		when(profilePictureService.resizeProfilePicture(file.getBytes())).then(returnsFirstArg());
 		User user = authenticatedUserService.updateProfilePicture(file);
@@ -169,7 +157,7 @@ public class AuthenticatedUserServiceTest {
 	
 	@Test
 	public void removeProfilePictureTest() throws IOException{
-		MultipartFile file = mockMultipartFileJpeg("src/main/webapp/WEB-INF/test/jpg/profile-pic-landscape-349.jpg");
+		MultipartFile file = MultipartFileMocker.mockJpeg("src/main/webapp/WEB-INF/test/images/350x100.jpg");
 		User emtpyUser=new User();
 		emtpyUser.setProfilePic(file.getBytes());
 		setupMockAuthenticatedUser(emtpyUser);

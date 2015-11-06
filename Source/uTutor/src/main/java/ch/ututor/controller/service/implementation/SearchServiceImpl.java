@@ -20,7 +20,7 @@ public class SearchServiceImpl implements SearchService {
 	 *
 	 *	@throws			NoResultFoundException if no lectures are found for the search term
 	 */
-	public List<TutorLecture> searchByLecture( String query ) throws NoResultFoundException {
+	public List<TutorLecture> searchByLecture( String query ){
 		assert ( query != null );
 		
 		List<TutorLecture> lectures = tutorLectureDao.findByLectureNameLike('%' + query + '%');
