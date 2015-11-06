@@ -3,7 +3,6 @@ package ch.ututor.controller.service.implementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.ututor.controller.exceptions.FormException;
 import ch.ututor.controller.exceptions.form.PasswordRepetitionException;
 import ch.ututor.controller.exceptions.form.UserAlreadyExistsException;
 import ch.ututor.controller.pojos.SignUpForm;
@@ -23,7 +22,7 @@ public class SignupServiceImpl implements SignupService {
 	/**
 	 *	@param signUpForm	should not be null
 	 */
-	public User createUserAccount(SignUpForm signUpForm) throws FormException{
+	public User createUserAccount(SignUpForm signUpForm){
 		assert( signUpForm != null );
 		
 		String email = signUpForm.getEmail();
