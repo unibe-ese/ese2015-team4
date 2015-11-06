@@ -8,6 +8,9 @@ public class NewMessageForm {
     
 	//TODO: check correct display of long subjects and user names in message-view
 	
+	private long receiverId;
+	private String receiverDisplayName;
+	
 	@NotBlank(message = "Please enter a subject!")
 	@Size(max = 50, message = "No more than 50 characters allowed!")
 	private String subject;
@@ -31,5 +34,21 @@ public class NewMessageForm {
     public void setMessage(String message) {
         this.message = message;
     }
+
+	public long getReceiverId() {
+		return receiverId;
+	}
+
+	public void setReceiverId(long receiverId) {
+		this.receiverId = receiverId;
+	}
+
+	public String getReceiverDisplayName() {
+		return receiverDisplayName;
+	}
+
+	public void setReceiverDisplayName(String receiverDisplayName) {
+		this.receiverDisplayName = receiverDisplayName;
+	}
      
 }

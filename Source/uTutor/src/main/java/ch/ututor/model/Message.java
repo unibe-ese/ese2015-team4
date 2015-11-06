@@ -24,7 +24,7 @@ public class Message {
     private User receiver;
      
     @NotNull
-    private Date dateAndTime;
+    private Date dateAndTime =  new Date();
      
     @NotNull
     private String subject;
@@ -33,9 +33,9 @@ public class Message {
     @Column(length=1048)
     private String message;
     
-    private boolean isRead;
-    private boolean senderDeleted;
-    private boolean receiverDeleted;
+    private boolean isRead = false;
+    private boolean senderDeleted = false;
+    private boolean receiverDeleted = false;
  
 	public Long getId() {
         return id;

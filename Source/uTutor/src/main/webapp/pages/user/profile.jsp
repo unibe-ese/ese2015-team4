@@ -7,11 +7,11 @@
 </c:if>
 <c:if test="${exception_message == null}">
 	<c:if test="${ownProfile}">	
-		<form name="frmProfileActions" method="POST">
+		<form name="frmHiddenActions" method="POST">
 			<input type="hidden" name="action" id="action" value="update" />
 			<input type="hidden" name="objectId" id="objectId" value="0" />
 		</form>
-		<script type="text/javascript" src="<%=request.getContextPath()%>/js/profile.js"></script>
+		<script type="text/javascript" src="<%=request.getContextPath()%>/js/hidden-actions.js"></script>
 	</c:if>
 	<h1><c:out value="${user.firstName}" /> <c:out value="${user.lastName}" /></h1>
 	<div class="profile-data">
@@ -22,7 +22,7 @@
 					<a href="<%=request.getContextPath()%>/user/profile/picture/"><img class="action-icon" src="<%=request.getContextPath()%>/img/edit.png"></a>
 				</c:when>
 				<c:otherwise>
-					<a href="<%=request.getContextPath()%>/user/message/new?receiverId=<c:out value="${user.id}"/>" class="button action">+ new message</a>
+					<a href="<%=request.getContextPath()%>/user/messagecenter/new?receiverId=<c:out value="${user.id}"/>" class="button action">+ new message</a>
 				</c:otherwise>
 			</c:choose>
 		</div>
@@ -73,7 +73,7 @@
 					<div class="row">
 						<div class="cell"><c:out value="${result.lecture.name}" /></div>
 		    			<div class="cell"><c:out value="${result.grade}" /></div>
-		    			<div class="cell icon"><c:if test="${ownProfile}"><img class="action-icon" src="<%=request.getContextPath()%>/img/delete.png" onClick="profileAction('deleteLecture',<c:out value="${result.id}"/>);" /></c:if></div>
+		    			<div class="cell icon"><c:if test="${ownProfile}"><img class="action-icon" src="<%=request.getContextPath()%>/img/delete.png" onClick="hiddenAction('deleteLecture',<c:out value="${result.id}"/>);" /></c:if></div>
 					</div>
 			</c:forEach>
 			<c:if test="${ownProfile}">
