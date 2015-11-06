@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ch.ututor.controller.exceptions.UserNotFoundException;
 import ch.ututor.controller.exceptions.form.MessageNotFoundException;
 import ch.ututor.controller.pojos.NewMessageForm;
-import ch.ututor.controller.service.AuthenticatedUserService;
+import ch.ututor.controller.service.AuthenticatedUserLoaderService;
 import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.controller.service.MessageService;
 import ch.ututor.controller.service.UserService;
@@ -29,7 +29,7 @@ public class MessageServiceImpl implements MessageService {
 	UserService userService;
 	
 	@Autowired    
-	AuthenticatedUserService authUserService;
+	AuthenticatedUserLoaderService authenticatedUserLoaderService;
 	
 	@Autowired    
 	MessageDao messageDao;
@@ -73,7 +73,7 @@ public class MessageServiceImpl implements MessageService {
 		assert( newMessageForm != null );
 		assert( receiver != null );
 		
-		User sender = authUserService.getAuthenticatedUser();
+		User sender = authenticatedUserLoaderService.getAuthenticatedUser();
 		Date dateTime = new Date();
 		
 		Message message = new Message();

@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ch.ututor.controller.exceptions.UserNotFoundException;
 import ch.ututor.controller.exceptions.form.MessageNotFoundException;
 import ch.ututor.controller.pojos.NewMessageForm;
-import ch.ututor.controller.service.AuthenticatedUserService;
+import ch.ututor.controller.service.AuthenticatedUserLoaderService;
 import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.controller.service.MessageService;
 import ch.ututor.controller.service.UserService;
@@ -29,7 +29,7 @@ import ch.ututor.model.User;
 public class MessageController {
      
     @Autowired    UserService userService;
-    @Autowired 	  AuthenticatedUserService authenticatedUserService;
+    @Autowired 	  AuthenticatedUserLoaderService authenticatedUserLoaderService;
     @Autowired	  MessageService messageService;
     @Autowired	  ExceptionService exceptionService;
     
@@ -79,7 +79,7 @@ public class MessageController {
      */
     @RequestMapping(value={"/user/message"}, method = RequestMethod.GET)
     public ModelAndView displayMessageCenter( @RequestParam(value = "view", required=false) String view ){
-    	User user = authenticatedUserService.getAuthenticatedUser();
+    	User user = authenticatedUserLoaderService.getAuthenticatedUser();
     	return messageService.getMessagesByView( user, view );
     }
     
@@ -96,7 +96,7 @@ public class MessageController {
     public ModelAndView viewOrDeleteMessage( @RequestParam(value = "view", required=false) String view , @RequestParam("action") String action, @RequestParam("objectId") String objectId ){
     	assert( action.equals("delete") || action.equals("show"));
     	
-    	User user = authenticatedUserService.getAuthenticatedUser();
+    	User user = authenticatedUserLoaderService.getAuthenticatedUser();
     	view = messageService.validateView( view );
     	Long messageId = Long.parseLong( objectId );
     	

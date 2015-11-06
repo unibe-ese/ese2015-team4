@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ch.ututor.controller.exceptions.form.PasswordRepetitionException;
 import ch.ututor.controller.pojos.ProfileEditForm;
 import ch.ututor.controller.pojos.ChangePasswordForm;
+import ch.ututor.controller.service.AuthenticatedUserLoaderService;
 import ch.ututor.controller.service.AuthenticatedUserService;
 import ch.ututor.controller.service.ProfilePictureService;
 import ch.ututor.controller.service.TutorService;
@@ -30,7 +31,7 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	@Autowired    UserDao userDao;
 	@Autowired    UserService userService;
 	@Autowired    ProfilePictureService profilePictureService;
-	@Autowired    TutorService tutorService;
+	@Autowired    AuthenticatedUserLoaderService authenticatedUserLoaderService;
 	
 	/**
 	 * Prefills the profileEditForm with the information of the currently
@@ -41,7 +42,7 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	public ProfileEditForm preFillProfileEditForm(ProfileEditForm profileEditForm){
 		assert( profileEditForm != null );
 		
-		User user = getAuthenticatedUser();
+		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		profileEditForm.setFirstName(user.getFirstName());
 		profileEditForm.setLastName(user.getLastName());
 		
@@ -63,7 +64,7 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	public void updateUserData(ProfileEditForm profileEditForm){
 		assert( profileEditForm != null );
 		
-		User user = getAuthenticatedUser();
+		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		user.setFirstName(profileEditForm.getFirstName());
 		user.setLastName(profileEditForm.getLastName());
 		
@@ -80,7 +81,7 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	public void updatePassword(ChangePasswordForm changePasswordForm){
 		assert( changePasswordForm != null );
 		
-		User user = getAuthenticatedUser();
+		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 
 		if(!BCrypt.checkpw(changePasswordForm.getOldPassword(), user.getPassword())){
 			throw new PasswordRepetitionException("Entered password doesn't match your actual password.");
@@ -100,7 +101,7 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	public void updateProfilePicture(MultipartFile file) throws IOException{
 		assert( file != null );
 		
-		User user = getAuthenticatedUser();
+		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		
 		if(profilePictureService.validateUploadedPicture(file)){
 			user.setProfilePic(profilePictureService.resizeProfilePicture(file.getBytes()));
@@ -109,28 +110,14 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	}
 	
 	public void removeProfilePicture(){
-		User user = getAuthenticatedUser();
+		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		user.setProfilePic(null);
 		userDao.save( user );
 	}
 	
 	public boolean getIsTutor() {
-		User user = getAuthenticatedUser();
+		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		return user.getIsTutor();
 	}
 	
-	/**
-	 * Checks if the currently logged-in user is a tutor by 
-	 * checking if he has registered lectures in his profile.
-	 */
-	public void updateTutorState(){
-		User user = getAuthenticatedUser();
-		user.setIsTutor( tutorService.hasLectures(user) );
-		userDao.save( user );
-	}
-	
-	public User getAuthenticatedUser(){
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return userService.load(auth.getName());
-	}
 }

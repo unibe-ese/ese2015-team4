@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.ututor.controller.exceptions.FormException;
+import ch.ututor.controller.service.AuthenticatedUserLoaderService;
 import ch.ututor.controller.service.AuthenticatedUserService;
 import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.controller.service.ProfilePictureService;
@@ -21,6 +22,7 @@ import ch.ututor.model.User;
 @Controller
 public class ProfilePictureEditController {
 	
+	@Autowired 	  AuthenticatedUserLoaderService authenticatedUserLoaderService;
 	@Autowired 	  AuthenticatedUserService authenticatedUserService;
 	@Autowired 	  ProfilePictureService profilePictureService;
 	@Autowired 	  ExceptionService exceptionService;
@@ -31,7 +33,7 @@ public class ProfilePictureEditController {
     @RequestMapping(value="/user/profile/picture", method = RequestMethod.GET)
     public ModelAndView displayProfilePicturePage(){
     	ModelAndView model = new ModelAndView( "user/profile-picture" );
-    	User user = authenticatedUserService.getAuthenticatedUser();
+    	User user = authenticatedUserLoaderService.getAuthenticatedUser();
     	model = profilePictureService.addUserDataToModel( model, user );
     	return model;
     }
@@ -42,7 +44,7 @@ public class ProfilePictureEditController {
      */
     @RequestMapping(value="/user/profile/picture", method = RequestMethod.POST)
     public ModelAndView uploadNewProfilePicture(@RequestParam("action") String action, @RequestParam("picture") MultipartFile file){
-    	User user = authenticatedUserService.getAuthenticatedUser();
+    	User user = authenticatedUserLoaderService.getAuthenticatedUser();
     	ModelAndView model = new ModelAndView("user/profile-picture");
     	
     	if( action.equals( "upload" )){

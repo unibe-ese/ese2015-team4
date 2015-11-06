@@ -10,7 +10,7 @@ import ch.ututor.controller.exceptions.form.InvalidPriceException;
 import ch.ututor.controller.exceptions.form.TutorLectureAlreadyExistsException;
 import ch.ututor.controller.pojos.AddLectureForm;
 import ch.ututor.controller.pojos.BecomeTutorForm;
-import ch.ututor.controller.service.AuthenticatedUserService;
+import ch.ututor.controller.service.AuthenticatedUserLoaderService;
 import ch.ututor.controller.service.TutorService;
 import ch.ututor.model.Lecture;
 import ch.ututor.model.TutorLecture;
@@ -27,7 +27,7 @@ import ch.ututor.model.dao.UserDao;
 public class TutorServiceImpl implements TutorService {
 
 	@Autowired 
-	AuthenticatedUserService authenticatedUserService;
+	AuthenticatedUserLoaderService authenticatedUserLoaderService;
 	
 	@Autowired    
 	UserDao userDao;
@@ -47,14 +47,14 @@ public class TutorServiceImpl implements TutorService {
 	public User becomeTutor(BecomeTutorForm becomeTutorForm) {
 		assert( becomeTutorForm != null );
 		
-		User user = authenticatedUserService.getAuthenticatedUser();
+		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		user = updateUserProfile( user, becomeTutorForm );
 		
 		Lecture lecture = createOrGetLecture(becomeTutorForm.getLecture());
 		
 		createTutorLectureDataset(lecture, user, becomeTutorForm.getGrade());
 		
-		authenticatedUserService.updateTutorState();
+		updateTutorState();
 		
 		return user;
 	}
@@ -105,7 +105,7 @@ public class TutorServiceImpl implements TutorService {
 	public TutorLecture addTutorLecture(AddLectureForm addLectureForm){
 		assert( addLectureForm != null );
 		
-		User user = authenticatedUserService.getAuthenticatedUser();
+		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		Lecture lecture = createOrGetLecture(addLectureForm.getLecture());
 				
 		TutorLecture tutorLecture = tutorLectureDao.findByTutorAndLecture(user, lecture);
@@ -139,11 +139,11 @@ public class TutorServiceImpl implements TutorService {
 	 *	Deletes the specified lecture from the tutor's profile
 	 */
 	public void deleteTutorLecture(Long tutorLectureId){
-		User user = authenticatedUserService.getAuthenticatedUser();
+		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		TutorLecture tutorLecture = tutorLectureDao.findByTutorAndId(user, tutorLectureId);
 		if ( tutorLecture != null ){
 			tutorLectureDao.delete(tutorLecture);
-			authenticatedUserService.updateTutorState();
+			updateTutorState();
 		}
 	}
 	
@@ -187,7 +187,7 @@ public class TutorServiceImpl implements TutorService {
 	public BecomeTutorForm preFillBecomeTutorForm( BecomeTutorForm becomeTutorForm ){
 		assert( becomeTutorForm != null );
 		
-		User user = authenticatedUserService.getAuthenticatedUser();
+		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		
 		System.out.println( user );
 		System.out.println( user.getDescription() );
@@ -197,4 +197,13 @@ public class TutorServiceImpl implements TutorService {
 		return becomeTutorForm;		
 	}
 	
+	/**
+	 * Checks if the currently logged-in user is a tutor by 
+	 * checking if he has registered lectures in his profile.
+	 */
+	private void updateTutorState(){
+		User user = authenticatedUserLoaderService.getAuthenticatedUser();
+		user.setIsTutor( hasLectures(user) );
+		userDao.save( user );
+	}
 }

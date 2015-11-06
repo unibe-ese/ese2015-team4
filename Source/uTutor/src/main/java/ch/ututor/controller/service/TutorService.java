@@ -20,5 +20,4 @@ public interface TutorService {
 	public boolean hasLectures(User tutor);
 	
 	public BecomeTutorForm preFillBecomeTutorForm( BecomeTutorForm becomeTutorForm );
-
 }

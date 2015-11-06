@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.ututor.controller.exceptions.FormException;
 import ch.ututor.controller.pojos.ProfileEditForm;
+import ch.ututor.controller.service.AuthenticatedUserLoaderService;
 import ch.ututor.controller.service.AuthenticatedUserService;
 import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.model.User;
@@ -24,6 +25,7 @@ import ch.ututor.model.User;
 @Controller
 public class ProfileEditController {
 	
+	@Autowired 	  AuthenticatedUserLoaderService authenticatedUserLoaderService;
 	@Autowired 	  AuthenticatedUserService authenticatedUserService;
 	@Autowired 	  ExceptionService exceptionService;
 	
@@ -33,7 +35,7 @@ public class ProfileEditController {
     @RequestMapping(value={"/user/profile/edit"}, method = RequestMethod.GET)
     public ModelAndView displayProfileEditForm() {
     	ModelAndView model = new ModelAndView("user/profile-edit");
-    	User user = authenticatedUserService.getAuthenticatedUser();
+    	User user = authenticatedUserLoaderService.getAuthenticatedUser();
     	model.addObject( authenticatedUserService.preFillProfileEditForm( new ProfileEditForm() ) );
     	model.addObject( "isTutor", user.getIsTutor() );
     	return model;
@@ -48,7 +50,7 @@ public class ProfileEditController {
     @RequestMapping( value = {"/user/profile/edit"}, method = RequestMethod.POST )
     public ModelAndView updateProfileData( @Valid ProfileEditForm profileEditForm, BindingResult result, RedirectAttributes redirectAttributes ){
     	ModelAndView model = new ModelAndView("user/profile-edit");
-    	User user = authenticatedUserService.getAuthenticatedUser();
+    	User user = authenticatedUserLoaderService.getAuthenticatedUser();
     	
     	if (!result.hasErrors()) {
             try{

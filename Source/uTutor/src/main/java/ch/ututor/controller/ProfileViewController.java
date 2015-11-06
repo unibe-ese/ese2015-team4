@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ch.ututor.controller.exceptions.NoLecturesFoundException;
 import ch.ututor.controller.exceptions.UserNotFoundException;
-import ch.ututor.controller.service.AuthenticatedUserService;
+import ch.ututor.controller.service.AuthenticatedUserLoaderService;
 import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.controller.service.TutorService;
 import ch.ututor.controller.service.UserService;
@@ -24,7 +24,7 @@ import ch.ututor.model.User;
 @Controller
 public class ProfileViewController {
 	
-	@Autowired 	  AuthenticatedUserService authenticatedUserService;
+	@Autowired 	  AuthenticatedUserLoaderService authenticatedUserLoaderService;
 	@Autowired 	  UserService userService;
 	@Autowired	  ServletContext servletContext;
 	@Autowired    TutorService tutorService;
@@ -37,7 +37,7 @@ public class ProfileViewController {
     public ModelAndView viewProfile(@RequestParam(value = "userId", required=false) Long userId) {
     	ModelAndView model = new ModelAndView("user/profile");
     	User user = null;
-    	User authUser = authenticatedUserService.getAuthenticatedUser();
+    	User authUser = authenticatedUserLoaderService.getAuthenticatedUser();
     	
     	if( userId == null || authUser.getId() == userId ){
     		model.addObject("ownProfile", true);
