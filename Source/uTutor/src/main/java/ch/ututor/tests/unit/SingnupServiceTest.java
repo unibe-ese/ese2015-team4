@@ -1,7 +1,5 @@
 package ch.ututor.tests.unit;
 
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +18,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.AdditionalAnswers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/test.xml"})
+@ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/test/signupService.xml"})
 public class SingnupServiceTest {
 	
 	@Autowired SignupService signupService;

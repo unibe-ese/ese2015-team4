@@ -8,5 +8,5 @@
 		<constructor-arg value="ch.ututor.model.dao.UserDao"/>
 	</bean>
 	<!-- AUTOWIRE services -->
-	<bean class="ch.ututor.controller.service.SignupServiceImpl" />
+	<bean class="ch.ututor.controller.service.implementation.SignupServiceImpl" />
 </beans>
