@@ -1,19 +1,17 @@
 package ch.ututor.controller.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import ch.ututor.controller.exceptions.form.PasswordNotCorrectException;
 import ch.ututor.controller.exceptions.form.PasswordRepetitionException;
 import ch.ututor.controller.pojos.ProfileEditForm;
 import ch.ututor.controller.pojos.ChangePasswordForm;
 import ch.ututor.controller.service.AuthenticatedUserLoaderService;
 import ch.ututor.controller.service.AuthenticatedUserService;
 import ch.ututor.controller.service.ProfilePictureService;
-import ch.ututor.controller.service.TutorService;
 import ch.ututor.controller.service.UserService;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
@@ -61,7 +59,7 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	 * 
 	 * @param profileEditForm	should not be null
 	 */
-	public void updateUserData(ProfileEditForm profileEditForm){
+	public User updateUserData(ProfileEditForm profileEditForm){
 		assert( profileEditForm != null );
 		
 		User user = authenticatedUserLoaderService.getAuthenticatedUser();
@@ -72,19 +70,19 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 			user.setDescription(profileEditForm.getDescription());
 		}
 		
-		userDao.save( user );
+		return userDao.save( user );
 	}
 	
 	/**
 	 *	@param changePasswordForm	Should not be null.
 	 */
-	public void updatePassword(ChangePasswordForm changePasswordForm){
+	public User updatePassword(ChangePasswordForm changePasswordForm){
 		assert( changePasswordForm != null );
 		
 		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 
 		if(!BCrypt.checkpw(changePasswordForm.getOldPassword(), user.getPassword())){
-			throw new PasswordRepetitionException("Entered password doesn't match your actual password.");
+			throw new PasswordNotCorrectException("Entered password doesn't match your actual password.");
 		}
 		
 		if(!changePasswordForm.getNewPassword().equals(changePasswordForm.getNewPasswordRepeat())){
@@ -92,13 +90,13 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 		}
 		
 		user.setPassword(changePasswordForm.getNewPassword());
-		userDao.save( user );
+		return userDao.save( user );
 	}
 	
 	/**
 	 *	@param file		should not be null
 	 */
-	public void updateProfilePicture(MultipartFile file) throws IOException{
+	public User updateProfilePicture(MultipartFile file) throws IOException{
 		assert( file != null );
 		
 		User user = authenticatedUserLoaderService.getAuthenticatedUser();
@@ -107,12 +105,13 @@ public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 			user.setProfilePic(profilePictureService.resizeProfilePicture(file.getBytes()));
 			userDao.save( user );
 		}
+		return user;
 	}
 	
-	public void removeProfilePicture(){
+	public User removeProfilePicture(){
 		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		user.setProfilePic(null);
-		userDao.save( user );
+		return userDao.save( user );
 	}
 	
 	public boolean getIsTutor() {

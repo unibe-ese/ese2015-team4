@@ -1,0 +1,195 @@
+package ch.ututor.tests.unit;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import javassist.bytecode.ByteArray;
+
+import org.apache.commons.io.IOUtils;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.multipart.MultipartFile;
+
+import ch.ututor.controller.exceptions.form.PasswordNotCorrectException;
+import ch.ututor.controller.exceptions.form.PasswordRepetitionException;
+import ch.ututor.controller.pojos.ChangePasswordForm;
+import ch.ututor.controller.pojos.ProfileEditForm;
+import ch.ututor.controller.service.AuthenticatedUserLoaderService;
+import ch.ututor.controller.service.AuthenticatedUserService;
+import ch.ututor.controller.service.ProfilePictureService;
+import ch.ututor.model.User;
+import ch.ututor.model.dao.UserDao;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/test/authenticatedUserService.xml"})
+public class AuthenticatedUserServiceTest {
+	@Autowired AuthenticatedUserService authenticatedUserService;
+	@Autowired AuthenticatedUserLoaderService authenticatedUserLoaderService;
+	@Autowired ProfilePictureService profilePictureService;
+	@Autowired UserDao userDao;
+	
+	
+	private User setupUser(){
+		User user = new User();
+		user.setFirstName("Harry");
+		user.setLastName("Potter");
+		user.setDescription("Harry first appears in Harry Potter and the Philosopher's Stone.");
+		user.setPassword("Nine and Three-Quarters");
+		return user;
+	}
+	
+	private ProfileEditForm setupProfileEditForm(){
+		ProfileEditForm profileEditForm = new ProfileEditForm();
+		profileEditForm.setFirstName("Harry");
+		profileEditForm.setLastName("Potter");
+		profileEditForm.setDescription("Harry first appears in Harry Potter and the Philosopher's Stone.");
+		return profileEditForm;
+	}
+	
+	private MultipartFile mockMultipartFileJpeg(String source) throws IOException{
+		File file = new File(source);
+	    FileInputStream input = new FileInputStream(file);
+	    return new MockMultipartFile("file", file.getName(), "image/jpeg", IOUtils.toByteArray(input));
+	}
+	
+	private void setupMockAuthenticatedUser(Boolean empty, Boolean isTutor){
+		User user = new User();
+		if(!empty){
+			user = setupUser();
+		}
+		user.setIsTutor(isTutor);
+		setupMockAuthenticatedUser(user);
+	}
+	
+	private void setupMockAuthenticatedUser(User user){
+		when(authenticatedUserLoaderService.getAuthenticatedUser()).thenReturn(user);
+	}
+	
+	
+	@Before
+	public void setupUserDao(){
+		when(userDao.save(any(User.class))).then(returnsFirstArg());
+	}
+	
+	
+	@Test
+	public void preFillProfileEditFormStudentTest(){
+		setupMockAuthenticatedUser(false, false);
+		ProfileEditForm profileEditForm = authenticatedUserService.preFillProfileEditForm(new ProfileEditForm());
+		assertEquals("Harry", profileEditForm.getFirstName());
+		assertEquals("Potter", profileEditForm.getLastName());
+		assertNull(profileEditForm.getDescription());
+	}
+	
+	@Test
+	public void preFillProfileEditFormTutorTest(){
+		setupMockAuthenticatedUser(false, true);
+		
+		ProfileEditForm profileEditForm = authenticatedUserService.preFillProfileEditForm(new ProfileEditForm());
+		assertEquals("Harry", profileEditForm.getFirstName());
+		assertEquals("Potter", profileEditForm.getLastName());
+		assertEquals("Harry first appears in Harry Potter and the Philosopher's Stone.", profileEditForm.getDescription());
+	}
+	
+	@Test
+	public void updateUserDataStudentTest(){	
+		setupMockAuthenticatedUser(true, false);
+		ProfileEditForm profileEditForm = setupProfileEditForm();
+		
+		User user = authenticatedUserService.updateUserData(profileEditForm);
+		assertEquals("Harry", user.getFirstName());
+		assertEquals("Potter", user.getLastName());
+		assertNull(user.getDescription());
+	}
+	
+	@Test
+	public void updateUserDataTutorTest(){	
+		setupMockAuthenticatedUser(true, true);
+		ProfileEditForm profileEditForm = setupProfileEditForm();
+		
+		User user = authenticatedUserService.updateUserData(profileEditForm);
+		assertEquals("Harry", user.getFirstName());
+		assertEquals("Potter", user.getLastName());
+		assertEquals("Harry first appears in Harry Potter and the Philosopher's Stone.", user.getDescription());
+	}
+	
+	@Test
+	public void updatePasswordAcceptedTest(){
+		setupMockAuthenticatedUser(false, false);
+		ChangePasswordForm changePasswordForm = new ChangePasswordForm();
+		changePasswordForm.setOldPassword("Nine and Three-Quarters");
+		changePasswordForm.setNewPassword("Obliviate");
+		changePasswordForm.setNewPasswordRepeat("Obliviate");
+		User user = authenticatedUserService.updatePassword(changePasswordForm);
+		assertTrue(BCrypt.checkpw("Obliviate", user.getPassword()));
+	}
+	
+	@Test(expected = PasswordNotCorrectException.class)
+	public void updatePasswordExistingWrongTest(){
+		setupMockAuthenticatedUser(false, false);
+		ChangePasswordForm changePasswordForm = new ChangePasswordForm();
+		changePasswordForm.setOldPassword("Eight and Three-Quarters");
+		authenticatedUserService.updatePassword(changePasswordForm);
+	}
+	
+	@Test(expected = PasswordRepetitionException.class)
+	public void updatePasswordRepetitionWrongTest(){
+		setupMockAuthenticatedUser(false, false);
+		ChangePasswordForm changePasswordForm = new ChangePasswordForm();
+		changePasswordForm.setOldPassword("Nine and Three-Quarters");
+		changePasswordForm.setNewPassword("Obliviate");
+		changePasswordForm.setNewPasswordRepeat("Obiviate");
+		authenticatedUserService.updatePassword(changePasswordForm);
+	}
+	
+	@Test
+	public void updateProfilePictureTest() throws IOException{
+		setupMockAuthenticatedUser(true, false);
+		MultipartFile file = mockMultipartFileJpeg("src/main/webapp/WEB-INF/test/jpg/profile-pic-landscape-349.jpg");
+		when(profilePictureService.validateUploadedPicture(any(MultipartFile.class))).thenReturn(true);
+		when(profilePictureService.resizeProfilePicture(file.getBytes())).then(returnsFirstArg());
+		User user = authenticatedUserService.updateProfilePicture(file);
+		assertEquals(file.getBytes(), user.getProfilePic());
+	}
+	
+	@Test
+	public void removeProfilePictureTest() throws IOException{
+		MultipartFile file = mockMultipartFileJpeg("src/main/webapp/WEB-INF/test/jpg/profile-pic-landscape-349.jpg");
+		User emtpyUser=new User();
+		emtpyUser.setProfilePic(file.getBytes());
+		setupMockAuthenticatedUser(emtpyUser);
+		User user = authenticatedUserService.removeProfilePicture();
+		assertNull(user.getProfilePic());
+	}
+	
+	@Test
+	public void isTutorStudentTest(){
+		User emptyUser = new User();
+		emptyUser.setIsTutor(false);
+		setupMockAuthenticatedUser(emptyUser);
+		assertFalse(authenticatedUserService.getIsTutor());
+	}
+
+	@Test
+	public void isTutorTutorTest(){
+		User emptyUser = new User();
+		emptyUser.setIsTutor(true);
+		setupMockAuthenticatedUser(emptyUser);
+		assertTrue(authenticatedUserService.getIsTutor());
+	}
+}
