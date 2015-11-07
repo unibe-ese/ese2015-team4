@@ -110,6 +110,7 @@ public class TutorServiceTest {
 		tutorService.addTutorLecture(addLectureForm);
 	}
 	
+	@Test
 	public void testPrefillBecomeTutorForm() {
 		User tutorUser = new User();
 		tutorUser.setPrice(20.0f);
@@ -118,7 +119,7 @@ public class TutorServiceTest {
 		
 		becomeTutorForm = tutorService.preFillBecomeTutorForm(becomeTutorForm);
 		
-		assertEquals(20.0f, becomeTutorForm.getPrice());
+		assertEquals("20.0", becomeTutorForm.getPrice());
 		assertEquals("I'm a tutor!", becomeTutorForm.getDescription());
 	}
 	
