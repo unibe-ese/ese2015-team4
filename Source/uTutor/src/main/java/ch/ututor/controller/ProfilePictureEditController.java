@@ -34,7 +34,7 @@ public class ProfilePictureEditController {
     public ModelAndView displayProfilePicturePage(){
     	ModelAndView model = new ModelAndView( "user/profile-picture" );
     	User user = authenticatedUserLoaderService.getAuthenticatedUser();
-    	model = profilePictureService.addUserDataToModel( model, user );
+    	model = profilePictureService.addProfilePictureInfoToModel( model, user );
     	return model;
     }
     
@@ -61,7 +61,7 @@ public class ProfilePictureEditController {
     		return new ModelAndView("redirect:/user/profile");
     	}   	
     	
-    	model = profilePictureService.addUserDataToModel( model, user );
+    	model = profilePictureService.addProfilePictureInfoToModel( model, user );
     	return model;
     }
 }

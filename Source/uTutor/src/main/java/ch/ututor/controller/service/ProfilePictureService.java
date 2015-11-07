@@ -8,5 +8,5 @@ import ch.ututor.model.User;
 public interface ProfilePictureService {
 	public boolean validateUploadedPicture(MultipartFile file);
 	public byte[] resizeProfilePicture(byte[] picture);
-	public ModelAndView addUserDataToModel( ModelAndView model, User user );
+	public ModelAndView addProfilePictureInfoToModel( ModelAndView model, User user );
 }

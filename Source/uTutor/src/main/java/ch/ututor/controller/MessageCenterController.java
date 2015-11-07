@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ch.ututor.controller.pojos.NewMessageForm;
 import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.controller.service.MessageCenterService;
+import ch.ututor.controller.exceptions.UserNotFoundException;
 import ch.ututor.controller.exceptions.form.MessageNotFoundException;
 
 @Controller
@@ -59,6 +60,8 @@ public class MessageCenterController {
         	return model;
         }catch(MessageNotFoundException e){
         	return exceptionService.addException(null, e.getMessage());
+        }catch(UserNotFoundException e){
+        	return exceptionService.addException(null, e.getMessage());
         }
     }
 	
@@ -71,14 +74,20 @@ public class MessageCenterController {
         	return model;
         }catch(MessageNotFoundException e){
         	return exceptionService.addException(null, e.getMessage());
+        }catch(UserNotFoundException e){
+        	return exceptionService.addException(null, e.getMessage());
         }
     }
 	
 	@RequestMapping(value={"/user/messagecenter/new", "/user/messagecenter/reply"}, method = RequestMethod.POST)
     public ModelAndView messageCenterMessageSave(@Valid NewMessageForm newMessageForm, BindingResult result, HttpServletRequest request) {
 		if ( !result.hasErrors() ){
-			messageCenterService.sendMessage( newMessageForm );
-			return new ModelAndView("redirect:/user/messagecenter/?view=outbox");	
+			try{
+				messageCenterService.sendMessage( newMessageForm );
+				return new ModelAndView("redirect:/user/messagecenter/?view=outbox");
+			}catch(UserNotFoundException e){
+		        return exceptionService.addException(null, e.getMessage());
+		    }
 		}
 		ModelAndView model = new ModelAndView("user/new-message");
 		model.addObject(newMessageForm);

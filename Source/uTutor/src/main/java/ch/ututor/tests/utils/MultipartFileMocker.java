@@ -1,4 +1,4 @@
-package ch.ututor.tests.unit;
+package ch.ututor.tests.utils;
 
 import java.io.File;
 import java.io.FileInputStream;

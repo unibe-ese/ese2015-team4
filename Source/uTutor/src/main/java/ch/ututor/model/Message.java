@@ -93,7 +93,7 @@ public class Message {
 		this.isRead = isRead;
 	}
 
-	public boolean isSenderDeleted() {
+	public boolean getSenderDeleted() {
 		return senderDeleted;
 	}
 
@@ -101,7 +101,7 @@ public class Message {
 		this.senderDeleted = senderDeleted;
 	}
 
-	public boolean isReceiverDeleted() {
+	public boolean getReceiverDeleted() {
 		return receiverDeleted;
 	}
 

@@ -108,7 +108,7 @@ public class ProfilePictureServiceImpl implements ProfilePictureService{
 	 *	@param model	Should not be null
 	 *	@param user		Should not be null
 	 */
-	public ModelAndView addUserDataToModel( ModelAndView model, User user ){
+	public ModelAndView addProfilePictureInfoToModel( ModelAndView model, User user ){
 		assert( model != null );
 		assert( user != null );
 		

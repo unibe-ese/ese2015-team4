@@ -17,11 +17,23 @@ import ch.ututor.controller.exceptions.form.MessageNotFoundException;
 @Service
 public class MessageCenterServiceImpl implements MessageCenterService{
 
-	@Autowired AuthenticatedUserLoaderService authenticatedUserLoaderService;
-	@Autowired UserService userService;
-	@Autowired MessageDao messageDao;
+	@Autowired 
+	AuthenticatedUserLoaderService authenticatedUserLoaderService;
 	
-	public List<Message> getMessagesByView(String view) {
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	MessageDao messageDao;
+	
+	/**
+	 * Returns messages for the logged in user depending on the given view
+	 * 
+	 * @param view	should be not null. should be "inbox", "outbox" or "trash", otherwise messages for "inbox" are returned.  
+	 */
+	public List<Message> getMessagesByView( String view ){
+		assert( view != null);
+		
 		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		if ( view.equalsIgnoreCase( "outbox" ) ){
 			return messageDao.findBySenderAndSenderDeletedOrderByDateAndTimeDesc( user,  false );
@@ -32,32 +44,52 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 		}
 	}
 
-	
-	public long normalizeLong(String longString) {
+	/**
+	 * Attempts to convert a string to long
+	 * 
+	 * @return	converted long or 0 if conversion fails
+	 */
+	public long normalizeLong( String longString ){
 		try{
-			return Long.parseLong(longString);
-		}catch(Exception e){
+			return Long.parseLong( longString );
+		}catch( Exception e ){
 			return 0L;
 		}
 	}
 	
-	public String normalizeString(String string) {
-		if(string==null){
+	/**
+	 * Prevents that a string is null
+	 * 
+	 * @return	Trimmed string if not null, "" otherwise
+	 */
+	public String normalizeString( String string ) {
+		if( string == null ){
 			return "";
 		}
-		return string;
+		return string.trim();
 	}
 
-	public String normalizeView(String view) {
-		view = normalizeString(view);
-		if(!view.equals("inbox") && !view.equals("outbox") && !view.equals("trash")){
+	/**
+	 * Prevents that a string is null @see normalizeString
+	 * and that the string has a correct value for the message center view.
+	 * 
+	 * @return the given value, if it equals "inbox", "outbox" or "trash". "inbox" otherwise.
+	 */
+	public String normalizeView( String view ){
+		view = normalizeString( view );
+		if(!view.equals( "inbox" ) && !view.equals( "outbox" ) && !view.equals( "trash" )){
 			return "inbox";
 		}
 		return view;
 	}
 
-
-	public void deleteMessage(long messageId) {
+	/**
+	 * Sets the senderDeleted flag if the logged in user is the sender of the message object
+	 * or sets the receiverDeleted flag if the logged in user is the receiver of the message object.
+	 * 
+	 * @param messageId	The id of the message which is to mark as deleted.
+	 */
+	public Message deleteMessage( long messageId ) {
 		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		Message message = messageDao.findById(messageId);
 		if( message != null ){
@@ -68,41 +100,53 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 			}
 			message = messageDao.save( message );
 		}
+		return message;
 	}
 	
-	public NewMessageForm prefillNewMessageForm(long receiverId) {
-		User user = userService.load(receiverId);
+	/**
+	 * Prefills the NewMessageForm.
+	 * 
+	 * @param receiverId	The id of the user which is the receiver
+	 */
+	public NewMessageForm prefillNewMessageForm( long receiverId ) {
+		User user = userService.load( receiverId );
 		NewMessageForm newMessageForm = new NewMessageForm();
-		prefillUserToMessageForm(newMessageForm, user);
+		prefillReceiverToMessageForm( newMessageForm, user );
 		return newMessageForm;
 	}
 
-
-	public NewMessageForm prefillReplyMessageForm(long replyToMessageId) {
-		Message message = messageDao.findById(replyToMessageId);
+	/**
+	 * Prefills the NewMessageForm as Reply to a message
+	 * 
+	 * @param replyToMessageId	The id of the message to which the reply is.
+	 */
+	public NewMessageForm prefillReplyMessageForm( long replyToMessageId ) {
+		Message message = messageDao.findById( replyToMessageId );
 		NewMessageForm newMessageForm = new NewMessageForm();
-		if(message==null){
-			throw new MessageNotFoundException("Message not found.");
+		if( message == null ){
+			throw new MessageNotFoundException( "Message not found." );
 		}
-		prefillUserToMessageForm(newMessageForm, message.getSender());
-		newMessageForm.setSubject("Re: " + message.getSubject());
+		prefillReceiverToMessageForm( newMessageForm, message.getSender() );
+		newMessageForm.setSubject( "Re: " + message.getSubject() );
 		return newMessageForm;
 	}
-	
-	private void prefillUserToMessageForm(NewMessageForm newMessageForm, User user){
-		newMessageForm.setReceiverId(user.getId());
-		newMessageForm.setReceiverDisplayName(user.getFirstName() + " " + user.getLastName());
-	}
 
-
-	public Message sendMessage(NewMessageForm newMessageForm) {
+	/**
+	 * Saves the given NewMessageForm as a Message
+	 */
+	public Message sendMessage( NewMessageForm newMessageForm ) {
 		User sender = authenticatedUserLoaderService.getAuthenticatedUser();
-		User receiver = userService.load(newMessageForm.getReceiverId());
+		User receiver = userService.load( newMessageForm.getReceiverId() );
 		Message message = new Message();
-		message.setReceiver(receiver);
-		message.setSender(sender);
-		message.setMessage(newMessageForm.getMessage());
-		message.setSubject(newMessageForm.getSubject());
-		return messageDao.save(message);
+		message.setReceiver( receiver );
+		message.setSender( sender );
+		message.setMessage( newMessageForm.getMessage() );
+		message.setSubject( newMessageForm.getSubject() );
+		return messageDao.save( message );
+	}
+	
+	private void prefillReceiverToMessageForm( NewMessageForm newMessageForm, User user ){
+		newMessageForm.setReceiverId( user.getId() );
+		newMessageForm.setReceiverDisplayName( user.getFirstName() + " " + user.getLastName() );
 	}
 }

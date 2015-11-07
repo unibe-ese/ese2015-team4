@@ -1,12 +1,12 @@
 package ch.ututor.tests;
 
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-import ch.ututor.tests.integration.*;
 
-@RunWith(Suite.class)
-@SuiteClasses({SignupControllerTest.class})
+import com.googlecode.junittoolbox.SuiteClasses;
+import com.googlecode.junittoolbox.WildcardPatternSuite;
+
+@RunWith(WildcardPatternSuite.class)
+@SuiteClasses("integration/*.class")
 public class IntegrationTestSuite {
  
 }
