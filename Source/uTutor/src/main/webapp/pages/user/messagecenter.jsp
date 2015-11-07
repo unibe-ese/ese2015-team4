@@ -38,7 +38,7 @@
 			<c:otherwise>
 				<div id="messages">
 					<c:forEach begin="0" items="${messageList}" var="message" varStatus="i">
-						<div class="el<c:if test="${i.index==show}"> active</c:if>" onClick="document.location.href='?view=<c:out value="${view}"/>&show=<c:out value="${i.index}"/>'">
+						<div class="el<c:if test="${i.index==show}"> active</c:if>" onClick="document.location.href='?view=<c:out value="${view}"/>&show=<c:out value="${i.index}"/>&messageId=<c:out value="${message.id}"/>'">
 							<c:if test="${view=='inbox' || view=='trash'}">
 								<strong>From:</strong> <c:out value="${message.sender.firstName}"/> <c:out value="${message.sender.lastName}"/><br>
 							</c:if>
@@ -47,6 +47,9 @@
 							</c:if>
 							<strong><c:out value="${message.subject}"/></strong><br>
 							<i><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${message.dateAndTime}" /></i>
+							<c:if test="${message.isRead}">
+								<img class="action-icon" style="position:absolute;right:25px;top:5px" src="<%=request.getContextPath()%>/img/readed.png"/>
+							</c:if>
 						</div>
 					</c:forEach>
 				</div>

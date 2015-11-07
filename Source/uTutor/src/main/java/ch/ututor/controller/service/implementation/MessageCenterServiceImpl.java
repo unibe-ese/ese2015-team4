@@ -149,4 +149,16 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 		newMessageForm.setReceiverId( user.getId() );
 		newMessageForm.setReceiverDisplayName( user.getFirstName() + " " + user.getLastName() );
 	}
+
+	public Message setRead(long messageId) {
+		Message message = messageDao.findById( messageId );
+		if( message != null ){
+			User receiver = authenticatedUserLoaderService.getAuthenticatedUser();
+			if( message.getReceiver().equals(receiver) ){
+				message.setIsRead(true);
+				messageDao.save(message);
+			}
+		}
+		return message;
+	}
 }

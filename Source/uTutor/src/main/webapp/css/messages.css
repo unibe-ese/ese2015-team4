@@ -22,6 +22,7 @@
 }
 
 #message-center #messages .el{
+	position: relative;
 	width: 280px;
 	overflow-x: hidden;
 	margin: 0px;

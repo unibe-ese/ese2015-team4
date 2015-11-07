@@ -211,7 +211,7 @@ public class MessageCenterTest {
 	}
 	
 	@Test
-	public void sendMessage(){
+	public void sendMessageTest(){
 		setUpMockAuthenticatedUser( lenny );
 		setUpMockUserServiceLoad( carl );
 		setUpMockMessageDaoSave();
@@ -227,5 +227,25 @@ public class MessageCenterTest {
 		assertEquals( carl, message.getReceiver() );
 		assertEquals( newMessageForm.getSubject(), message.getSubject() );
 		assertEquals( newMessageForm.getMessage(), message.getMessage() );
+	}
+	
+	@Test
+	public void setReadReceiverTest(){
+		setUpMockAuthenticatedUser( carl );
+		setUpMockMessageDaoSave();
+		Message message = setUpMessage( lenny, carl );
+		setUpMockMessageDaoFindById( message );
+		message = messageCenterService.setRead( message.getId() );
+		assertTrue( message.getIsRead() );
+	}
+	
+	@Test
+	public void setReadSenderTest(){
+		setUpMockAuthenticatedUser( lenny );
+		setUpMockMessageDaoSave();
+		Message message = setUpMessage( lenny, carl );
+		setUpMockMessageDaoFindById( message );
+		message = messageCenterService.setRead( message.getId() );
+		assertFalse( message.getIsRead() );
 	}
 }
