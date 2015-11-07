@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ututor.controller.exceptions.form.ProfilePictureException;
 import ch.ututor.controller.service.ProfilePictureService;
+import ch.ututor.tests.utils.MultipartFileMocker;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/test/profilePictureService.xml"})
