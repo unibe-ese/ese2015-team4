@@ -111,7 +111,7 @@ public class TutorServiceImpl implements TutorService {
 		TutorLecture tutorLecture = tutorLectureDao.findByTutorAndLecture(user, lecture);
 		
 		if (tutorLecture != null){
-			throw new TutorLectureAlreadyExistsException("You've already registered this lecutre!");			
+			throw new TutorLectureAlreadyExistsException("You've already registered this lecture!");			
 		}
 		
 		tutorLecture = createTutorLectureDataset(lecture, user, addLectureForm.getGrade());
@@ -188,9 +188,6 @@ public class TutorServiceImpl implements TutorService {
 		assert( becomeTutorForm != null );
 		
 		User user = authenticatedUserLoaderService.getAuthenticatedUser();
-		
-		System.out.println( user );
-		System.out.println( user.getDescription() );
 		
 		becomeTutorForm.setDescription( user.getDescription() );		
 		becomeTutorForm.setPrice( Float.toString( user.getPrice() ) );

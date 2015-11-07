@@ -2,20 +2,24 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
 	<!-- MOCK data access classes (DAO) -->
 	<bean class="org.mockito.Mockito" factory-method="mock">
 		<constructor-arg value="ch.ututor.model.dao.UserDao"/>
 	</bean>
-	<!-- MOCK services -->
 	<bean class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="ch.ututor.controller.service.implementation.AuthenticatedUserLoaderServiceImpl"/>
+		<constructor-arg value="ch.ututor.model.dao.LectureDao"/>
 	</bean>
 	<bean class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="ch.ututor.controller.service.implementation.ProfilePictureServiceImpl"/>
+		<constructor-arg value="ch.ututor.model.dao.TutorLectureDao"/>
+	</bean>
+	<!--  MOCK services -->
+	<bean class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="ch.ututor.controller.service.implementation.AuthenticatedUserLoaderServiceImpl"/>
 	</bean>
 	<bean class="org.mockito.Mockito" factory-method="mock">
 		<constructor-arg value="ch.ututor.controller.service.implementation.UserServiceImpl"/>
 	</bean>
 	<!-- AUTOWIRE services -->
-	<bean class="ch.ututor.controller.service.implementation.AuthenticatedUserServiceImpl" />
+	<bean class="ch.ututor.controller.service.implementation.TutorServiceImpl" />
 </beans>
