@@ -1,0 +1,17 @@
+.action-icon{
+	cursor:pointer;
+	-webkit-transition: opacity 250ms linear;
+    -moz-transition: opacity 250ms linear;
+    -o-transition: opacity 250ms linear;
+    -ms-transition: opacity 250ms linear;
+    transition: opacity 250ms linear;
+	opacity:0.5;
+}
+
+.action-icon:hover{
+	opacity:1;
+}
+
+h1 img.action-icon{
+	float:right; margin:47px 0px 0px 15px;
+}

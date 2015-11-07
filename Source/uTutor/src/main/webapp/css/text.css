@@ -1,0 +1,61 @@
+h1{
+	display:inline-block;
+	font-family:'Bree Serif',serif;
+	font-weight:'normal';
+	font-size:64px;
+	margin-top:0px;
+	margin-bottom:0.2em;
+	color:rgb(83,95,146);
+}
+
+h2{
+	font-family:'Bree Serif',serif;
+	font-weight:'normal';
+	font-size:48px;
+	margin:0px;
+	color:rgb(8,18,60);
+}
+
+h3{
+	font-family:'Bree Serif',serif;
+	font-weight:'normal';
+	font-size:36px;
+	margin:0px;
+}
+
+p{
+	margin-top:0px;
+}
+
+blockquote {
+	font-size: 1.5rem;
+	font-style: italic;
+	max-width: 480px;
+	margin: 0.25em 0;
+	margin-left:3em;
+	padding: 0.25em 40px;
+	line-height: 1.45;
+	position: relative;
+	color: rgb(83,95,146);
+}
+
+blockquote:before {
+	display: block;
+	content: "\201C";
+	font-size: 5rem;
+	position: absolute;
+	left: -20px;
+	top: -20px;
+	color: rgb(8,18,60);
+}
+
+blockquote cite {
+	color: rgb(169,175,200);
+	font-size: 0.8rem;
+	display: block;
+	margin-top: 5px;
+}
+ 
+blockquote cite:before {
+	content: "\2014 \2009";
+}

@@ -11,7 +11,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>uTutor</title>
-	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/style.css">
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/main.css">
 	
 	<link rel="apple-touch-icon" sizes="57x57" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-60x60.png">

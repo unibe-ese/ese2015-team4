@@ -1,0 +1,159 @@
+@import url(https://fonts.googleapis.com/css?family=Bree+Serif|Droid+Sans:400,700);
+
+*:
+{
+	-webkit-text-size-adjust: none;
+}
+
+*:focus {
+    outline: none;
+}
+
+html, body{
+	height:100%;
+}
+
+body{
+	margin:0px;
+	padding:0px;
+	background:rgb(250,251,252);
+	font-family:'Droid Sans',sans-serif;
+	font-size:18px;
+	color:rgb(2,5,15);
+}
+
+div.exception{
+	font-weight:bold;
+	color:rgb(255,0,0);
+	margin-bottom:15px;
+}
+
+img{
+	border:none;
+}
+
+img.profile-picture{
+	max-width:350px;
+	max-height:350px;
+}
+
+a.button{
+	display:inline-block;
+	text-decoration:none;
+	margin:5px;
+	padding:10px;
+	font-family:'Droid',sans-serif;
+	font-size:24px;
+	border-radius:10px;
+	border:none;
+	-webkit-transition: background-color 250ms linear,color 250ms linear;
+    -moz-transition: background-color 250ms linear,color 250ms linear;
+    -o-transition: background-color 250ms linear,color 250ms linear;
+    -ms-transition: background-color 250ms linear,color 250ms linear;
+    transition: background-color 250ms linear,color 250ms linear;
+	color:rgb(250,251,252);
+	background-color:rgb(8,16,60);
+	cursor:pointer;
+	padding:10px 20px;
+}
+
+a.button.action{
+	font-size:1rem;
+	border-radius:5px;
+	padding:5px 10px;
+	background-color:rgb(212,215,228);
+	color:rgb(83,95,146);
+}
+
+a.button:hover, a.button.action:hover{
+	background-color:rgb(83,95,146);
+	color:rgb(250,251,252);
+}
+
+#header-container{
+	position:relative;
+	width:100%;
+	background:rgb(212, 215, 228);
+	height:75px;
+	z-index:10;
+}
+
+#content-container{
+	padding:50px;
+	position:relative;
+	width:960px;
+	overflow-x:hidden;
+	min-height: -moz-calc(100% - 125px);
+	min-height: -webkit-calc(100% - 125px);
+	min-height: -o-calc(100% - 125px);
+	min-height: calc(100% - 125px);
+	margin: 0 auto;
+}
+
+#footer-container{
+	position:relative;
+	width:100%;
+	height:50px;
+	background-color:rgb(221,221,221);
+}
+
+#header-inner, #footer-inner{
+	position:relative;
+	width: 960px;
+	margin: 0 auto;
+}
+
+#footer-inner{
+	text-align:right;
+	color: rgb(144,144,144);
+	font-size: 0.8rem;
+	padding:18px 5px;
+}
+
+#logo{
+	position:absolute;
+	top:5px;
+	left:5px;
+}
+
+#header-actions{
+	margin-top:8px;
+	float:right;
+}
+
+.center{
+	text-align:center;
+}
+
+.clear{
+	clear:both;
+}
+
+.top > * {
+	vertical-align:top;
+}
+
+.hidden-container{
+	height:1px;
+	overflow:hidden;
+}
+
+.profile-data div.profile-picture{
+	float:right;
+	margin:0px 0px 0px 30px;
+}
+
+.float-left{
+	float:left;
+}
+
+.pre{
+	white-space: pre-wrap;
+}
+
+.private{
+	font-weight:normal;
+	font-style:italic;
+	color:rgba(2,5,15,0.5);
+	font-size:12px;
+}

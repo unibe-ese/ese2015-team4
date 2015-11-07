@@ -1,0 +1,42 @@
+#message-center{
+	width: 960px;
+}
+
+#message-center .messages{
+	font-size: 70%;
+	width: 300px;
+	height: 500px;
+	overflow: hidden;
+	float: left;
+}
+#message-center #messages{
+	width: 300px;
+	height: 438px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+#message-center select.view{
+	width:290px;
+}
+#message-center #messages .el{
+	width: 280px;
+	overflow-x: hidden;
+	margin: 0px;
+	padding: 10px;
+	border-bottom: 1px solid rgb(212, 215, 228);
+	white-space: nowrap;
+	-webkit-transition: background-color 250ms linear;
+    -moz-transition: background-color 250ms linear;
+    -o-transition: background-color 250ms linear;
+    -ms-transition: background-color 250ms linear;
+    transition: background-color 250ms linear;
+    background-color: transparent;
+    cursor:pointer;
+}
+#message-center #messages .el:hover{
+	background-color: rgb(212, 215, 228);
+}
+#message-center #messages .el.active{
+	background-color: rgb(8, 18, 60);
+	color:white;
+}
