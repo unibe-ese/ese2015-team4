@@ -1,3 +1,4 @@
+<!-- BEGIN LOGIN FORM -->
 <form class="form-box" action="j_spring_security_check" method="post" >
 	<h1>Login</h1>
 	<c:if test="${param.error}" >
@@ -16,3 +17,4 @@
 			</label>
 	<label><input type="submit" value="Login"/></label>
 </form>
+<!-- END LOGIN FORM -->

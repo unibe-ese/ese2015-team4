@@ -1,6 +1,11 @@
+<!-- END CONTENT -->
 </div>
 	<div id="footer-container">
-		<div id="footer-inner">a chavez, fankhauser, indermühle &amp; stocker cooperation</div>
+		<div id="footer-inner">
+<!-- BEGIN FOOTER -->
+a chavez, fankhauser, indermühle &amp; stocker cooperation
+<!-- END FOOTER -->
+		</div>
 	</div>
 </body>
 </html>

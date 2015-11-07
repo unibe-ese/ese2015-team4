@@ -1,3 +1,4 @@
+<!-- BEGINN ADD LECTURE FORM PART -->
 <label>
 	<form:input path="lecture" id="field-lecture" placeholder="Lecture"/>
    	<form:errors path="lecture" element="div" class="error"/>
@@ -15,3 +16,4 @@
    		<form:errors path="grade" element="div" class="error"/>
 	</div>
 </label>
+<!--  END ADD LECTURE FORM PART -->
