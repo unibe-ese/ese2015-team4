@@ -1,5 +1,7 @@
 <%@include file="../includes/header.jsp"%>
+
 <div class="center">
+<!-- BEGIN ADD LECTURE FORM -->
 	<form:form method="post" class="form-box" modelAttribute="addLectureForm" action="add-lecture" id="add-lecture" autocomplete="off">
 		<h1>Add a lecture to your profile!</h1>	
 		<c:if test="${exception_message != null}">
@@ -12,5 +14,7 @@
 			<input type="submit" value="Add Lecture!" />
 		</label>
 	</form:form>
+<!-- END ADD LECTURE FORM -->
 </div>
+
 <%@include file="../includes/footer.jsp"%>

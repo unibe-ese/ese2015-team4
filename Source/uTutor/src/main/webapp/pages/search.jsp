@@ -1,9 +1,12 @@
 <%@include file="includes/header.jsp"%>
+
+<!-- TEMP RATING VALUE -->
 <c:set var="rating" scope="page" value="${4}"/>
+
 <h1>Searched for &quot;<c:out value="${query}" />&quot;</h1>
-<c:if test="${exception_message!=null}">
-	<div class="exception"><c:out value="${exception_message}"/></div>
-</c:if>
+
+<%@include file="includes/exception.jsp"%>
+
 <div class="search-result">
 	<c:forEach items="${results}" var="result">
 		<div class="item" onClick="document.location.href='<%=request.getContextPath()%>/user/profile/?userId=<c:out value="${result.tutor.id}"/>';">

@@ -1,13 +1,11 @@
 <%@include file="../includes/header.jsp"%>
+
 <div class="center">
+<!-- BEGIN BECOME TUTOR FORM -->
 	<form:form method="post" class="form-box" modelAttribute="becomeTutorForm" action="become-tutor" id="becomeTutorForm" autocomplete="off">
 		<h1>Become a tutor!</h1>	
 		
-		<c:if test="${exception_message != null}">
-			<div class="exception">
-				<c:out value="${exception_message}" />
-			</div>
-		</c:if>
+		<%@include file="../includes/exception.jsp"%>
 		
 		<c:choose>
 			<c:when test="${empty becomeTutorForm.description}">
@@ -31,5 +29,7 @@
 			<input type="submit" value="Become tutor!" />
 		</label>
 	</form:form>
+<!-- END BECOME TUTOR FORM -->
 </div>
+
 <%@include file="../includes/footer.jsp"%>

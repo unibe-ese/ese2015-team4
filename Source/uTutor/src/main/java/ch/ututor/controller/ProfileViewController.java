@@ -47,7 +47,7 @@ public class ProfileViewController {
     		try{
     			user = userService.load(userId);
     		}catch(UserNotFoundException e){
-    			model = exceptionService.addException( model, e.getMessage() );
+    			model = exceptionService.addException(null, e.getMessage() );
     		}
     	}
     	

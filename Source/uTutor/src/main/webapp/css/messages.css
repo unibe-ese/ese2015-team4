@@ -9,15 +9,18 @@
 	overflow: hidden;
 	float: left;
 }
+
 #message-center #messages{
 	width: 300px;
 	height: 438px;
 	overflow-x: hidden;
 	overflow-y: auto;
 }
+
 #message-center select.view{
 	width:290px;
 }
+
 #message-center #messages .el{
 	width: 280px;
 	overflow-x: hidden;
@@ -33,10 +36,50 @@
     background-color: transparent;
     cursor:pointer;
 }
+
 #message-center #messages .el:hover{
 	background-color: rgb(212, 215, 228);
 }
+
 #message-center #messages .el.active{
 	background-color: rgb(8, 18, 60);
 	color:white;
+}
+
+#message-container{
+	margin-left:60px;
+	width:600px;
+	height:500px;
+	float:left;
+	position:relative;
+	overflow:hidden;
+}
+
+#message{
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:600px;
+	height:500px;
+	overflow:auto;
+}
+
+#message-inner{
+	border-bottom:1px solid rgb(212, 215, 228);
+	margin-bottom:25px;
+}
+
+#message-actions{
+	position:absolute;
+	top:5px;right:5px;
+}
+
+.message-txt{
+	max-width:600px;
+}
+
+.no-messages{
+	margin-top:10px;
+	text-align:center;
+	font-style:italic;
 }
