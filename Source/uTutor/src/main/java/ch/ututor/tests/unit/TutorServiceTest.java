@@ -83,7 +83,6 @@ public class TutorServiceTest {
 		
 		tutorService.addTutorLecture(addLectureForm);
 		
-		System.out.println(authLectures.size());
 		assertEquals(2, tutorService.findLecturesByTutor(authenticatedUser).size());
 		
 		tutorService.deleteTutorLecture(1L);
