@@ -22,16 +22,29 @@ public class MessageCenterController {
 	@Autowired MessageCenterService messageCenterService;
 	@Autowired ExceptionService exceptionService;
 	
+	/**
+	 * Adds the messages corresponding to the view parameter.
+	 * 
+	 * @param view	should be "inbox", "outbox", "trash" otherwise the default ("inbox") will be used.
+	 * @return A ModelAndView Object with a List<Message> attached, corresponding to the view parameter.
+	 */
 	@RequestMapping(value={"/user/messagecenter"}, method = RequestMethod.GET)
     public ModelAndView messageCenterView(@RequestParam(value = "view", required = false) String view) {
-		if(view==null){
-			view="inbox";
-		}
+		view = messageCenterService.normalizeView(view);
         ModelAndView model = new ModelAndView("user/messagecenter");
         model.addObject("messageList", messageCenterService.getMessagesByView(view));
         return model;
     }
 	
+	/**
+	 * General POST action handler
+	 * 
+	 * @param actionString		should be "delete" otherwise no further action is handled.
+	 * @param objectIdString	if action is "delete" this should be a messageId of the message which should be deleted.
+	 * @param viewString		the view which will be called after action handling.
+	 * @param showString		the index of the message which will be displayed after action handling.
+	 * @return A ModelAndView redirect to the message center.
+	 */
 	@RequestMapping(value="/user/messagecenter", method = RequestMethod.POST)
 	public ModelAndView messageCenterAction(
 			@RequestParam(value = "action") String actionString,
@@ -51,6 +64,12 @@ public class MessageCenterController {
 		return new ModelAndView("redirect:/user/messagecenter/?view="+view+"&show="+show);
 	}
 	
+	/**
+	 * Populates and adds the Form to the ModelAndView for sending a new message.
+	 * 
+	 * @param receiverIdString	The id of the User Object which is the receiver.
+	 * @return A ModelAndView for sending a new message or a ModelAndView with an exception message.
+	 */
 	@RequestMapping(value={"/user/messagecenter/new"}, method = RequestMethod.GET)
     public ModelAndView messageCenterNewView(@RequestParam(value = "receiverId") String receiverIdString, HttpServletRequest request) {
 		long receiverId = messageCenterService.normalizeLong(receiverIdString);
@@ -65,6 +84,12 @@ public class MessageCenterController {
         }
     }
 	
+	/**
+	 * Populates and adds the Form to the ModelAndView for sending a reply to a message.
+	 * 
+	 * @param messageIdString	The id of the Message Object to which the reply is.
+	 * @return A ModelAndView for sending a reply to a message or a ModelAndView with an exception message.
+	 */
 	@RequestMapping(value={"/user/messagecenter/reply"}, method = RequestMethod.GET)
     public ModelAndView messageCenterReplyView(@RequestParam(value = "replyToMessageId") String messageIdString, HttpServletRequest request) {
 		long messageId = messageCenterService.normalizeLong(messageIdString);
@@ -79,6 +104,13 @@ public class MessageCenterController {
         }
     }
 	
+	/**
+	 * Handles new messages and reply to messages POSTs
+	 * 
+	 * @return 	ModelAndView with the form attached if form validation was not successful.
+	 *  		ModelAndView with an exception message center if message sending was not successful.
+	 *  		ModelAndView redirect to the message center if message sending was successful.
+	 */
 	@RequestMapping(value={"/user/messagecenter/new", "/user/messagecenter/reply"}, method = RequestMethod.POST)
     public ModelAndView messageCenterMessageSave(@Valid NewMessageForm newMessageForm, BindingResult result, HttpServletRequest request) {
 		if ( !result.hasErrors() ){
