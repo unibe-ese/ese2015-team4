@@ -84,7 +84,7 @@ public class ProfilePictureServiceImpl implements ProfilePictureService{
 	private BufferedImage resizeImage(BufferedImage originalImage, int type){
 		int newW=PROFILE_PICTURE_MAX_WIDTH;
 		int newH=PROFILE_PICTURE_MAX_HEIGHT;
-		if(originalImage.getWidth() < newW && originalImage.getHeight() < newH){
+		if(originalImage.getWidth() <= newW && originalImage.getHeight() <= newH){
 			newW=originalImage.getWidth();
 			newH=originalImage.getHeight();
 		}else{
