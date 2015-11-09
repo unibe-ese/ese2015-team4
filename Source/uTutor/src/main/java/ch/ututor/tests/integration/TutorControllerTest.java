@@ -105,7 +105,7 @@ public class TutorControllerTest {
 			.andExpect(forwardedUrl("/pages/user/become-tutor.jsp"))
 			.andExpect(model().attributeExists("becomeTutorForm"))
 			.andExpect(model().attribute("becomeTutorForm", hasProperty("description", is("Hi I'm Hermione"))))
-			.andExpect(model().attribute("becomeTutorForm", hasProperty("price", is("99.9"))));
+			.andExpect(model().attribute("becomeTutorForm", hasProperty("price", is("99.90"))));
 	}
 	
 	@Test

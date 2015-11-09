@@ -4,10 +4,10 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class ProfileEditForm {	
 	
-	@NotBlank(message = "Please enter your first name!")
+	@NotBlank( message = "Please enter your first name!" )
 	private String firstName;
 	
-	@NotBlank(message = "Please enter your last name!")
+	@NotBlank( message = "Please enter your last name!" )
 	private String lastName;
 
 	private String description;
@@ -16,7 +16,7 @@ public class ProfileEditForm {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName( String firstName ) {
 		this.firstName = firstName;
 	}
 
@@ -24,15 +24,15 @@ public class ProfileEditForm {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public void setLastName( String lastName ) {
 		this.lastName = lastName;
 	}
 	
-	public String getDescription(){
+	public String getDescription() {
 		return description;
 	}
 	
-	public void setDescription(String description){
+	public void setDescription( String description ) {
 		this.description = description;
 	}
 }

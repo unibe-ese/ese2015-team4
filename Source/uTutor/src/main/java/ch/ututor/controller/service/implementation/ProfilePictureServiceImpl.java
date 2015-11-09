@@ -33,11 +33,11 @@ public class ProfilePictureServiceImpl implements ProfilePictureService{
 	/**
 	 *	@throws	ProfilePictureException if file is null, empty or not an image
 	 */
-	public boolean validateUploadedPicture(MultipartFile file) {
-		if(file == null || file.isEmpty() ){
-			throw new ProfilePictureException("Please select a file.");
-		}else if(!file.getContentType().equals("image/jpeg") && !file.getContentType().equals("image/jpg")){
-			throw new ProfilePictureException("Only JPG files allowed.");
+	public boolean validateUploadedPicture( MultipartFile file ) throws ProfilePictureException {
+		if( file == null || file.isEmpty() ) {
+			throw new ProfilePictureException( "Please select a file." );
+		} else if( !file.getContentType().equals( "image/jpeg" ) && !file.getContentType().equals( "image/jpg" ) ) {
+			throw new ProfilePictureException( "Only JPG files allowed." );
 		}
 		return true;
 	}
@@ -48,7 +48,7 @@ public class ProfilePictureServiceImpl implements ProfilePictureService{
 	 *	@return		A byte array with the binary data of the resized picture
 	 * 				or null if an error occurs.
 	 */
-	public byte[] resizeProfilePicture(byte[] picture) {
+	public byte[] resizeProfilePicture( byte[] picture ) {
 		assert( picture != null );
 		
 		try{
@@ -62,15 +62,15 @@ public class ProfilePictureServiceImpl implements ProfilePictureService{
 				type = originalImage.getType();
 			}
 				
-			BufferedImage resizeImageJpg = resizeImage(originalImage, type);
+			BufferedImage resizeImageJpg = resizeImage( originalImage, type );
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ImageOutputStream ios = ImageIO.createImageOutputStream(baos);
-			ImageWriter writer = ImageIO.getImageWritersByFormatName("jpeg").next();
-			writer.setOutput(ios);
+			ImageOutputStream ios = ImageIO.createImageOutputStream( baos );
+			ImageWriter writer = ImageIO.getImageWritersByFormatName( "jpeg" ).next();
+			writer.setOutput( ios );
 			ImageWriteParam param = writer.getDefaultWriteParam();
-			param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-			param.setCompressionQuality(0.8F);
-			writer.write(resizeImageJpg);
+			param.setCompressionMode( ImageWriteParam.MODE_EXPLICIT );
+			param.setCompressionQuality( 0.8F );
+			writer.write( resizeImageJpg );
 			
 			baos.flush();
 			byte[] imageInByte = baos.toByteArray();
@@ -81,32 +81,32 @@ public class ProfilePictureServiceImpl implements ProfilePictureService{
 		}		
 	}
 	
-	private BufferedImage resizeImage(BufferedImage originalImage, int type){
-		int newW=PROFILE_PICTURE_MAX_WIDTH;
-		int newH=PROFILE_PICTURE_MAX_HEIGHT;
-		if(originalImage.getWidth() <= newW && originalImage.getHeight() <= newH){
-			newW=originalImage.getWidth();
-			newH=originalImage.getHeight();
-		}else{
-			if(originalImage.getWidth() > originalImage.getHeight()){
+	private BufferedImage resizeImage( BufferedImage originalImage, int type ) {
+		int newW = PROFILE_PICTURE_MAX_WIDTH;
+		int newH = PROFILE_PICTURE_MAX_HEIGHT;
+		if( originalImage.getWidth() <= newW && originalImage.getHeight() <= newH ) {
+			newW = originalImage.getWidth();
+			newH = originalImage.getHeight();
+		} else {
+			if( originalImage.getWidth() > originalImage.getHeight() ) {
 				float ratio = (float) newW / (float) originalImage.getWidth();
-				newH = (int) ((float) originalImage.getHeight() * ratio);
-			}else{
+				newH = (int) ( (float) originalImage.getHeight() * ratio );
+			} else {
 				float ratio = (float) newH / (float) originalImage.getHeight();
-				newW = (int) ((float) originalImage.getWidth() * ratio);
+				newW = (int) ( (float) originalImage.getWidth() * ratio );
 			}
 		}
-		BufferedImage resizedImage = new BufferedImage(newW, newH, type);
+		BufferedImage resizedImage = new BufferedImage( newW, newH, type );
 		Graphics2D g = resizedImage.createGraphics();
-		g.drawImage(originalImage, 0, 0, newW, newH, null);
+		g.drawImage( originalImage, 0, 0, newW, newH, null );
 		g.dispose();
 	
 		return resizedImage;
 	}
 	
 	/**
-	 *	@param model	Should not be null
-	 *	@param user		Should not be null
+	 *	@param model	mustn't be null
+	 *	@param user		mustn't be null
 	 */
 	public ModelAndView addProfilePictureInfoToModel( ModelAndView model, User user ){
 		assert( model != null );
@@ -116,5 +116,4 @@ public class ProfilePictureServiceImpl implements ProfilePictureService{
     	model.addObject( "hasProfilePic", user.hasProfilePic() );
     	return model;
 	}
-	
 }

@@ -18,10 +18,10 @@ import ch.ututor.controller.service.ExceptionService;
 @Controller
 public class PasswordChangeController {
 	
-	@Autowired	AuthenticatedUserService authenticatedUserService;
-	@Autowired	ExceptionService exceptionService;
+	@Autowired	private AuthenticatedUserService authenticatedUserService;
+	@Autowired	private ExceptionService exceptionService;
     
-    @RequestMapping(value={"/user/password"}, method = RequestMethod.GET)
+    @RequestMapping( value = {"/user/password"}, method = RequestMethod.GET )
     public ModelAndView displayChangePasswordForm() {
     	ModelAndView model = new ModelAndView("user/change-password");
     	model.addObject( new ChangePasswordForm() );    	
@@ -33,14 +33,16 @@ public class PasswordChangeController {
      * 			Otherwise a page with the changePasswordForm.
      */
     @RequestMapping( value = {"/user/password"}, method = RequestMethod.POST )
-    public ModelAndView changePassword(@Valid ChangePasswordForm changePasswordForm, BindingResult result, RedirectAttributes redirectAttributes){
-    	ModelAndView model = new ModelAndView("user/change-password");
+    public ModelAndView changePassword( @Valid 	ChangePasswordForm changePasswordForm, 
+    											BindingResult result, 
+    											RedirectAttributes redirectAttributes ) {
+    	ModelAndView model = new ModelAndView( "user/change-password" );
     	
-    	if (!result.hasErrors()) {
-            try{
+    	if ( !result.hasErrors() ) {
+            try {
             	authenticatedUserService.updatePassword( changePasswordForm );
-            	return new ModelAndView("redirect:/user/profile");
-            } catch (CustomException e ){
+            	return new ModelAndView( "redirect:/user/profile" );
+            } catch ( CustomException e ) {
             	return exceptionService.addException( model, e.getMessage() );
             }
         }

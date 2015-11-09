@@ -13,20 +13,20 @@ import ch.ututor.model.dao.TutorLectureDao;
 @Service
 public class SearchServiceImpl implements SearchService {
 	
-	@Autowired    TutorLectureDao tutorLectureDao;
+	@Autowired   private TutorLectureDao tutorLectureDao;
 	
 	/**
-	 *	@param query	Should not be null
+	 *	@param query	mustn't be null
 	 *
 	 *	@throws			NoResultFoundException if no lectures are found for the search term
 	 */
-	public List<TutorLecture> searchByLecture( String query ){
+	public List<TutorLecture> searchByLecture( String query ) throws NoResultFoundException {
 		assert ( query != null );
 		
-		List<TutorLecture> lectures = tutorLectureDao.findByLectureNameLike('%' + query + '%');
+		List<TutorLecture> lectures = tutorLectureDao.findByLectureNameLike( '%' + query + '%' );
 		
-		if(lectures.size() == 0){
-			throw new NoResultFoundException("No lectures found.");
+		if( lectures.size() == 0 ) {
+			throw new NoResultFoundException( "No lectures found." );
 		}
 		
 		return lectures;

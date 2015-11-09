@@ -24,16 +24,16 @@ import ch.ututor.model.User;
 @Controller
 public class ProfilePictureEditController {
 	
-	@Autowired 	  AuthenticatedUserLoaderService authenticatedUserLoaderService;
-	@Autowired 	  AuthenticatedUserService authenticatedUserService;
-	@Autowired 	  ProfilePictureService profilePictureService;
-	@Autowired 	  ExceptionService exceptionService;
+	@Autowired 	 private AuthenticatedUserLoaderService authenticatedUserLoaderService;
+	@Autowired 	 private AuthenticatedUserService authenticatedUserService;
+	@Autowired 	 private ProfilePictureService profilePictureService;
+	@Autowired 	 private ExceptionService exceptionService;
 	
 	/**
 	 *	@return a ModelAndView containing the needed information to display the profile picture.
 	 */
-    @RequestMapping(value="/user/profile/picture", method = RequestMethod.GET)
-    public ModelAndView displayProfilePicturePage(){
+    @RequestMapping( value = "/user/profile/picture", method = RequestMethod.GET )
+    public ModelAndView displayProfilePicturePage() {
     	ModelAndView model = new ModelAndView( "user/profile-picture" );
     	User user = authenticatedUserLoaderService.getAuthenticatedUser();
     	model = profilePictureService.addProfilePictureInfoToModel( model, user );
@@ -42,25 +42,27 @@ public class ProfilePictureEditController {
     
     /**
      *	@return A ModelAndView of the own profile if the update or the cleanup was successful.
-	 *			Else a ModelAndView to edit the profile picture.
+	 *			Otherwise a ModelAndView to edit the profile picture.
      */
-    @RequestMapping(value="/user/profile/picture", method = RequestMethod.POST)
-    public ModelAndView uploadNewProfilePicture(@RequestParam("action") String action, @RequestParam("picture") MultipartFile file){
+    @RequestMapping (value = "/user/profile/picture", method = RequestMethod.POST )
+    public ModelAndView uploadNewProfilePicture(	@RequestParam( "action" ) String action, 
+    												@RequestParam( "picture" ) MultipartFile file) {
+    	
     	User user = authenticatedUserLoaderService.getAuthenticatedUser();
-    	ModelAndView model = new ModelAndView("user/profile-picture");
+    	ModelAndView model = new ModelAndView( "user/profile-picture" );
     	
     	if( action.equals( "upload" )){
-    		try{
+    		try {
     			authenticatedUserService.updateProfilePicture( file );
         		return new ModelAndView( "redirect:/user/profile" );
-            }catch(CustomException e){
+            } catch( CustomException e ) {
                	model = exceptionService.addException( model, e.getMessage() );
-            }catch(IOException e){
+            } catch( IOException e ) {
             	model = exceptionService.addException( model, e.getMessage() );
             }
-    	} else if ( action.equals("delete" )){
+    	} else if ( action.equals( "delete" ) ) {
     		authenticatedUserService.removeProfilePicture();
-    		return new ModelAndView("redirect:/user/profile");
+    		return new ModelAndView( "redirect:/user/profile" );
     	}   	
     	
     	model = profilePictureService.addProfilePictureInfoToModel( model, user );

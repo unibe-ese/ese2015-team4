@@ -118,7 +118,7 @@ public class TutorServiceTest {
 		
 		becomeTutorForm = tutorService.preFillBecomeTutorForm(becomeTutorForm);
 		
-		assertEquals("20.0", becomeTutorForm.getPrice());
+		assertEquals("20.00", becomeTutorForm.getPrice());
 		assertEquals("I'm a tutor!", becomeTutorForm.getDescription());
 	}
 	

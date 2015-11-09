@@ -9,17 +9,16 @@ import ch.ututor.controller.service.ExceptionService;
 public class ExceptionServiceImpl implements ExceptionService {
 	
 	/**
-	 *	@param exceptionMessage		Should not be null
+	 *	@param exceptionMessage		mustn't be null
 	 */
-	public ModelAndView addException( ModelAndView model, String exceptionMessage ){
+	public ModelAndView addException( ModelAndView model, String exceptionMessage ) {
 		assert( exceptionMessage != null );
 		
 		if ( model == null ){
-			model = new ModelAndView("exception");
+			model = new ModelAndView( "exception" );
 		}
 		
-		model.addObject("exception_message", exceptionMessage);
+		model.addObject( "exception_message", exceptionMessage );
 		return model;
 	}
-	
 }

@@ -18,16 +18,13 @@ import ch.ututor.controller.service.SignupService;
 @Controller
 public class SignUpController {
     
-	@Autowired
-    SignupService signupService;
-	
-	@Autowired
-    ExceptionService exceptionService;
+	@Autowired	private SignupService signupService;
+	@Autowired	private ExceptionService exceptionService;
 	
 	@RequestMapping( value = "/signup", method = RequestMethod.GET )
 	public ModelAndView displaySignUpForm() {
-	    	ModelAndView model = new ModelAndView("signup");
-	    	model.addObject("signUpForm", new SignUpForm() );
+	    	ModelAndView model = new ModelAndView( "signup" );
+	    	model.addObject( "signUpForm", new SignUpForm() );
 	        return model;
 	}
 	
@@ -36,13 +33,16 @@ public class SignUpController {
 	 *			Otherwise the sign up form with the exception messages.
 	 */
 	@RequestMapping( value = "/signup", method = RequestMethod.POST )
-    public ModelAndView createUserAccount(@Valid SignUpForm signupForm, BindingResult result, RedirectAttributes redirectAttributes){
-    	ModelAndView model = new ModelAndView("signup");
-    	if (!result.hasErrors()) {
-            try{
+    public ModelAndView createUserAccount( 	@Valid SignUpForm signupForm, 
+    										BindingResult result, 
+    										RedirectAttributes redirectAttributes) {
+		
+    	ModelAndView model = new ModelAndView( "signup" );
+    	if ( !result.hasErrors() ) {
+            try {
             	signupService.createUserAccount( signupForm );
-            	model = new ModelAndView("redirect:/login?username="+signupForm.getEmail());
-            } catch (CustomException e ){
+            	model = new ModelAndView( "redirect:/login?username=" + signupForm.getEmail() );
+            } catch ( CustomException e ){
             	model = exceptionService.addException( model, e.getMessage() );
             }
         }

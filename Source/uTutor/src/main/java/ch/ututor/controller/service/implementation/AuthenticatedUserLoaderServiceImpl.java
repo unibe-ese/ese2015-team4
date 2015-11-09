@@ -10,10 +10,12 @@ import ch.ututor.controller.service.UserService;
 import ch.ututor.model.User;
 
 @Service
-public class AuthenticatedUserLoaderServiceImpl implements AuthenticatedUserLoaderService{
-	@Autowired UserService userService;
-	public User getAuthenticatedUser(){
+public class AuthenticatedUserLoaderServiceImpl implements AuthenticatedUserLoaderService {
+	
+	@Autowired 	private UserService userService;
+
+	public User getAuthenticatedUser() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return userService.load(auth.getName());
+		return userService.load( auth.getName() );
 	}
 }

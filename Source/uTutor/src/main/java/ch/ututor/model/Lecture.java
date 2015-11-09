@@ -15,11 +15,11 @@ public class Lecture {
 	@NotNull
 	private String name;
 
-	public Long getId(){
+	public Long getId() {
 		return id;
 	}
 	
-	public void setId( Long id ){
+	public void setId( Long id ) {
 		this.id = id;
 	}
 	
@@ -27,7 +27,7 @@ public class Lecture {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName( String name ) {
 		this.name = name;
 	}
 }

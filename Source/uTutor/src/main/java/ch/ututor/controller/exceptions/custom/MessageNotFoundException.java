@@ -9,5 +9,4 @@ public class MessageNotFoundException extends CustomException {
 	public MessageNotFoundException( String s ) {
         super( s );
     }	
-	
 }

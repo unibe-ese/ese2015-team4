@@ -26,7 +26,7 @@ public class TutorLecture {
 		return id;
 	}
 	
-	public void setId(Long id) {
+	public void setId( Long id ) {
 		this.id = id;
 	}
 	
@@ -34,7 +34,7 @@ public class TutorLecture {
 		return tutor;
 	}
 	
-	public void setTutor(User tutor) {
+	public void setTutor( User tutor ) {
 		this.tutor = tutor;
 	}
 	
@@ -42,7 +42,7 @@ public class TutorLecture {
 		return lecture;
 	}
 	
-	public void setLecture(Lecture lecture) {
+	public void setLecture( Lecture lecture ) {
 		this.lecture = lecture;
 	}
 	
@@ -50,7 +50,7 @@ public class TutorLecture {
 		return grade;
 	}
 	
-	public void setGrade(float grade) {
+	public void setGrade( float grade ) {
 		this.grade = grade;
 	}
 }

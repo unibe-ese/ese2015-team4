@@ -10,29 +10,25 @@ import ch.ututor.controller.exceptions.CustomException;
 import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.controller.service.SearchService;
 
-/**
- *	This class handles the search requests.
- */
-
 @Controller
 public class SearchController {
 	
-	@Autowired	SearchService searchService;
-	@Autowired	ExceptionService exceptionService;
+	@Autowired	private SearchService searchService;
+	@Autowired	private ExceptionService exceptionService;
 	
 	/**
 	 *	@return			A ModelAndView with the search results or an error message
 	 *					if no lectures are found.
 	 */
-	@RequestMapping("/search")
-    public ModelAndView search(@RequestParam(value = "query") String query) {
+	@RequestMapping( "/search" )
+    public ModelAndView search( @RequestParam( value = "query" ) String query ) {
 		
-		ModelAndView model = new ModelAndView("search");
-    	model.addObject("query", query);
+		ModelAndView model = new ModelAndView( "search" );
+    	model.addObject( "query", query );
     	
-    	try{
-    		model.addObject("results", searchService.searchByLecture(query));
-    	}catch(CustomException e){
+    	try {
+    		model.addObject( "results", searchService.searchByLecture( query ) );
+    	} catch( CustomException e ) {
     		exceptionService.addException( model, e.getMessage() );
     	}
     	

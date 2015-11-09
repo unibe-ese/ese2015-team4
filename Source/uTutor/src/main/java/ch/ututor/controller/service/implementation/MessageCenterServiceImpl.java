@@ -17,14 +17,9 @@ import ch.ututor.controller.exceptions.custom.MessageNotFoundException;
 @Service
 public class MessageCenterServiceImpl implements MessageCenterService{
 
-	@Autowired 
-	AuthenticatedUserLoaderService authenticatedUserLoaderService;
-	
-	@Autowired
-	UserService userService;
-	
-	@Autowired
-	MessageDao messageDao;
+	@Autowired 	private AuthenticatedUserLoaderService authenticatedUserLoaderService;
+	@Autowired	private UserService userService;
+	@Autowired	private MessageDao messageDao;
 	
 	/**
 	 * Returns messages for the logged in user depending on the given view
@@ -32,7 +27,7 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 	 * @param view	should be not null. should be "inbox", "outbox" or "trash", otherwise messages for "inbox" are returned.  
 	 */
 	public List<Message> getMessagesByView( String view ){
-		assert( view != null);
+		assert( view != null );
 		
 		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		if ( view.equalsIgnoreCase( "outbox" ) ){
@@ -49,10 +44,10 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 	 * 
 	 * @return	converted long or 0 if conversion fails
 	 */
-	public long normalizeLong( String longString ){
-		try{
+	public long normalizeLong( String longString ) {
+		try {
 			return Long.parseLong( longString );
-		}catch( Exception e ){
+		} catch( NumberFormatException e ) {
 			return 0L;
 		}
 	}
@@ -75,9 +70,9 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 	 * 
 	 * @return the given value, if it equals "inbox", "outbox" or "trash". "inbox" otherwise.
 	 */
-	public String normalizeView( String view ){
+	public String normalizeView( String view ) {
 		view = normalizeString( view );
-		if(!view.equals( "inbox" ) && !view.equals( "outbox" ) && !view.equals( "trash" )){
+		if( !view.equals( "inbox" ) && !view.equals( "outbox" ) && !view.equals( "trash" ) ) {
 			return "inbox";
 		}
 		return view;
@@ -93,7 +88,7 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		Message message = messageDao.findById(messageId);
 		if( message != null ){
-			if ( user.equals( message.getReceiver() ) ){
+			if ( user.equals( message.getReceiver() ) ) {
 				message.setReceiverDeleted( true );
 			} else if ( user.equals( message.getSender() ) ) {
 				message.setSenderDeleted( true );
@@ -152,11 +147,11 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 
 	public Message setRead(long messageId) {
 		Message message = messageDao.findById( messageId );
-		if( message != null ){
+		if( message != null ) {
 			User receiver = authenticatedUserLoaderService.getAuthenticatedUser();
-			if( message.getReceiver().equals(receiver) ){
-				message.setIsRead(true);
-				messageDao.save(message);
+			if( message.getReceiver().equals( receiver ) ) {
+				message.setIsRead( true );
+				messageDao.save( message );
 			}
 		}
 		return message;

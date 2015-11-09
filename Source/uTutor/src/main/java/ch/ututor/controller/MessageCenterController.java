@@ -20,19 +20,20 @@ import ch.ututor.controller.exceptions.custom.UserNotFoundException;
 
 @Controller
 public class MessageCenterController {
-	@Autowired MessageCenterService messageCenterService;
-	@Autowired ExceptionService exceptionService;
+	@Autowired private MessageCenterService messageCenterService;
+	@Autowired private ExceptionService exceptionService;
 	
 	/**
 	 * Adds the messages corresponding to the view parameter.
 	 * 
 	 * @param view	should be "inbox", "outbox", "trash" otherwise the default ("inbox") will be used.
-	 * @param messageId id of the message for wich the setRead will be called.
+	 * @param messageId id of the message for which the setRead will be called.
 	 * @return A ModelAndView Object with a List<Message> attached, corresponding to the view parameter.
 	 */
 	@RequestMapping( value={"/user/messagecenter"}, method = RequestMethod.GET )
     public ModelAndView messageCenterView(	@RequestParam( value = "view", required = false ) String view,
     										@RequestParam( value = "messageId", required = false ) String messageIdString ) {
+		
 		messageCenterService.setRead( messageCenterService.normalizeLong( messageIdString ) );
 		view = messageCenterService.normalizeView( view );
         ModelAndView model = new ModelAndView( "user/messagecenter" );
@@ -47,42 +48,41 @@ public class MessageCenterController {
 	 * @param objectIdString	if action is "delete" this should be a messageId of the message which should be deleted.
 	 * @param viewString		the view which will be called after action handling.
 	 * @param showString		the index of the message which will be displayed after action handling.
-	 * @return A ModelAndView redirect to the message center.
+	 * @return ModelAndView redirect to the message center.
 	 */
 	@RequestMapping( value="/user/messagecenter", method = RequestMethod.POST )
-	public ModelAndView messageCenterAction(
-			@RequestParam( value = "action" ) String actionString,
-			@RequestParam( value = "objectId" ) String objectIdString,
-			@RequestParam( value = "view", required = false ) String viewString,
-			@RequestParam( value = "show", required = false ) String showString){
+	public ModelAndView messageCenterAction( 	@RequestParam( value = "action" ) String actionString,
+												@RequestParam( value = "objectId" ) String objectIdString,
+												@RequestParam( value = "view", required = false ) String viewString,
+												@RequestParam( value = "show", required = false ) String showString) {
 			
 		String action = messageCenterService.normalizeString( actionString );
 		long objectId = messageCenterService.normalizeLong( objectIdString );
 		String view = messageCenterService.normalizeView( viewString );
 		long show = messageCenterService.normalizeLong( showString );
 		
-		if( action.equals( "delete" ) ){
+		if( action.equals( "delete" ) ) {
 			messageCenterService.deleteMessage( objectId );
 		}
 		
-		return new ModelAndView("redirect:/user/messagecenter/?view="+view+"&show="+show);
+		return new ModelAndView( "redirect:/user/messagecenter/?view=" + view + "&show=" + show );
 	}
 	
 	/**
 	 * Populates and adds the Form to the ModelAndView for sending a new message.
 	 * 
-	 * @param receiverIdString	The id of the User Object which is the receiver.
-	 * @return A ModelAndView for sending a new message or a ModelAndView with an exception message.
+	 * @param receiverIdString	The id of the User Object who is the receiver.
+	 * @return ModelAndView for sending a new message or a ModelAndView with an exception message.
 	 */
 	@RequestMapping( value={"/user/messagecenter/new"}, method = RequestMethod.GET )
     public ModelAndView messageCenterNewView( 	@RequestParam(value = "receiverId") String receiverIdString,
-    											HttpServletRequest request) {
+    											HttpServletRequest request ) {
 		long receiverId = messageCenterService.normalizeLong( receiverIdString );
-        try{
+        try {
             ModelAndView model = new ModelAndView( "user/new-message" );
         	model.addObject( "newMessageForm" , messageCenterService.prefillNewMessageForm( receiverId ));
         	return model;
-        }catch( CustomException e ){
+        } catch( CustomException e ) {
         	return exceptionService.addException( null, e.getMessage() );
         }
     }
@@ -95,15 +95,15 @@ public class MessageCenterController {
 	 */
 	@RequestMapping( value={"/user/messagecenter/reply"}, method = RequestMethod.GET )
     public ModelAndView messageCenterReplyView( @RequestParam(value = "replyToMessageId" ) String messageIdString,
-    											HttpServletRequest request) {
+    											HttpServletRequest request ) {
 		long messageId = messageCenterService.normalizeLong( messageIdString );
-        try{
+        try {
             ModelAndView model = new ModelAndView( "user/new-message" );
         	model.addObject( "newMessageForm" , messageCenterService.prefillReplyMessageForm( messageId ) );
         	return model;
-        }catch( MessageNotFoundException e ){
+        } catch( MessageNotFoundException e ) {
         	return exceptionService.addException( null, e.getMessage() );
-        }catch( UserNotFoundException e ){
+        } catch( UserNotFoundException e ) {
         	return exceptionService.addException( null, e.getMessage() );
         }
     }
@@ -118,12 +118,12 @@ public class MessageCenterController {
 	@RequestMapping( value={"/user/messagecenter/new", "/user/messagecenter/reply"}, method = RequestMethod.POST )
     public ModelAndView messageCenterMessageSave( 	@Valid NewMessageForm newMessageForm, 
     												BindingResult result,
-    												HttpServletRequest request) {
-		if ( !result.hasErrors() ){
-			try{
+    												HttpServletRequest request ) {
+		if ( !result.hasErrors() ) {
+			try {
 				messageCenterService.sendMessage( newMessageForm );
 				return new ModelAndView( "redirect:/user/messagecenter/?view=outbox" );
-			}catch( UserNotFoundException e ){
+			} catch( UserNotFoundException e ) {
 		        return exceptionService.addException( null, e.getMessage() );
 		    }
 		}

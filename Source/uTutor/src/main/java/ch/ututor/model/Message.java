@@ -30,7 +30,7 @@ public class Message {
     private String subject;
      
     @NotNull
-    @Column(length=1048)
+    @Column (length=1048 )
     private String message;
     
     private boolean isRead = false;
@@ -41,7 +41,7 @@ public class Message {
         return id;
     }
  
-    public void setId(Long id) {
+    public void setId( Long id ) {
         this.id = id;
     }
  
@@ -49,7 +49,7 @@ public class Message {
         return sender;
     }
  
-    public void setSender(User sender) {
+    public void setSender( User sender ) {
         this.sender = sender;
     }
  
@@ -57,7 +57,7 @@ public class Message {
         return receiver;
     }
  
-    public void setReceiver(User receiver) {
+    public void setReceiver( User receiver ) {
         this.receiver = receiver;
     }
  
@@ -65,7 +65,7 @@ public class Message {
         return dateAndTime;
     }
  
-    public void setDateAndTime(Date dateAndTime) {
+    public void setDateAndTime( Date dateAndTime ) {
         this.dateAndTime = dateAndTime;
     }
  
@@ -73,7 +73,7 @@ public class Message {
         return subject;
     }
  
-    public void setSubject(String subject) {
+    public void setSubject( String subject ) {
         this.subject = subject;
     }
  
@@ -81,7 +81,7 @@ public class Message {
         return message;
     }
  
-    public void setMessage(String message) {
+    public void setMessage( String message ) {
         this.message = message;
     } 
     
@@ -89,7 +89,7 @@ public class Message {
 		return isRead;
 	}
 
-	public void setIsRead(boolean isRead) {
+	public void setIsRead( boolean isRead ) {
 		this.isRead = isRead;
 	}
 
@@ -97,7 +97,7 @@ public class Message {
 		return senderDeleted;
 	}
 
-	public void setSenderDeleted(boolean senderDeleted) {
+	public void setSenderDeleted( boolean senderDeleted ) {
 		this.senderDeleted = senderDeleted;
 	}
 
@@ -105,7 +105,7 @@ public class Message {
 		return receiverDeleted;
 	}
 
-	public void setReceiverDeleted(boolean receiverDeleted) {
+	public void setReceiverDeleted( boolean receiverDeleted ) {
 		this.receiverDeleted = receiverDeleted;
 	}
     

@@ -19,12 +19,12 @@ public class User{
 	private String firstName;
 	private String lastName;
 	
-	@Column(length=512000)
+	@Column( length=512000 )
 	private byte[] profilePic;
 
 	private boolean isTutor = false;
 	
-	@Column(length=1048)
+	@Column( length=1048 )
 	private String description;	
 	
 	private Float price = 0F;
@@ -41,7 +41,7 @@ public class User{
 		return username;
 	}
 
-	public void setUsername(String username) {
+	public void setUsername( String username ) {
 		this.username = username;
 	}
 
@@ -49,16 +49,16 @@ public class User{
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword( String password ) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		this.password = passwordEncoder.encode(password);
+		this.password = passwordEncoder.encode( password );
 	}
 
 	public String getFirstName() {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName( String firstName ) {
 		this.firstName = firstName;
 	}
 
@@ -66,7 +66,7 @@ public class User{
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public void setLastName( String lastName ) {
 		this.lastName = lastName;
 	}
 	
@@ -74,30 +74,31 @@ public class User{
         return profilePic;
     }
  
-    public void setProfilePic(byte[] profilePic) {
+    public void setProfilePic( byte[] profilePic ) {
         this.profilePic = profilePic;
     }
-    public boolean hasProfilePic(){
-    	if(profilePic == null){
+    
+    public boolean hasProfilePic() {
+    	if( profilePic == null ) {
     		return false;
-    	}else{
+    	} else {
     		return true;
     	}
     }
     
-    public void setIsTutor(boolean isTutor){
-    	this.isTutor=isTutor;
+    public void setIsTutor( boolean isTutor ) {
+    	this.isTutor = isTutor;
     }
     
-    public boolean getIsTutor(){
+    public boolean getIsTutor() {
     	return isTutor;
     }
     
-    public String getDescription(){
+    public String getDescription() {
     	return description;
     }
     
-    public void setDescription(String description){
+    public void setDescription( String description ) {
     	this.description = description;
     }
     
@@ -108,32 +109,4 @@ public class User{
 	public void setPrice(float price) {
 		this.price = price;
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-	
-	
-	
 }

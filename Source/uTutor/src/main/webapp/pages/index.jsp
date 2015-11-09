@@ -6,9 +6,9 @@
 			Note:
 		</strong><br/>
 		If you have tested an earlier version of uTutor, please open phpMyAdmin, drop the database (<code style="white-space:nowrap;">DROP DATABASE ututor</code>)<br/>
-		and build again, so the db has the correct structure after rebuild.
+		and build again, ensuring that the database has the right structure.
 	</p>
-	<p>Description.</p>
+	<p>Find a tutor. Or become one.</p>
 </div>
 <div class="center">
 	<!-- BEGIN SEARCH FORM -->

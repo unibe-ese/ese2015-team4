@@ -3,23 +3,21 @@ package ch.ututor.controller.pojos;
 import org.hibernate.validator.constraints.NotBlank;
  
 public class NewMessageForm {
-    
-	//TODO: check correct display of long subjects and user names in message-view
 	
 	private long receiverId;
 	private String receiverDisplayName;
 	
-	@NotBlank(message = "Please enter a subject!")
+	@NotBlank( message = "Please enter a subject!" )
 	private String subject;
      
-    @NotBlank(message = "Please enter a message body!")
+    @NotBlank( message = "Please enter a message body!" )
     private String message;
  
     public String getSubject() {
         return subject;
     }
  
-    public void setSubject(String subject) {
+    public void setSubject( String subject ) {
         this.subject = subject;
     }
  
@@ -27,7 +25,7 @@ public class NewMessageForm {
         return message;
     }
  
-    public void setMessage(String message) {
+    public void setMessage( String message ) {
         this.message = message;
     }
 
@@ -35,7 +33,7 @@ public class NewMessageForm {
 		return receiverId;
 	}
 
-	public void setReceiverId(long receiverId) {
+	public void setReceiverId( long receiverId ) {
 		this.receiverId = receiverId;
 	}
 
@@ -43,8 +41,7 @@ public class NewMessageForm {
 		return receiverDisplayName;
 	}
 
-	public void setReceiverDisplayName(String receiverDisplayName) {
+	public void setReceiverDisplayName( String receiverDisplayName ) {
 		this.receiverDisplayName = receiverDisplayName;
 	}
-     
 }

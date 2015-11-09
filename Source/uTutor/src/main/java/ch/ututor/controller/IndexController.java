@@ -10,8 +10,8 @@ public class IndexController {
 	
 	@RequestMapping("/")
     public ModelAndView index() {
-    	ModelAndView model = new ModelAndView("index");
-    	model.addObject("signUpForm", new SignUpForm() );
+    	ModelAndView model = new ModelAndView( "index" );
+    	model.addObject( "signUpForm", new SignUpForm() );
         return model;
     }
 }

@@ -17,24 +17,19 @@ import ch.ututor.controller.service.AuthenticatedUserService;
 import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.model.User;
 
-/**
- *	This class handles the requests concerning the change of profile data
- *	(except the profile picture)
- */
-
 @Controller
 public class ProfileEditController {
 	
-	@Autowired 	  AuthenticatedUserLoaderService authenticatedUserLoaderService;
-	@Autowired 	  AuthenticatedUserService authenticatedUserService;
-	@Autowired 	  ExceptionService exceptionService;
+	@Autowired 	 private AuthenticatedUserLoaderService authenticatedUserLoaderService;
+	@Autowired 	 private AuthenticatedUserService authenticatedUserService;
+	@Autowired 	 private ExceptionService exceptionService;
 	
 	/**
-	 *	Returns a ModelAndView containing a form to update the profile data.
+	 *	@return ModelAndView containing a form to update the profile data.
 	 */
-    @RequestMapping(value={"/user/profile/edit"}, method = RequestMethod.GET)
+    @RequestMapping( value = {"/user/profile/edit"}, method = RequestMethod.GET )
     public ModelAndView displayProfileEditForm() {
-    	ModelAndView model = new ModelAndView("user/profile-edit");
+    	ModelAndView model = new ModelAndView( "user/profile-edit" );
     	User user = authenticatedUserLoaderService.getAuthenticatedUser();
     	model.addObject( authenticatedUserService.preFillProfileEditForm( new ProfileEditForm() ) );
     	model.addObject( "isTutor", user.getIsTutor() );
@@ -42,26 +37,28 @@ public class ProfileEditController {
     }
     
     /**
-     * Updates the profile data based on the information entered in the profileEditForm
+     *  Updates the profile data based on the information entered in the profileEditForm
      * 
-     *	@return	A ModelAndView of the own profile if the update has succeeded.
+     *	@return	ModelAndView of the own profile if the update has succeeded.
 	 *			Otherwise a ModelAndView with a profile edit form containing error or exception messages.
      */
     @RequestMapping( value = {"/user/profile/edit"}, method = RequestMethod.POST )
-    public ModelAndView updateProfileData( @Valid ProfileEditForm profileEditForm, BindingResult result, RedirectAttributes redirectAttributes ){
-    	ModelAndView model = new ModelAndView("user/profile-edit");
+    public ModelAndView updateProfileData( 	@Valid ProfileEditForm profileEditForm, 
+    										BindingResult result, 
+    										RedirectAttributes redirectAttributes ) {
+    	ModelAndView model = new ModelAndView( "user/profile-edit" );
     	User user = authenticatedUserLoaderService.getAuthenticatedUser();
     	
-    	if (!result.hasErrors()) {
-            try{
+    	if ( !result.hasErrors() ) {
+            try {
             	authenticatedUserService.updateUserData( profileEditForm );
-            	model = new ModelAndView("redirect:/user/profile");
-            } catch (CustomException e ){
+            	model = new ModelAndView( "redirect:/user/profile" );
+            } catch ( CustomException e ) {
             	model = exceptionService.addException( model, e.getMessage() );
             }
         }
     	
-    	model.addObject("isTutor", user.getIsTutor());
+    	model.addObject( "isTutor", user.getIsTutor() );
     	return model;
     } 
 }
