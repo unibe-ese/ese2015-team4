@@ -78,5 +78,31 @@ public class SignupControllerTest {
 				.andExpect(model().attributeHasFieldErrors("signUpForm", "email"))
 				.andExpect(model().attributeHasFieldErrors("signUpForm", "password"));
 	}
+	
+	@Test
+	public void testUserAlreadyExistsException() throws Exception{
+		this.mockMvc
+			.perform(post("/signup")
+					.param("firstName", "Severus")
+					.param("lastName", "Snape")
+					.param("email", "test@user.ch"))
+				.andExpect(status().isOk())
+				.andExpect(forwardedUrl("/pages/signup.jsp"))
+				.andExpect(model().attribute("exception_message", "There's already a user registered with this email address!"));
+	}
+	
+	@Test
+	public void testPasswordRepetitionException() throws Exception{
+		this.mockMvc
+			.perform(post("/signup")
+					.param("firstName", "Albus")
+					.param("lastName", "Dumbledore")
+					.param("email", "dumbledore@hogwarts.com")
+					.param("password", "DumbledoreRocks")
+					.param("passwordRepeat", "He really does"))
+				.andExpect(status().isOk())
+				.andExpect(forwardedUrl("/pages/signup.jsp"))
+				.andExpect(model().attribute("exception_message", "The password repetition did not match."));
+	}
 }
 
