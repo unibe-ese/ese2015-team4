@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class TutorLecture {
@@ -18,7 +19,8 @@ public class TutorLecture {
 	@ManyToOne
 	private Lecture lecture;
 	
-	private float grade;
+	@NotNull
+	private Float grade;
 	
 	public Long getId() {
 		return id;

@@ -10,6 +10,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.hasProperty;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.Rollback;
@@ -47,19 +48,42 @@ public class MessageCenterControllerTest {
 	MessageDao messageDao;
 	private MockMvc mockMvc;
 	private Message message;
+	private User sender;
+	private User receiver;
 
+	private void dataSetup(){
+		userDao.deleteAll();
+		messageDao.deleteAll();
+		
+		sender = new User();
+		sender.setFirstName("Lenny");
+		sender.setLastName("Lenford");
+		sender.setUsername("lenny.lenford@simpsons.com");
+		sender = userDao.save(sender);
+		
+		receiver = new User();
+		receiver.setFirstName("Carl");
+		receiver.setLastName("Carlson");
+		receiver.setUsername("carl.carlson@simpsons.com");
+		receiver = userDao.save(receiver);
+		
+		message = new Message();
+		message.setSender(sender);
+		message.setReceiver(receiver);
+		message.setSubject("Hello Carl");
+		message.setMessage("How are you?");
+		message = messageDao.save(message);
+	}
+	
 	@Before
 	public void setup() {
+		dataSetup();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-		message = new Message();
-		message.setReceiver(userDao.findByUsername("test@user.ch"));
-		message.setSender(userDao.findByUsername("test@user.ch"));
 	}
 
 	@Test
-	@WithMockUser(username = "test@user.ch", roles = { "USER" })
+	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
 	public void testValidMessageCenter() throws Exception {
-
 		this.mockMvc.perform(get("/user/messagecenter"))
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists("messageList"))
@@ -67,7 +91,7 @@ public class MessageCenterControllerTest {
 	}
 
 	@Test
-	@WithMockUser(username = "test@user.ch", roles = { "USER" })
+	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
 	public void testValidOutboxMessageCenter() throws Exception {
 
 		this.mockMvc.perform(get("/user/messagecenter?view=outbox"))
@@ -77,7 +101,7 @@ public class MessageCenterControllerTest {
 	}
 
 	@Test
-	@WithMockUser(username = "test@user.ch", roles = { "USER" })
+	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
 	public void testValidTrashMessageCenter() throws Exception {
 
 		this.mockMvc.perform(get("/user/messagecenter?view=trash"))
@@ -87,175 +111,134 @@ public class MessageCenterControllerTest {
 	}
 
 	@Test
-	@WithMockUser(username = "test@user.ch", roles = { "USER" })
+	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
 	public void testDeleteMessageStandardRedirect() throws Exception {
 
 		this.mockMvc
 				.perform(
-						post("/user/messagecenter?action=delete&objectId="
-								+ message.getId()))
-				.andExpect(status().isFound())
-				.andExpect(redirectedUrl("/user/messagecenter/?view=inbox&show=0"));
+						post("/user/messagecenter?view=inbox&show=123")
+						.param("action", "delete")
+						.param("objectId", message.getId().toString()))
+							.andExpect(status().isFound())
+							.andExpect(redirectedUrl("/user/messagecenter/?view=inbox&show=123"));
 	}
 
 	@Test
-	@WithMockUser(username = "test@user.ch", roles = { "USER" })
+	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
 	public void testDeleteMessageRedirectToOutbox() throws Exception {
 
 		this.mockMvc
 				.perform(
-						post("/user/messagecenter?action=delete&objectId="
-								+ message.getId() + "&view=outbox"))
-				.andExpect(status().isFound())
-				.andExpect(
-						redirectedUrl("/user/messagecenter/?view=outbox&show=0"));
-	}
+						post("/user/messagecenter?view=outbox&show=123").param("action", "delete")
+						.param("action", "delete")
+						.param("objectId", message.getId().toString()))
+							.andExpect(status().isFound())
+							.andExpect(redirectedUrl("/user/messagecenter/?view=outbox&show=123"));
+		}
 
 	@Test
-	@WithMockUser(username = "test@user.ch", roles = { "USER" })
+	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
 	public void testDeleteMessageRedirectToTrash() throws Exception {
-
 		this.mockMvc
 				.perform(
-						post("/user/messagecenter?action=delete&objectId="
-								+ message.getId() + "&view=trash"))
-				.andExpect(status().isFound())
-				.andExpect(
-						redirectedUrl("/user/messagecenter/?view=trash&show=0"));
+						post("/user/messagecenter?view=trash&show=123").param("action", "delete")
+						.param("action", "delete")
+						.param("objectId", message.getId().toString()))
+							.andExpect(status().isFound())
+							.andExpect(redirectedUrl("/user/messagecenter/?view=trash&show=123"));
 	}
 
 	@Test
-	@WithMockUser(username = "test@user.ch", roles = { "USER" })
-	public void testInvalidDeleteMessage() throws Exception {
-
-		this.mockMvc
-				.perform(
-						post("/user/messagecenter?action=hogwarts&objectId="
-								+ message.getId()))
-				.andExpect(status().isFound())
-				.andExpect(
-						redirectedUrl("/user/messagecenter/?view=inbox&show=0"));
-	}
-
-	@Test
-	@WithMockUser(username = "test@user.ch", roles = { "USER" })
+	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
 	public void testValidNewMessage() throws Exception {
-		User user = userDao.findByUsername("test@user.ch");
-
 		this.mockMvc
 				.perform(
 						get("/user/messagecenter/new?receiverId="
-								+ user.getId())).andExpect(status().isOk())
+								+ receiver.getId())).andExpect(status().isOk())
 				.andExpect(forwardedUrl("/pages/user/new-message.jsp"))
 				.andExpect(model().attributeExists("newMessageForm"));
 	}
 
 	@Test
-	@WithMockUser(username = "test@user.ch", roles = { "USER" })
+	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
 	public void testNewMessageUserNotFoundException() throws Exception {
-
 		this.mockMvc
-				.perform(get("/user/messagecenter/new?receiverId="))
+				.perform(get("/user/messagecenter/new?receiverId=-1"))
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists("exception_message"))
 				.andExpect(
-						model().attribute("exception_message",
-								"User not found."));
+						model().attribute("exception_message", "User not found."));
 	}
 
 	@Test
-	@WithMockUser(username = "test@user.ch", roles = { "USER" })
+	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
 	public void testReplyMessageMessageNotFoundException() throws Exception {
-
 		this.mockMvc
-				.perform(get("/user/messagecenter/reply?replyToMessageId="))
+				.perform(get("/user/messagecenter/reply?replyToMessageId=-1"))
 				.andExpect(status().isOk())
 				.andExpect(forwardedUrl("/pages/exception.jsp"))
 				.andExpect(model().attribute("exception_message", "Message not found."));
 	}
 	
 	@Test
-	@WithMockUser(username = "test@user.ch", roles = { "USER" })
-	public void testReplyMessageUserNotFoundException() throws Exception {
-		User user = userDao.findByUsername("test@user.ch");
-			
-		this.mockMvc
-				.perform(get("/user/messagecenter/reply?replyToMessageId=" + message.getId()))
-				.andExpect(status().isOk())
-				.andExpect(forwardedUrl("/pages/user/new-message.jsp"))
-				.andExpect(model().attributeExists("newMessageForm"))
-				.andExpect(model().attribute("newMessageForm", hasProperty("sender", is(user))));
-	}
-	
-	@Test
-	@WithMockUser(username="test@user.ch", roles = {"USER"})
+	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
 	public void testValidSendNewMessage() throws Exception{
-		User user = userDao.findByUsername("test@user.ch");
-		
 		this.mockMvc
 			.perform(post("/user/messagecenter/new")
-				.param("receiverId", "" +user.getId())
-				.param("receiverDisplayName", user.getFirstName() + " " +user.getLastName())
+				.param("receiverId", "" +receiver.getId())
+				.param("receiverDisplayName", receiver.getFirstName() + " " +receiver.getLastName())
 				.param("subject", "Hi")
-				.param("message", "Hi there I'm using UTutor"))
+				.param("message", "Hi there I'm using uTutor"))
 				.andExpect(redirectedUrl("/user/messagecenter/?view=outbox"));
 	}
-	
+
 	@Test
-	@WithMockUser(username="test@user.ch", roles = {"USER"})
+	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
 	public void testValidReplyToMessage() throws Exception{
-		User user = userDao.findByUsername("test@user.ch");
-		
 		this.mockMvc
 			.perform(post("/user/messagecenter/reply")
-				.param("receiverId", "" +user.getId())
-				.param("receiverDisplayName", user.getFirstName() + " " +user.getLastName())
-				.param("subject", "Hi")
-				.param("message", "Hi there I'm using UTutor"))
+				.param("receiverId", "" +receiver.getId())
+				.param("receiverDisplayName", receiver.getFirstName() + " " +receiver.getLastName())
+				.param("subject", "Re: Hi")
+				.param("message", "Hi there I'm also using UTutor"))
 				.andExpect(redirectedUrl("/user/messagecenter/?view=outbox"));
 	}
 	
 	@Test
-	@WithMockUser(username="test@user.ch", roles = {"USER"})
-	public void testInvalidNewMessageForm() throws Exception{
-		
+	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	public void testInvalidNewMessageForm() throws Exception{	
 		this.mockMvc
 			.perform(post("/user/messagecenter/new")
-				.param("receiverId", "")
-				.param("receiverDisplayName", "")
+				.param("receiverId", receiver.getId().toString())
+				.param("receiverDisplayName", receiver.getFirstName() + " " +receiver.getLastName())
 				.param("subject", "")
 				.param("message", ""))
 				.andExpect(forwardedUrl("/pages/user/new-message.jsp"))
-				.andExpect(model().attributeHasFieldErrors("newMessageForm", "receiverId"))
 				.andExpect(model().attributeHasFieldErrors("newMessageForm", "subject"))
 				.andExpect(model().attributeHasFieldErrors("newMessageForm", "message"));
 	}
 	
 	@Test
-	@WithMockUser(username="test@user.ch", roles = {"USER"})
+	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
 	public void testInvalidReplyMessageForm() throws Exception{
-		
 		this.mockMvc
 			.perform(post("/user/messagecenter/reply")
-				.param("receiverId", "")
-				.param("receiverDisplayName", "")
+				.param("receiverId", receiver.getId().toString())
+				.param("receiverDisplayName", receiver.getFirstName() + " " +receiver.getLastName())
 				.param("subject", "")
 				.param("message", ""))
 				.andExpect(forwardedUrl("/pages/user/new-message.jsp"))
-				.andExpect(model().attributeHasFieldErrors("newMessageForm", "receiverId"))
 				.andExpect(model().attributeHasFieldErrors("newMessageForm", "subject"))
 				.andExpect(model().attributeHasFieldErrors("newMessageForm", "message"));
 	}
-	
+
 	@Test
-	@WithMockUser(username="test@user.ch", roles = {"USER"})
+	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
 	public void testSendMessageUserNotFoundException() throws Exception{
-		User user = userDao.findByUsername("test@user.ch");
-		
 		this.mockMvc
 			.perform(post("/user/messagecenter/new")
 				.param("receiverId", "-1")
-				.param("receiverDisplayName", user.getFirstName() + " " +user.getLastName())
+				.param("receiverDisplayName", receiver.getFirstName() + " " +receiver.getLastName())
 				.param("subject", "Hi")
 				.param("message", "Hi there I'm using UTutor"))
 				.andExpect(forwardedUrl("/pages/exception.jsp"))
