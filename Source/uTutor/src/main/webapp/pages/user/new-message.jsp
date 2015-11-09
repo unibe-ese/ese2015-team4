@@ -27,7 +27,7 @@
  				<form:errors path="subject" element="div" class="error"/> 						  	
 			</label>
 			<label>
-				<form:textarea path="message" id="field-message" placeholder="Please enter your message..." maxlength="255" style="width:600px;height:200px"></form:textarea>
+				<form:textarea path="message" id="field-message" placeholder="Please enter your message..." style="width:600px;height:200px"></form:textarea>
 	    		<form:errors path="message" element="div" class="error"/>
 			</label>
 		

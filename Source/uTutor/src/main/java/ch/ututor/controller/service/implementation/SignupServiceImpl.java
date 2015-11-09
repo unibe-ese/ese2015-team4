@@ -26,6 +26,7 @@ public class SignupServiceImpl implements SignupService {
 		assert( signUpForm != null );
 		
 		String email = signUpForm.getEmail();
+		System.out.println(email);
 		User user = userDao.findByUsername(email);
 		
 		if(user != null){
