@@ -86,7 +86,7 @@ public class TutorControllerTest {
 	
 	@Test
 	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
-	public void testGetBecomeTutorForm() throws Exception{
+	public void testDisplayBecomeTutorForm() throws Exception{
 		
 		this.mockMvc
 			.perform(get("/user/become-tutor"))
