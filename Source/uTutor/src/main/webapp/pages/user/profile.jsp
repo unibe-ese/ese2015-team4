@@ -89,7 +89,7 @@
 						Price per hour
 					</div>
 	    			<div class="cell value">
-	    				<c:out value="${user.price}" />
+	    				CHF <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${user.price}" />
 	    			</div>
 				</div>
 				<div class="row">

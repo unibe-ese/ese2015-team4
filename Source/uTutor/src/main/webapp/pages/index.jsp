@@ -1,7 +1,14 @@
 <%@include file="includes/header.jsp"%>
 <div class="center">
-<strong style="color:#ff0000">Important for testing:</strong><br/>
-If you have tested an earlier version of uTutor, please open phpMyAdmin, drop the database (<code style="white-space:nowrap;">DROP DATABASE ututor</code>) and build again, so the db has the correct structure after rebuild.
+	<h1>Welcome to uTutor</h1>
+	<p style="font-size:75%;font-style:italic">
+		<strong style="color:#ff0000">
+			Note:
+		</strong><br/>
+		If you have tested an earlier version of uTutor, please open phpMyAdmin, drop the database (<code style="white-space:nowrap;">DROP DATABASE ututor</code>)<br/>
+		and build again, so the db has the correct structure after rebuild.
+	</p>
+	<p>Description.</p>
 </div>
 <div class="center">
 	<!-- BEGIN SEARCH FORM -->
