@@ -81,8 +81,6 @@ public class MessageCenterController {
             ModelAndView model = new ModelAndView( "user/new-message" );
         	model.addObject( "newMessageForm" , messageCenterService.prefillNewMessageForm( receiverId ));
         	return model;
-        }catch( MessageNotFoundException e ){
-        	return exceptionService.addException( null, e.getMessage() );
         }catch( UserNotFoundException e ){
         	return exceptionService.addException( null, e.getMessage() );
         }

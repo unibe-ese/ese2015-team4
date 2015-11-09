@@ -4,9 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -27,8 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 "file:src/main/webapp/WEB-INF/config/springMVC.xml",
 "file:src/main/webapp/WEB-INF/config/springData.xml" })
 @Transactional
-@Rollback
-public class SignupControllerTest {
+@TransactionConfiguration(defaultRollback = true)
+public class IndexControllerTest {
 	
 	@Autowired private WebApplicationContext wac;
 	private MockMvc mockMvc;
@@ -39,44 +40,10 @@ public class SignupControllerTest {
 	}
 	
 	@Test
-	public void testGetSignupForm() throws Exception{
-		this.mockMvc.perform(
-				get("/signup"))
-					.andExpect(status().isOk())
-					.andExpect(forwardedUrl("/pages/signup.jsp"))
-					.andExpect(model().attributeExists("signUpForm"));
-		
-	}
-	
-	@Test
-	public void testValidSignupForm() throws Exception{
-		this.mockMvc.perform(
-				post("/signup")
-					.param("firstName", "Ron")
-					.param("lastName", "Weasley")
-					.param("email", "ron.weasley@hogwarts.com")
-					.param("password", "12345678")
-					.param("passwordRepeat", "12345678"))
-				.andExpect(model().hasNoErrors())
-				.andExpect(status().isFound())
-				.andExpect(redirectedUrl("/login?username=ron.weasley@hogwarts.com"));
-	}
-	
-	@Test
-	public void testErrorsSignupForm() throws Exception{
-		this.mockMvc.perform(
-				post("/signup")
-					.param("firstName", "")
-					.param("lastName", "")
-					.param("email", "")
-					.param("password", "")
-					.param("passwordRepeat", ""))
-				.andExpect(status().isOk())
-				.andExpect(forwardedUrl("/pages/signup.jsp"))
-				.andExpect(model().attributeHasFieldErrors("signUpForm", "firstName"))
-				.andExpect(model().attributeHasFieldErrors("signUpForm", "lastName"))
-				.andExpect(model().attributeHasFieldErrors("signUpForm", "email"))
-				.andExpect(model().attributeHasFieldErrors("signUpForm", "password"));
+	public void testValidIndexCall() throws Exception{
+		this.mockMvc.perform(get("/"))
+			.andExpect(status().isOk())
+			.andExpect(forwardedUrl("/pages/index.jsp"))
+			.andExpect(model().attributeExists("signUpForm"));
 	}
 }
-
