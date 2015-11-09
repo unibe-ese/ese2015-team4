@@ -13,11 +13,11 @@ public class MultipartFileMocker {
 		return mockType(source, "image/jpeg");
 	}
 	public static MultipartFile mockEmpty(){
-		return new MockMultipartFile("file", new byte[]{});
+		return new MockMultipartFile("picture", new byte[]{});
 	}
 	public static MultipartFile mockType(String source, String type) throws IOException{
 		File file = new File(source);
 	    FileInputStream input = new FileInputStream(file);
-	    return new MockMultipartFile("file", file.getName(), type, IOUtils.toByteArray(input));
+	    return new MockMultipartFile("picture", file.getName(), type, IOUtils.toByteArray(input));
 	}
 }
