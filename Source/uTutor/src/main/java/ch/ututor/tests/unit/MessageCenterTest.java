@@ -21,7 +21,7 @@ import ch.ututor.controller.pojos.NewMessageForm;
 import ch.ututor.controller.service.AuthenticatedUserLoaderService;
 import ch.ututor.controller.service.MessageCenterService;
 import ch.ututor.controller.service.UserService;
-import ch.ututor.controller.exceptions.form.MessageNotFoundException;
+import ch.ututor.controller.exceptions.custom.MessageNotFoundException;
 import ch.ututor.model.Message;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.MessageDao;

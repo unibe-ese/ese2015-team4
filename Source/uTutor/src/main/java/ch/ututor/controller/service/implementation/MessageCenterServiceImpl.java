@@ -12,7 +12,7 @@ import ch.ututor.controller.service.UserService;
 import ch.ututor.model.Message;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.MessageDao;
-import ch.ututor.controller.exceptions.form.MessageNotFoundException;
+import ch.ututor.controller.exceptions.custom.MessageNotFoundException;
 
 @Service
 public class MessageCenterServiceImpl implements MessageCenterService{

@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.ututor.controller.exceptions.NoLecturesFoundException;
-import ch.ututor.controller.exceptions.form.InvalidPriceException;
-import ch.ututor.controller.exceptions.form.TutorLectureAlreadyExistsException;
+import ch.ututor.controller.exceptions.custom.InvalidPriceException;
+import ch.ututor.controller.exceptions.custom.NoLecturesFoundException;
+import ch.ututor.controller.exceptions.custom.TutorLectureAlreadyExistsException;
 import ch.ututor.controller.pojos.AddLectureForm;
 import ch.ututor.controller.pojos.BecomeTutorForm;
 import ch.ututor.controller.service.AuthenticatedUserLoaderService;

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ch.ututor.controller.exceptions.FormException;
+import ch.ututor.controller.exceptions.CustomException;
 import ch.ututor.controller.pojos.SignUpForm;
 import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.controller.service.SignupService;
@@ -42,10 +42,8 @@ public class SignUpController {
             try{
             	signupService.createUserAccount( signupForm );
             	model = new ModelAndView("redirect:/login?username="+signupForm.getEmail());
-            } catch (FormException e ){
+            } catch (CustomException e ){
             	model = exceptionService.addException( model, e.getMessage() );
-            } catch (Exception e){
-            	model = exceptionService.addException( model, "Unknown exception: " + e.getMessage() );
             }
         }
     	return model;

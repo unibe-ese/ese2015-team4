@@ -14,8 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 import ch.ututor.controller.pojos.NewMessageForm;
 import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.controller.service.MessageCenterService;
-import ch.ututor.controller.exceptions.UserNotFoundException;
-import ch.ututor.controller.exceptions.form.MessageNotFoundException;
+import ch.ututor.controller.exceptions.CustomException;
+import ch.ututor.controller.exceptions.custom.MessageNotFoundException;
+import ch.ututor.controller.exceptions.custom.UserNotFoundException;
 
 @Controller
 public class MessageCenterController {
@@ -81,7 +82,7 @@ public class MessageCenterController {
             ModelAndView model = new ModelAndView( "user/new-message" );
         	model.addObject( "newMessageForm" , messageCenterService.prefillNewMessageForm( receiverId ));
         	return model;
-        }catch( UserNotFoundException e ){
+        }catch( CustomException e ){
         	return exceptionService.addException( null, e.getMessage() );
         }
     }

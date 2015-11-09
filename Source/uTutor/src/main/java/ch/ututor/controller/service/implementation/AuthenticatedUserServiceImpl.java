@@ -5,8 +5,8 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import ch.ututor.controller.exceptions.form.PasswordNotCorrectException;
-import ch.ututor.controller.exceptions.form.PasswordRepetitionException;
+import ch.ututor.controller.exceptions.custom.PasswordNotCorrectException;
+import ch.ututor.controller.exceptions.custom.PasswordRepetitionException;
 import ch.ututor.controller.pojos.ProfileEditForm;
 import ch.ututor.controller.pojos.ChangePasswordForm;
 import ch.ututor.controller.service.AuthenticatedUserLoaderService;

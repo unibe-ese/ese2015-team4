@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.ututor.controller.exceptions.form.ProfilePictureException;
+import ch.ututor.controller.exceptions.custom.ProfilePictureException;
 import ch.ututor.controller.service.ProfilePictureService;
 import ch.ututor.model.User;
 

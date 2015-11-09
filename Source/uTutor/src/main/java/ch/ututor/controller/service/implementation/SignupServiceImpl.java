@@ -3,8 +3,8 @@ package ch.ututor.controller.service.implementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.ututor.controller.exceptions.form.PasswordRepetitionException;
-import ch.ututor.controller.exceptions.form.UserAlreadyExistsException;
+import ch.ututor.controller.exceptions.custom.PasswordRepetitionException;
+import ch.ututor.controller.exceptions.custom.UserAlreadyExistsException;
 import ch.ututor.controller.pojos.SignUpForm;
 import ch.ututor.controller.service.SignupService;
 import ch.ututor.model.User;

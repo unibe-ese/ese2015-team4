@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.ututor.controller.exceptions.NoLecturesFoundException;
-import ch.ututor.controller.exceptions.UserNotFoundException;
+import ch.ututor.controller.exceptions.CustomException;
+import ch.ututor.controller.exceptions.custom.NoLecturesFoundException;
+import ch.ututor.controller.exceptions.custom.UserNotFoundException;
 import ch.ututor.controller.service.AuthenticatedUserLoaderService;
 import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.controller.service.TutorService;
@@ -46,7 +47,7 @@ public class ProfileViewController {
     		model.addObject("ownProfile", false);
     		try{
     			user = userService.load(userId);
-    		}catch(UserNotFoundException e){
+    		}catch(CustomException e){
     			model = exceptionService.addException(null, e.getMessage() );
     		}
     	}
@@ -56,7 +57,7 @@ public class ProfileViewController {
     		if (user.getIsTutor()){
     			try{
     				model.addObject("lectures", tutorService.findLecturesByTutor(user));
-    			}catch(NoLecturesFoundException e){
+    			}catch(CustomException e){
     				model = exceptionService.addException( model, e.getMessage() );
     			}
     		}

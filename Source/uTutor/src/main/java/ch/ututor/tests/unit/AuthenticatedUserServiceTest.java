@@ -19,8 +19,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.multipart.MultipartFile;
 
-import ch.ututor.controller.exceptions.form.PasswordNotCorrectException;
-import ch.ututor.controller.exceptions.form.PasswordRepetitionException;
+import ch.ututor.controller.exceptions.custom.PasswordNotCorrectException;
+import ch.ututor.controller.exceptions.custom.PasswordRepetitionException;
 import ch.ututor.controller.pojos.ChangePasswordForm;
 import ch.ututor.controller.pojos.ProfileEditForm;
 import ch.ututor.controller.service.AuthenticatedUserLoaderService;

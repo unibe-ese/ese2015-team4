@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ch.ututor.controller.exceptions.FormException;
+import ch.ututor.controller.exceptions.CustomException;
 import ch.ututor.controller.pojos.AddLectureForm;
 import ch.ututor.controller.pojos.BecomeTutorForm;
 import ch.ututor.controller.service.AuthenticatedUserService;
@@ -61,7 +61,7 @@ public class TutorController {
 			try{
 				tutorService.becomeTutor( becomeTutorForm );
 				return new ModelAndView("redirect:/user/profile");
-			} catch ( FormException e ){
+			} catch ( CustomException e ){
 				model = exceptionService.addException( model, e.getMessage() );
 			}
         }
@@ -100,7 +100,7 @@ public class TutorController {
 			try{
 				tutorService.addTutorLecture( addLectureForm );
 				return new ModelAndView("redirect:/user/profile");
-			} catch ( FormException e ){
+			} catch ( CustomException e ){
 				model = exceptionService.addException( model, e.getMessage() );
 			}
 		}

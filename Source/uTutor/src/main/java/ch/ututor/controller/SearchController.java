@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.ututor.controller.exceptions.FormException;
+import ch.ututor.controller.exceptions.CustomException;
 import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.controller.service.SearchService;
 
@@ -32,7 +32,7 @@ public class SearchController {
     	
     	try{
     		model.addObject("results", searchService.searchByLecture(query));
-    	}catch(FormException e){
+    	}catch(CustomException e){
     		exceptionService.addException( model, e.getMessage() );
     	}
     	

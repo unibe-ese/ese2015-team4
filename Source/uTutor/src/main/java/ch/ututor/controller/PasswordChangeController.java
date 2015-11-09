@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ch.ututor.controller.exceptions.FormException;
+import ch.ututor.controller.exceptions.CustomException;
 import ch.ututor.controller.pojos.ChangePasswordForm;
 import ch.ututor.controller.service.AuthenticatedUserService;
 import ch.ututor.controller.service.ExceptionService;
@@ -40,7 +40,7 @@ public class PasswordChangeController {
             try{
             	authenticatedUserService.updatePassword( changePasswordForm );
             	return new ModelAndView("redirect:/user/profile");
-            } catch (FormException e ){
+            } catch (CustomException e ){
             	return exceptionService.addException( model, e.getMessage() );
             }
         }

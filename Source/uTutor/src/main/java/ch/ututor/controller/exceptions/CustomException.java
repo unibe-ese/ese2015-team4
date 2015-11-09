@@ -1,10 +1,10 @@
 package ch.ututor.controller.exceptions;
 
-public abstract class FormException extends RuntimeException {
+public abstract class CustomException extends RuntimeException {
 
 	private static final long serialVersionUID = 8582603042239368291L;
 
-	public FormException( String s ) {
+	public CustomException( String s ) {
         super( s );
     }
 }

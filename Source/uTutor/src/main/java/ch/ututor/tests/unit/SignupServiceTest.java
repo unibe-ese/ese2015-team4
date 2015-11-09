@@ -8,8 +8,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import ch.ututor.controller.exceptions.form.PasswordRepetitionException;
-import ch.ututor.controller.exceptions.form.UserAlreadyExistsException;
+import ch.ututor.controller.exceptions.custom.PasswordRepetitionException;
+import ch.ututor.controller.exceptions.custom.UserAlreadyExistsException;
 import ch.ututor.controller.pojos.SignUpForm;
 import ch.ututor.controller.service.SignupService;
 import ch.ututor.model.User;

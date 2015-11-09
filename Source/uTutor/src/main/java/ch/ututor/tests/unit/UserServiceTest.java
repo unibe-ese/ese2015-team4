@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ch.ututor.controller.exceptions.UserNotFoundException;
+import ch.ututor.controller.exceptions.custom.UserNotFoundException;
 import ch.ututor.controller.service.UserService;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
