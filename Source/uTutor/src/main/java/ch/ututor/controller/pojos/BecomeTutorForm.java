@@ -10,7 +10,6 @@ public class BecomeTutorForm extends AddLectureForm {
 	@Size(max = 8, message = "No more than 8 digits allowed!")
 	private String price;
 	
-	@Size(max = 1000, message = "No more than 1000 characters allowed!")
 	private String description;
 
 	public String getPrice() {

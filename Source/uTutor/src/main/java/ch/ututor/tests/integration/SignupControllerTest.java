@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import ch.ututor.model.User;
+import ch.ututor.model.dao.UserDao;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -31,10 +33,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SignupControllerTest {
 	
 	@Autowired private WebApplicationContext wac;
+	@Autowired private UserDao userDao;
+	
 	private MockMvc mockMvc;
+	private User user;
+	
+	private void dataSetupUser(){		
+		user = new User();
+		user.setFirstName("Lenny");
+		user.setLastName("Lenford");
+		user.setUsername("lenny.lenford@simpsons.com");
+		user = userDao.save(user);
+	}
 	
 	@Before
 	public void setup() {
+		userDao.deleteAll();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 	
@@ -81,11 +95,14 @@ public class SignupControllerTest {
 	
 	@Test
 	public void testUserAlreadyExistsException() throws Exception{
-		this.mockMvc
-			.perform(post("/signup")
-					.param("firstName", "Severus")
-					.param("lastName", "Snape")
-					.param("email", "test@user.ch"))
+		dataSetupUser();
+		this.mockMvc.perform(
+				post("/signup")
+					.param("firstName", "Lenny")
+					.param("lastName", "Lenford")
+					.param("email", "lenny.lenford@simpsons.com")
+					.param("password", "12345678")
+					.param("passwordRepeat", "12345678"))
 				.andExpect(status().isOk())
 				.andExpect(forwardedUrl("/pages/signup.jsp"))
 				.andExpect(model().attribute("exception_message", "There's already a user registered with this email address!"));

@@ -83,14 +83,6 @@
 			<version>1.0.0.GA</version>
 			<!-- <version>1.1.0.Final</version> funktioniert nicht -->
 		</dependency>
-		
-		<dependency>
-       		<groupId>org.slf4j</groupId>
-       		<artifactId>slf4j-log4j12</artifactId>
-       		<version>1.7.12</version>
-       		<scope>compile</scope>
-		</dependency>
-
 
 		<!-- slf4j -->
 		<dependency>

@@ -12,11 +12,9 @@ public class NewMessageForm {
 	private String receiverDisplayName;
 	
 	@NotBlank(message = "Please enter a subject!")
-	@Size(max = 50, message = "No more than 50 characters allowed!")
 	private String subject;
      
     @NotBlank(message = "Please enter a message body!")
-    @Size(max = 1000, message = "No more than 1000 characters allowed!")
     private String message;
  
     public String getSubject() {

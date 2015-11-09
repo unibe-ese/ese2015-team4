@@ -8,19 +8,16 @@ import org.hibernate.validator.constraints.NotBlank;
 public class SignUpForm {
 	
 	@NotBlank(message = "Please enter your first name!")
-	@Size(max = 30, message = "No more than 30 characters allowed!")
 	private String firstName;
 	
 	@NotBlank(message = "Please enter your last name!")
-	@Size(max = 30, message = "No more than 30 characters allowed!")
 	private String lastName;
 	
 	@Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", 
 	    message = "Please enter valid email!")
-	@Size(max = 25, message = "No more than 25 characters allowed!")
 	private String email;
 	
-	@Size(min = 8, max = 30, message = "Your password should contain between 8 and 30 characters!")
+	@Size(min = 8, message = "Your password should contain between 8 and 30 characters!")
 	private String password;
 	
 	private String passwordRepeat;

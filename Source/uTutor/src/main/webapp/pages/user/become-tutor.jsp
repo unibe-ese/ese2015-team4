@@ -7,16 +7,8 @@
 		
 		<%@include file="../includes/exception.jsp"%>
 		
-		<c:choose>
-			<c:when test="${empty becomeTutorForm.description}">
-				<form:textarea path="description" id="field-description" placeholder="Describe yourself here..." maxlength="1000"></form:textarea>
-				<form:errors path="description" element="div" class="error"/>
-			</c:when>
-			<c:otherwise>
-				<form:textarea path="description" id="field-description" maxlength="1000"></form:textarea>
-				<form:errors path="description" element="div" class="error"/>
-			</c:otherwise>
-		</c:choose>
+		<form:textarea path="description" id="field-description" placeholder="Describe yourself here..."></form:textarea>
+		<form:errors path="description" element="div" class="error"/>
 				
 		<label>
 			<form:input path="price" id="field-price" placeholder="Price per hour"/>
