@@ -1,5 +1,5 @@
 <!-- BEGIN SIGNUP FORM -->
-<form:form method="post" class="form-box" modelAttribute="signUpForm" action="signup" id="signUpForm" autocomplete="off">
+<form:form method="post" class="form-box" modelAttribute="signUpForm" action="/ututor/signup" id="signUpForm" autocomplete="off">
 	<h1>Sign up</h1>
 	<c:if test="${exception_message != null}">
 		<div class="exception">

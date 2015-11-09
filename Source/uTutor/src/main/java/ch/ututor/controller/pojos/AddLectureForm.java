@@ -1,7 +1,5 @@
 package ch.ututor.controller.pojos;
 
-import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class AddLectureForm {

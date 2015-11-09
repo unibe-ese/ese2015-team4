@@ -6,8 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,11 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import ch.ututor.model.Lecture;
-import ch.ututor.model.Message;
 import ch.ututor.model.TutorLecture;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.LectureDao;
-import ch.ututor.model.dao.MessageDao;
 import ch.ututor.model.dao.TutorLectureDao;
 import ch.ututor.model.dao.UserDao;
 
@@ -99,7 +96,7 @@ public class TutorControllerTest {
 	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
 	public void testTutorGetsBecomeTutorForm() throws Exception{
 		user.setDescription("Hi I'm Hermione");
-		user.setPrice(Float.parseFloat("50"));
+		user.setPrice(99.9F);
 		user = userDao.save(user);
 		
 		this.mockMvc
@@ -107,8 +104,8 @@ public class TutorControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(forwardedUrl("/pages/user/become-tutor.jsp"))
 			.andExpect(model().attributeExists("becomeTutorForm"))
-			.andExpect(model().attribute("description", "Hi I'm Hermione"))
-			.andExpect(model().attribute("price", 50));
+			.andExpect(model().attribute("becomeTutorForm", hasProperty("description", is("Hi I'm Hermione"))))
+			.andExpect(model().attribute("becomeTutorForm", hasProperty("price", is("99.9"))));
 	}
 	
 	@Test

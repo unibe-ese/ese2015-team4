@@ -53,7 +53,7 @@ public class ProfileViewControllerTest {
 		user.setPrice(19.95F);
 		user.setDescription("Safety operations supervisor from the sector 7G of the Springfield Nuclear Power Plant");
 		user.setIsTutor(true);
-		user = userDao.save(otherUser);
+		user = userDao.save(user);
 		
 		lectureDao.deleteAll();
 		tutorLectureDao.deleteAll();
@@ -65,7 +65,7 @@ public class ProfileViewControllerTest {
 		tutorLecture = new TutorLecture();
 		tutorLecture.setGrade(1);
 		tutorLecture.setLecture(lecture);
-		tutorLecture.setTutor(otherUser);
+		tutorLecture.setTutor(user);
 		tutorLecture = tutorLectureDao.save(tutorLecture);
 	}
 	

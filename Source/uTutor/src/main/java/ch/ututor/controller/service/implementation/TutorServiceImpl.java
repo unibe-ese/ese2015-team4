@@ -190,7 +190,9 @@ public class TutorServiceImpl implements TutorService {
 		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		
 		becomeTutorForm.setDescription( user.getDescription() );		
-		becomeTutorForm.setPrice( Float.toString( user.getPrice() ) );
+		if(user.getPrice()>0){
+			becomeTutorForm.setPrice( Float.toString( user.getPrice() ) );
+		}
 		return becomeTutorForm;		
 	}
 	

@@ -20,7 +20,7 @@ public class TutorLecture {
 	private Lecture lecture;
 	
 	@NotNull
-	private Float grade;
+	private Float grade = 0F;
 	
 	public Long getId() {
 		return id;

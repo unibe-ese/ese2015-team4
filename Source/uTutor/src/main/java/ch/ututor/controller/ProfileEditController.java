@@ -61,7 +61,7 @@ public class ProfileEditController {
             }
         }
     	
-    	model.addObject( "isTutor", user.getIsTutor() );
+    	model.addObject("isTutor", user.getIsTutor());
     	return model;
     } 
 }

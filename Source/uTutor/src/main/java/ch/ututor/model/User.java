@@ -27,7 +27,7 @@ public class User{
 	@Column(length=1048)
 	private String description;	
 	
-	private Float price;
+	private Float price = 0F;
 	
 	public Long getId(){
 		return id;
