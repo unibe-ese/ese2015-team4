@@ -3,6 +3,7 @@ package ch.ututor.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Lecture {
@@ -11,6 +12,7 @@ public class Lecture {
 	@GeneratedValue
 	private Long id;
 	
+	@NotNull
 	private String name;
 
 	public Long getId(){

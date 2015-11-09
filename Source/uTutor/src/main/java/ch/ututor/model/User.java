@@ -22,12 +22,12 @@ public class User{
 	@Column(length=512000)
 	private byte[] profilePic;
 
-	private boolean isTutor;
+	private boolean isTutor = false;
 	
 	@Column(length=1048)
 	private String description;	
 	
-	private float price;
+	private Float price;
 	
 	public Long getId(){
 		return id;
