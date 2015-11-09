@@ -6,8 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.hasProperty;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +23,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import ch.ututor.model.Message;
 import ch.ututor.model.User;
-import ch.ututor.model.dao.MessageDao;
 import ch.ututor.model.dao.UserDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -45,13 +42,27 @@ public class PasswordChangeControllerTest {
 	UserDao userDao;
 	private MockMvc mockMvc;
 	
+	private User user;
+	
+	private void dataSetup(){
+		userDao.deleteAll();
+		
+		user = new User();
+		user.setFirstName("Lenny");
+		user.setLastName("Lenford");
+		user.setUsername("lenny.lenford@simpsons.com");
+		user.setPassword("springfield");
+		user = userDao.save(user);
+	}
+	
 	@Before
 	public void setup() {
+		dataSetup();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 	
 	@Test
-	@WithMockUser(username="test@user.ch", roles={"USER"})
+	@WithMockUser(username="lenny.lenford@simpsons.com", roles={"USER"})
 	public void testChangePasswordPage() throws Exception{
 		
 		this.mockMvc.perform(get("/user/password"))
@@ -61,19 +72,19 @@ public class PasswordChangeControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username="test@user.ch", roles = {"USER"})
+	@WithMockUser(username="lenny.lenford@simpsons.com", roles={"USER"})
 	public void testValidChangePassword() throws Exception{
 		
 		this.mockMvc.perform(post("/user/password")
-					.param("oldPassword", "testuser")
-					.param("newPassword", "usertest")
-					.param("newPasswordRepeat", "usertest"))
+					.param("oldPassword", "springfield")
+					.param("newPassword", "KrustyTheClown")
+					.param("newPasswordRepeat", "KrustyTheClown"))
 				.andExpect(status().isFound())
 				.andExpect(redirectedUrl("/user/profile"));
 	}
-	
+
 	@Test
-	@WithMockUser(username="test@user.ch", roles={"USER"})
+	@WithMockUser(username="lenny.lenford@simpsons.com", roles={"USER"})
 	public void testInvalidChangePasswordForm() throws Exception{
 		
 		this.mockMvc
@@ -87,7 +98,7 @@ public class PasswordChangeControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username="test@user.ch", roles={"USER"})
+	@WithMockUser(username="lenny.lenford@simpsons.com", roles={"USER"})
 	public void testPasswordNotCorrectException() throws Exception{
 		
 		this.mockMvc
@@ -99,14 +110,14 @@ public class PasswordChangeControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username="test@user.ch", roles={"USER"})
+	@WithMockUser(username="lenny.lenford@simpsons.com", roles={"USER"})
 	public void testPasswordRepetitionException() throws Exception{
 		
 		this.mockMvc
 			.perform(post("/user/password")
-					.param("oldPassword", "testuser")
-					.param("newPassword", "usertest")
-					.param("newPasswordRepeat", "not the same again"))
+					.param("oldPassword", "springfield")
+					.param("newPassword", "KrustyTheClown")
+					.param("newPasswordRepeat", "KrustyClown"))
 				.andExpect(status().isOk())
 				.andExpect(forwardedUrl("/pages/user/change-password.jsp"))
 				.andExpect(model().attribute("exception_message", "The password repetition did not match."));

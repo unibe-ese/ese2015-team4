@@ -6,11 +6,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.hasProperty;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.Rollback;
@@ -168,6 +165,16 @@ public class MessageCenterControllerTest {
 				.andExpect(model().attributeExists("exception_message"))
 				.andExpect(
 						model().attribute("exception_message", "User not found."));
+	}
+	
+	@Test
+	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	public void testReplyMessageView() throws Exception {
+		this.mockMvc
+				.perform(get("/user/messagecenter/reply?replyToMessageId="+message.getId()))
+				.andExpect(status().isOk())
+				.andExpect(forwardedUrl("/pages/user/new-message.jsp"))
+				.andExpect(model().attributeDoesNotExist("exception_message"));
 	}
 
 	@Test
