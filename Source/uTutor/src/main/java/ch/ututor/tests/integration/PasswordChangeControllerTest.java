@@ -37,31 +37,16 @@ public class PasswordChangeControllerTest {
 	
 	@Autowired
 	private WebApplicationContext wac;
-	@Autowired
-	UserDao userDao;
+	
 	private MockMvc mockMvc;
-	
-	private User user;
-	
-	private void dataSetup(){
-		userDao.deleteAll();
-		
-		user = new User();
-		user.setFirstName("Lenny");
-		user.setLastName("Lenford");
-		user.setUsername("lenny.lenford@simpsons.com");
-		user.setPassword("springfield");
-		user = userDao.save(user);
-	}
 	
 	@Before
 	public void setup() {
-		dataSetup();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 	
 	@Test
-	@WithMockUser(username="lenny.lenford@simpsons.com", roles={"USER"})
+	@WithMockUser(username="fred.weasley@hogwarts.com", roles={"USER"})
 	public void testChangePasswordPage() throws Exception{
 		
 		this.mockMvc.perform(get("/user/password"))
@@ -71,19 +56,19 @@ public class PasswordChangeControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username="lenny.lenford@simpsons.com", roles={"USER"})
+	@WithMockUser(username="fred.weasley@hogwarts.com", roles={"USER"})
 	public void testValidChangePassword() throws Exception{
 		
 		this.mockMvc.perform(post("/user/password")
-					.param("oldPassword", "springfield")
-					.param("newPassword", "KrustyTheClown")
-					.param("newPasswordRepeat", "KrustyTheClown"))
+					.param("oldPassword", "maraudersmap")
+					.param("newPassword", "MyNewPassword")
+					.param("newPasswordRepeat", "MyNewPassword"))
 				.andExpect(status().isFound())
 				.andExpect(redirectedUrl("/user/profile"));
 	}
 
 	@Test
-	@WithMockUser(username="lenny.lenford@simpsons.com", roles={"USER"})
+	@WithMockUser(username="fred.weasley@hogwarts.com", roles={"USER"})
 	public void testInvalidChangePasswordForm() throws Exception{
 		
 		this.mockMvc
@@ -97,7 +82,7 @@ public class PasswordChangeControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username="lenny.lenford@simpsons.com", roles={"USER"})
+	@WithMockUser(username="fred.weasley@hogwarts.com", roles={"USER"})
 	public void testPasswordNotCorrectException() throws Exception{
 		
 		this.mockMvc
@@ -109,14 +94,14 @@ public class PasswordChangeControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username="lenny.lenford@simpsons.com", roles={"USER"})
+	@WithMockUser(username="fred.weasley@hogwarts.com", roles={"USER"})
 	public void testPasswordRepetitionException() throws Exception{
 		
 		this.mockMvc
 			.perform(post("/user/password")
-					.param("oldPassword", "springfield")
-					.param("newPassword", "KrustyTheClown")
-					.param("newPasswordRepeat", "KrustyClown"))
+					.param("oldPassword", "maraudersmap")
+					.param("newPassword", "MyNewPassword")
+					.param("newPasswordRepeat", "MyNewPass"))
 				.andExpect(status().isOk())
 				.andExpect(forwardedUrl("/pages/user/change-password.jsp"))
 				.andExpect(model().attribute("exception_message", "The password repetition did not match."));

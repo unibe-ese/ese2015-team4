@@ -36,42 +36,20 @@ public class ProfilePictureViewControllerTest {
 	@Autowired
 	private WebApplicationContext wac;
 	@Autowired
-	UserDao userDao;
+	private UserDao userDao;
 	
 	private MockMvc mockMvc;
-	private User user;
-	
-	private void dataSetup(){
-		userDao.deleteAll();
-		
-		user = new User();
-		user.setFirstName("Lenny");
-		user.setLastName("Lenford");
-		user.setUsername("lenny.lenford@simpsons.com");
-		user = userDao.save(user);
-	}
 	
 	@Before
 	public void setup() {
-		dataSetup();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 	
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
-	public void testProfilePictureViewDefaultAvatar() throws Exception {
-		MultipartFile multipartFile = MultipartFileMocker.mockJpeg("src/main/webapp/img/default_avatar.jpg");
-		this.mockMvc.perform(get("/img/user.jpg?userId="+user.getId()))
-				.andExpect(status().isOk())
-				.andExpect(content().bytes(multipartFile.getBytes()));
-	}
-	
-	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "ginevra.weasley@hogwarts.com", roles = { "USER" })
 	public void testProfilePictureViewCustomAvatar() throws Exception {
-		MultipartFile multipartFile = MultipartFileMocker.mockJpeg("src/main/webapp/WEB-INF/test/images/350x100.jpg");
-		user.setProfilePic(multipartFile.getBytes());
-		userDao.save(user);
+		User user = userDao.findByUsername("ginevra.weasley@hogwarts.com");
+		MultipartFile multipartFile = MultipartFileMocker.mockJpeg("src/main/webapp/WEB-INF/data/img/Ginny_Weasley.jpg");
 		this.mockMvc.perform(get("/img/user.jpg?userId="+user.getId()))
 				.andExpect(status().isOk())
 				.andExpect(content().bytes(multipartFile.getBytes()));

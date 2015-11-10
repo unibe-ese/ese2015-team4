@@ -71,7 +71,6 @@ public class TutorServiceTest {
 		tutorService.becomeTutor(becomeTutorForm);
 		
 		assertTrue(authenticatedUser.getIsTutor());
-		assertEquals(becomeTutorForm.getDescription(), authenticatedUser.getDescription());
 		assertEquals(Float.parseFloat(becomeTutorForm.getPrice()), authenticatedUser.getPrice(), 0.0f);
 		assertTrue(tutorService.hasLectures(authenticatedUser));
 		assertEquals(1, tutorService.findLecturesByTutor(authenticatedUser).size());

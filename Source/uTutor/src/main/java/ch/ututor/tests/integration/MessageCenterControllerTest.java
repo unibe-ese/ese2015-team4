@@ -48,26 +48,15 @@ public class MessageCenterControllerTest {
 	private User sender;
 	private User receiver;
 
-	private void dataSetup(){
-		userDao.deleteAll();
-		messageDao.deleteAll();
+	private void dataSetup(){		
+		sender = userDao.findByUsername("fred.weasley@hogwarts.com");
 		
-		sender = new User();
-		sender.setFirstName("Lenny");
-		sender.setLastName("Lenford");
-		sender.setUsername("lenny.lenford@simpsons.com");
-		sender = userDao.save(sender);
-		
-		receiver = new User();
-		receiver.setFirstName("Carl");
-		receiver.setLastName("Carlson");
-		receiver.setUsername("carl.carlson@simpsons.com");
-		receiver = userDao.save(receiver);
+		receiver = userDao.findByUsername("ginevra.weasley@hogwarts.com");
 		
 		message = new Message();
 		message.setSender(sender);
 		message.setReceiver(receiver);
-		message.setSubject("Hello Carl");
+		message.setSubject("Hello Ginny");
 		message.setMessage("How are you?");
 		message = messageDao.save(message);
 	}
@@ -79,7 +68,7 @@ public class MessageCenterControllerTest {
 	}
 
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
 	public void testValidMessageCenter() throws Exception {
 		this.mockMvc.perform(get("/user/messagecenter"))
 				.andExpect(status().isOk())
@@ -88,7 +77,7 @@ public class MessageCenterControllerTest {
 	}
 
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
 	public void testValidOutboxMessageCenter() throws Exception {
 
 		this.mockMvc.perform(get("/user/messagecenter?view=outbox"))
@@ -98,7 +87,7 @@ public class MessageCenterControllerTest {
 	}
 
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
 	public void testValidTrashMessageCenter() throws Exception {
 
 		this.mockMvc.perform(get("/user/messagecenter?view=trash"))
@@ -108,7 +97,7 @@ public class MessageCenterControllerTest {
 	}
 
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
 	public void testDeleteMessageStandardRedirect() throws Exception {
 
 		this.mockMvc
@@ -121,7 +110,7 @@ public class MessageCenterControllerTest {
 	}
 
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
 	public void testDeleteMessageRedirectToOutbox() throws Exception {
 
 		this.mockMvc
@@ -134,7 +123,7 @@ public class MessageCenterControllerTest {
 		}
 
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
 	public void testDeleteMessageRedirectToTrash() throws Exception {
 		this.mockMvc
 				.perform(
@@ -146,7 +135,7 @@ public class MessageCenterControllerTest {
 	}
 
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
 	public void testValidNewMessage() throws Exception {
 		this.mockMvc
 				.perform(
@@ -157,7 +146,7 @@ public class MessageCenterControllerTest {
 	}
 
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
 	public void testNewMessageUserNotFoundException() throws Exception {
 		this.mockMvc
 				.perform(get("/user/messagecenter/new?receiverId=-1"))
@@ -168,7 +157,7 @@ public class MessageCenterControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
 	public void testReplyMessageView() throws Exception {
 		this.mockMvc
 				.perform(get("/user/messagecenter/reply?replyToMessageId="+message.getId()))
@@ -178,7 +167,7 @@ public class MessageCenterControllerTest {
 	}
 
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
 	public void testReplyMessageMessageNotFoundException() throws Exception {
 		this.mockMvc
 				.perform(get("/user/messagecenter/reply?replyToMessageId=-1"))
@@ -188,7 +177,7 @@ public class MessageCenterControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
 	public void testValidSendNewMessage() throws Exception{
 		this.mockMvc
 			.perform(post("/user/messagecenter/new")
@@ -200,7 +189,7 @@ public class MessageCenterControllerTest {
 	}
 
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
 	public void testValidReplyToMessage() throws Exception{
 		this.mockMvc
 			.perform(post("/user/messagecenter/reply")
@@ -212,7 +201,7 @@ public class MessageCenterControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
 	public void testInvalidNewMessageForm() throws Exception{	
 		this.mockMvc
 			.perform(post("/user/messagecenter/new")
@@ -226,7 +215,7 @@ public class MessageCenterControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
 	public void testInvalidReplyMessageForm() throws Exception{
 		this.mockMvc
 			.perform(post("/user/messagecenter/reply")
@@ -240,7 +229,7 @@ public class MessageCenterControllerTest {
 	}
 
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
 	public void testSendMessageUserNotFoundException() throws Exception{
 		this.mockMvc
 			.perform(post("/user/messagecenter/new")

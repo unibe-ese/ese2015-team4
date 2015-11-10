@@ -10,6 +10,7 @@ public class ProfileEditForm {
 	@NotBlank( message = "Please enter your last name!" )
 	private String lastName;
 
+	@NotBlank( message = "Please enter your description!" )
 	private String description;
 	
 	public String getFirstName() {

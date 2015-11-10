@@ -35,34 +35,23 @@ public class ProfilePictureEditControllerTest {
 	@Autowired
 	private WebApplicationContext wac;
 	@Autowired
-	UserDao userDao;
+	private UserDao userDao;
 	
 	private MockMvc mockMvc;
-	private User user;
-	
-	private void dataSetup(){
-		userDao.deleteAll();
-		
-		user = new User();
-		user.setFirstName("Lenny");
-		user.setLastName("Lenford");
-		user.setUsername("lenny.lenford@simpsons.com");
-		user = userDao.save(user);
-	}
 	
 	@Before
 	public void setup() {
-		dataSetup();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
-	@WithMockUser(username = "lenny.lenford@simpsons.com", roles = { "USER" })
+	@WithMockUser(username = "ginevra.weasley@hogwarts.com", roles = { "USER" })
 	public void testValidProfilePictureEdit() throws Exception {
+		User user = userDao.findByUsername("ginevra.weasley@hogwarts.com");
 		this.mockMvc.perform(get("/user/profile/picture"))
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("userId", user.getId()))
-				.andExpect(model().attribute("hasProfilePic", false))
+				.andExpect(model().attribute("hasProfilePic", true))
 				.andExpect(forwardedUrl("/pages/user/profile-picture.jsp"));
 	}
 }

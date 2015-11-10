@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.ututor.controller.pojos.NewMessageForm;
+import ch.ututor.controller.service.AuthenticatedUserLoaderService;
 import ch.ututor.controller.service.ExceptionService;
 import ch.ututor.controller.service.MessageCenterService;
 import ch.ututor.controller.exceptions.CustomException;
@@ -22,6 +23,7 @@ import ch.ututor.controller.exceptions.custom.UserNotFoundException;
 public class MessageCenterController {
 	@Autowired private MessageCenterService messageCenterService;
 	@Autowired private ExceptionService exceptionService;
+	@Autowired private AuthenticatedUserLoaderService authenticatedUserLoaderService;
 	
 	/**
 	 * Adds the messages corresponding to the view parameter.
@@ -38,6 +40,7 @@ public class MessageCenterController {
 		view = messageCenterService.normalizeView( view );
         ModelAndView model = new ModelAndView( "user/messagecenter" );
         model.addObject( "messageList", messageCenterService.getMessagesByView( view ) );
+        model.addObject( "userId", authenticatedUserLoaderService.getAuthenticatedUser().getId());
         return model;
     }
 	

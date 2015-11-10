@@ -17,10 +17,15 @@
 	    	<form:errors path="lastName" element="div" class="error"/>
 		</label>
 		
-		<c:if test="${ isTutor == true }">
-			<form:textarea path="description" id="field-description" placeholder="Describe yourself here..." maxlength="1000"></form:textarea>
-			<form:errors path="description" element="div" class="error"/>
-		</c:if>
+		<c:choose>
+			<c:when test="${ isTutor == true }">
+				<form:textarea path="description" id="field-description" placeholder="Describe yourself here..." maxlength="1000"></form:textarea>
+				<form:errors path="description" element="div" class="error"/>
+			</c:when>
+			<c:otherwise>
+				<form:textarea path="description" id="field-description" value="-" type="hidden"></form:textarea>
+			</c:otherwise>
+		</c:choose>
 		
 		<label>
 			<input type="submit" value="Save" />

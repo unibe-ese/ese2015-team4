@@ -7,6 +7,7 @@ public class BecomeTutorForm extends AddLectureForm {
 	@NotBlank( message = "Please enter a valid price!" )
 	private String price;
 	
+	@NotBlank( message = "Please enter a description!" )
 	private String description;
 
 	public String getPrice() {

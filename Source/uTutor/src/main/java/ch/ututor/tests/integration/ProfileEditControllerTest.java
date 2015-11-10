@@ -39,58 +39,17 @@ public class ProfileEditControllerTest {
 	
 	@Autowired
 	private WebApplicationContext wac;
-	@Autowired
-	UserDao userDao;
-	@Autowired
-	LectureDao lectureDao;
-	@Autowired
-	TutorLectureDao tutorLectureDao;
 	
 	private MockMvc mockMvc;
-	private User user;
-	
-	private TutorLecture tutorLecture;
-	
-	private void dataSetupTutor(User user){
-		user.setPrice(19.95F);
-		user.setDescription("Safety operations supervisor from the sector 7G of the Springfield Nuclear Power Plant");
-		user.setIsTutor(true);
-		user = userDao.save(user);
-		
-		lectureDao.deleteAll();
-		tutorLectureDao.deleteAll();
-	
-		Lecture lecture = new Lecture();
-		lecture.setName("Safety in nuclear power plants");
-		lecture = lectureDao.save(lecture);
-		
-		tutorLecture = new TutorLecture();
-		tutorLecture.setGrade(1);
-		tutorLecture.setLecture(lecture);
-		tutorLecture.setTutor(user);
-		tutorLecture = tutorLectureDao.save(tutorLecture);
-	}
-
-	private void dataSetup() {
-		userDao.deleteAll();
-		
-		user = new User();
-		user.setFirstName("Carl");
-		user.setLastName("Carlsson");
-		user.setUsername("carl@carlsson.com");
-		user = userDao.save(user);
-		
-	}
 	
 	@Before
 	public void setup() {
-		dataSetup();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 	
 	@Test
-	@WithMockUser (username="carl@carlsson.com", roles = {"USER"})
-	public void testDisplayProfileEditForm() throws Exception{
+	@WithMockUser (username="ginevra.weasley@hogwarts.com", roles = {"USER"})
+	public void testDisplayProfileEditFormStudent() throws Exception{
 		
 		this.mockMvc
 			.perform(get("/user/profile/edit"))
@@ -99,29 +58,26 @@ public class ProfileEditControllerTest {
 			.andExpect(model().attributeExists("profileEditForm"))
 			.andExpect(model().attribute("isTutor", false));
 	}
-	
+
 	@Test
-	@WithMockUser (username="carl@carlsson.com", roles = {"USER"})
+	@WithMockUser (username="percy.weasley@hogwarts.com", roles = {"USER"})
 	public void testDisplayProfileEditFormToTutor() throws Exception{
-		dataSetupTutor(user);
-		
 		this.mockMvc
 			.perform(get("/user/profile/edit"))
 			.andExpect(status().isOk())
 			.andExpect(forwardedUrl("/pages/user/profile-edit.jsp"))
 			.andExpect(model().attribute("isTutor", true))
-			.andExpect(model().attribute("profileEditForm", hasProperty("description", is("Safety operations supervisor from the sector 7G of the Springfield Nuclear Power Plant"))));
+			.andExpect(model().attribute("profileEditForm", hasProperty("description", is("Percy Ignatius Weasley (b. 22 August, 1976) was a pure-bloodwizard, the third child of Arthur and Molly Weasley (née Prewett)."))));
 	}
 	
 	@Test
-	@WithMockUser (username="carl@carlsson.com", roles = {"USER"})
-	public void testValidProfileEditForm() throws Exception{
-		
+	@WithMockUser (username="ginevra.weasley@hogwarts.com", roles = {"USER"})
+	public void testValidProfileEditFormStudent() throws Exception{
 		this.mockMvc
 			.perform(post("/user/profile/edit")
 					.param("firstName", "Tony")
 					.param("lastName", "Weak")
-					.param("description", "Hi I'm Tony"))
+					.param("description", "-"))
 				.andExpect(status().isFound())
 				.andExpect(redirectedUrl("/user/profile?isTutor=false"))
 				.andExpect(model().attribute("isTutor", "false"));
@@ -129,10 +85,8 @@ public class ProfileEditControllerTest {
 	}
 
 	@Test
-	@WithMockUser (username="carl@carlsson.com", roles = {"USER"})
+	@WithMockUser (username="percy.weasley@hogwarts.com", roles = {"USER"})
 	public void testValidProfileEditFormTutor() throws Exception{
-		dataSetupTutor(user);
-		
 		this.mockMvc
 		.perform(post("/user/profile/edit")
 				.param("firstName", "Tony")
@@ -145,9 +99,21 @@ public class ProfileEditControllerTest {
 
 	
 	@Test
-	@WithMockUser (username="carl@carlsson.com", roles = {"USER"})
-	public void testInvalidProfileEditForm() throws Exception{
-		
+	@WithMockUser (username="ginevra.weasley@hogwarts.com", roles = {"USER"})
+	public void testInvalidProfileEditFormStudent() throws Exception{		
+		this.mockMvc
+			.perform(post("/user/profile/edit")
+					.param("firstName", "")
+					.param("lastName", ""))
+				.andExpect(status().isOk())
+				.andExpect(forwardedUrl("/pages/user/profile-edit.jsp"))
+				.andExpect(model().attribute("isTutor", false))
+				.andExpect(model().attributeHasFieldErrors("profileEditForm", "firstName", "lastName"));
+	}
+	
+	@Test
+	@WithMockUser (username="percy.weasley@hogwarts.com", roles = {"USER"})
+	public void testInvalidProfileEditFormTutor() throws Exception{		
 		this.mockMvc
 			.perform(post("/user/profile/edit")
 					.param("firstName", "")
@@ -155,7 +121,7 @@ public class ProfileEditControllerTest {
 					.param("description", ""))
 				.andExpect(status().isOk())
 				.andExpect(forwardedUrl("/pages/user/profile-edit.jsp"))
-				.andExpect(model().attribute("isTutor", false));
-			
+				.andExpect(model().attribute("isTutor", true))
+				.andExpect(model().attributeHasFieldErrors("profileEditForm", "firstName", "lastName", "description"));
 	}
 }

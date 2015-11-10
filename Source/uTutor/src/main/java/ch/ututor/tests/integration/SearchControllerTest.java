@@ -38,47 +38,8 @@ public class SearchControllerTest {
 	
 	@Autowired
 	private WebApplicationContext wac;
-	@Autowired
-	UserDao userDao;
-	@Autowired
-	LectureDao lectureDao;
-	@Autowired
-	TutorLectureDao tutorLectureDao;
 	
 	private MockMvc mockMvc;
-	private User user;
-	private TutorLecture tutorLecture;
-	
-	private void dataSetupTutor(User user){
-		user.setPrice(19.95F);
-		user.setDescription("Safety operations supervisor from the sector 7G of the Springfield Nuclear Power Plant");
-		user.setIsTutor(true);
-		user = userDao.save(user);
-		
-		lectureDao.deleteAll();
-		tutorLectureDao.deleteAll();
-	
-		Lecture lecture = new Lecture();
-		lecture.setName("Safety in nuclear power plants");
-		lecture = lectureDao.save(lecture);
-		
-		tutorLecture = new TutorLecture();
-		tutorLecture.setGrade(1);
-		tutorLecture.setLecture(lecture);
-		tutorLecture.setTutor(user);
-		tutorLecture = tutorLectureDao.save(tutorLecture);
-	}
-
-	private void dataSetup() {
-		userDao.deleteAll();
-		
-		user = new User();
-		user.setFirstName("Carl");
-		user.setLastName("Carlsson");
-		user.setUsername("carl@carlsson.com");
-		user = userDao.save(user);
-		
-	}
 	
 	@Before
 	public void setup() {
@@ -97,10 +58,8 @@ public class SearchControllerTest {
 	
 	@Test
 	public void testLecturesFound() throws Exception{
-		dataSetup();
-		dataSetupTutor(user);
 		this.mockMvc
-		.perform(get("/search?query=nuclear"))
+		.perform(get("/search?query=transfiguration"))
 		.andExpect(status().isOk())
 		.andExpect(forwardedUrl("/pages/search.jsp"))
 		.andExpect(model().attributeExists("results"));

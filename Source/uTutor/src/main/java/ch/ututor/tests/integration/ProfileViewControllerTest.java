@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,64 +42,20 @@ import ch.ututor.model.dao.UserDao;
 
 public class ProfileViewControllerTest {
 	@Autowired private WebApplicationContext wac;
-	@Autowired UserDao userDao;
-	@Autowired LectureDao lectureDao;
-	@Autowired TutorLectureDao tutorLectureDao;
+	@Autowired private UserDao userDao;
+	@Autowired private TutorLectureDao tutorLectureDao;
 	
 	private MockMvc mockMvc;
-	private User user;
-	private User otherUser;
-	private TutorLecture tutorLecture;
-	
-	private void dataSetupTutor(User user){
-		user.setPrice(19.95F);
-		user.setDescription("Safety operations supervisor from the sector 7G of the Springfield Nuclear Power Plant");
-		user.setIsTutor(true);
-		user = userDao.save(user);
-		
-		lectureDao.deleteAll();
-		tutorLectureDao.deleteAll();
-	
-		Lecture lecture = new Lecture();
-		lecture.setName("Safety in nuclear power plants");
-		lecture = lectureDao.save(lecture);
-		
-		tutorLecture = new TutorLecture();
-		tutorLecture.setGrade(1);
-		tutorLecture.setLecture(lecture);
-		tutorLecture.setTutor(user);
-		tutorLecture = tutorLectureDao.save(tutorLecture);
-	}
-	
-	private void dataSetup(){
-		userDao.deleteAll();
-		
-		user = new User();
-		user.setFirstName("Lenny");
-		user.setLastName("Lenford");
-		user.setUsername("lenny.lenford@simpsons.com");
-		user.setPassword("springfield");
-		user = userDao.save(user);
-		
-		otherUser = new User();
-		otherUser.setFirstName("Carl");
-		otherUser.setLastName("Carlson");
-		otherUser.setUsername("carl.carlson@simpsons.com");
-		otherUser.setPrice(19.95F);
-		otherUser.setDescription("Safety operations supervisor from the sector 7G of the Springfield Nuclear Power Plant");
-		otherUser.setIsTutor(true);
-		otherUser = userDao.save(otherUser);
-	}
 	
 	@Before
 	public void setup() {
-		dataSetup();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 	
 	@Test
-	@WithMockUser(username="lenny.lenford@simpsons.com",roles={"USER"})
+	@WithMockUser(username="ginevra.weasley@hogwarts.com",roles={"USER"})
 	public void testProfileViewOwn() throws Exception{
+		User user = userDao.findByUsername("ginevra.weasley@hogwarts.com");
 		this.mockMvc.perform(get("/user/profile"))		
 					.andExpect(status().isOk())
 					.andExpect(forwardedUrl("/pages/user/profile.jsp"))
@@ -106,8 +64,9 @@ public class ProfileViewControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username="lenny.lenford@simpsons.com",roles={"USER"})
+	@WithMockUser(username="percy.weasley@hogwarts.com",roles={"USER"})
 	public void testProfileViewOtherUserNotTutor() throws Exception{
+		User otherUser = userDao.findByUsername("ginevra.weasley@hogwarts.com");
 		this.mockMvc.perform(get("/user/profile?userId="+otherUser.getId()))		
 					.andExpect(status().isOk())
 					.andExpect(forwardedUrl("/pages/user/profile.jsp"))
@@ -117,18 +76,18 @@ public class ProfileViewControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username="lenny.lenford@simpsons.com",roles={"USER"})
+	@WithMockUser(username="ginevra.weasley@hogwarts.com",roles={"USER"})
 	public void testProfileViewOtherUserUserNotFoundException() throws Exception{
-		this.mockMvc.perform(get("/user/profile?userId="+(otherUser.getId()+1)))		
+		this.mockMvc.perform(get("/user/profile?userId=-1"))		
 					.andExpect(status().isOk())
 					.andExpect(forwardedUrl("/pages/exception.jsp"))
 					.andExpect(model().attribute("exception_message", "User not found."));
 	}
 	
 	@Test
-	@WithMockUser(username="lenny.lenford@simpsons.com",roles={"USER"})
+	@WithMockUser(username="ginevra.weasley@hogwarts.com",roles={"USER"})
 	public void testProfileViewOtherUserTutor() throws Exception{
-		dataSetupTutor(otherUser);
+		User otherUser = userDao.findByUsername("percy.weasley@hogwarts.com");
 		this.mockMvc.perform(get("/user/profile?userId="+otherUser.getId()))		
 					.andExpect(status().isOk())
 					.andExpect(forwardedUrl("/pages/user/profile.jsp"))
@@ -136,30 +95,15 @@ public class ProfileViewControllerTest {
 					.andExpect(model().attribute("user", otherUser))
 					.andExpect(model().attributeExists("lectures"));
 	}
-	
-	@Test
-	@WithMockUser(username="lenny.lenford@simpsons.com",roles={"USER"})
-	public void testProfileViewOtherUserTutorNoLecturesFoundException() throws Exception{
-		otherUser.setIsTutor(true);
-		userDao.save(otherUser);
-		this.mockMvc.perform(get("/user/profile?userId="+otherUser.getId()))		
-					.andExpect(status().isOk())
-					.andExpect(forwardedUrl("/pages/user/profile.jsp"))
-					.andExpect(model().attribute("ownProfile", false))
-					.andExpect(model().attribute("user", otherUser))
-					.andExpect(model().attributeDoesNotExist("lectures"))
-					.andExpect(model().attribute("exception_message", "No lectures found for this tutor!"));
-	}
 
 	@Test
-	@WithMockUser(username="lenny.lenford@simpsons.com",roles={"USER"})
-	public void testProfileViewOtherUserTutorDeleteLecture() throws Exception{
-		dataSetupTutor(user);
-		assertTrue(user.getIsTutor());
-		
+	@WithMockUser(username="fred.weasley@hogwarts.com",roles={"USER"})
+	public void testProfileViewLastLecture() throws Exception{
+		User user = userDao.findByUsername("fred.weasley@hogwarts.com");
+		List<TutorLecture> tutorLectures = tutorLectureDao.findByTutor(user);
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "deleteLecture")
-					.param("objectId", tutorLecture.getId().toString()))
+					.param("objectId", tutorLectures.get(0).getId().toString()))
 					.andExpect(status().is(302))
 					.andExpect(redirectedUrl("/user/profile"));
 		

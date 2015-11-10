@@ -33,22 +33,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SignupControllerTest {
 	
 	@Autowired private WebApplicationContext wac;
-	@Autowired private UserDao userDao;
+	@Autowired UserDao userDao;
 	
 	private MockMvc mockMvc;
-	private User user;
-	
-	private void dataSetupUser(){		
-		user = new User();
-		user.setFirstName("Lenny");
-		user.setLastName("Lenford");
-		user.setUsername("lenny.lenford@simpsons.com");
-		user = userDao.save(user);
-	}
 	
 	@Before
 	public void setup() {
-		userDao.deleteAll();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 	
@@ -64,16 +54,20 @@ public class SignupControllerTest {
 	
 	@Test
 	public void testValidSignupForm() throws Exception{
+		User user = userDao.findByUsername("john@doe.com");
+		if(user!=null){
+			userDao.delete(user);
+		}
 		this.mockMvc.perform(
 				post("/signup")
-					.param("firstName", "Ron")
-					.param("lastName", "Weasley")
-					.param("email", "ron.weasley@hogwarts.com")
+					.param("firstName", "John")
+					.param("lastName", "Doe")
+					.param("email", "john@doe.com")
 					.param("password", "12345678")
 					.param("passwordRepeat", "12345678"))
 				.andExpect(model().hasNoErrors())
 				.andExpect(status().isFound())
-				.andExpect(redirectedUrl("/login?username=ron.weasley@hogwarts.com"));
+				.andExpect(redirectedUrl("/login?username=john@doe.com"));
 	}
 	
 	@Test
@@ -95,12 +89,11 @@ public class SignupControllerTest {
 	
 	@Test
 	public void testUserAlreadyExistsException() throws Exception{
-		dataSetupUser();
 		this.mockMvc.perform(
 				post("/signup")
-					.param("firstName", "Lenny")
-					.param("lastName", "Lenford")
-					.param("email", "lenny.lenford@simpsons.com")
+					.param("firstName", "George")
+					.param("lastName", "Weasley")
+					.param("email", "george.weasley@hogwarts.com")
 					.param("password", "12345678")
 					.param("passwordRepeat", "12345678"))
 				.andExpect(status().isOk())

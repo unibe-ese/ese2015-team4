@@ -112,9 +112,11 @@
 			</div>
 			<div id="message-actions">
 	<!-- BEGIN MESSAGE ACTIONS -->
-				<a href="<%=request.getContextPath() %>/user/messagecenter/reply/?replyToMessageId=<c:out value="${message.id}"/>">
-					<img class="action-icon" style="margin-left:5px" src="<%=request.getContextPath()%>/img/reply.png" />
-				</a>
+				<c:if test="${userId != message.sender.id}">
+					<a href="<%=request.getContextPath() %>/user/messagecenter/reply/?replyToMessageId=<c:out value="${message.id}"/>">
+						<img class="action-icon" style="margin-left:5px" src="<%=request.getContextPath()%>/img/reply.png" />
+					</a>
+				</c:if>
 				<c:if test="${view!='trash'}">
 					<img class="action-icon" style="margin-left:5px" src="<%=request.getContextPath()%>/img/delete.png" onClick="hiddenAction('delete',<c:out value="${message.id}"/>);" />
 				</c:if>

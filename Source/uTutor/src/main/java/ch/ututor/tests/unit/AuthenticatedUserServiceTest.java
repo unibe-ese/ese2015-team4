@@ -56,9 +56,9 @@ public class AuthenticatedUserServiceTest {
 		return profileEditForm;
 	}
 	
-	private void setupMockAuthenticatedUser(Boolean empty, Boolean isTutor){
+	private void setupMockAuthenticatedUser(Boolean emptyUser, Boolean isTutor){
 		User user = new User();
-		if(!empty){
+		if(!emptyUser){
 			user = setupUser();
 		}
 		user.setIsTutor(isTutor);

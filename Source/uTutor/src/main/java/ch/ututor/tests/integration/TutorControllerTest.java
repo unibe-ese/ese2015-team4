@@ -42,47 +42,16 @@ public class TutorControllerTest {
 
 	@Autowired
 	private WebApplicationContext wac;
-	@Autowired
-	UserDao userDao;
-	@Autowired
-	TutorLectureDao tutorLectureDao;
-	@Autowired
-	LectureDao lectureDao;
+
 	private MockMvc mockMvc;
-	private User user;
-	private TutorLecture tutorLecture;
-	private Lecture lecture;
-	
-	private void dataSetup(){
-		userDao.deleteAll();
-		tutorLectureDao.deleteAll();
-		lectureDao.deleteAll();
-		
-		user = new User();
-		user.setFirstName("Hermione");
-		user.setLastName("Granger");
-		user.setUsername("hermione@hogwarts.ch");
-		user = userDao.save(user);
-		
-		lecture = new Lecture();
-		lecture.setName("Potions");
-		lecture = lectureDao.save(lecture);
-		
-		tutorLecture = new TutorLecture();
-		tutorLecture.setTutor(user);
-		tutorLecture.setGrade(5);
-		tutorLecture.setLecture(lecture);
-		tutorLecture = tutorLectureDao.save(tutorLecture);
-	}
 	
 	@Before
 	public void setup() {
-		dataSetup();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 	
 	@Test
-	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
+	@WithMockUser(username="ginevra.weasley@hogwarts.com", roles={"USER"})
 	public void testDisplayBecomeTutorForm() throws Exception{
 		
 		this.mockMvc
@@ -93,27 +62,8 @@ public class TutorControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
-	public void testTutorGetsBecomeTutorForm() throws Exception{
-		user.setDescription("Hi I'm Hermione");
-		user.setPrice(99.9F);
-		user = userDao.save(user);
-		
-		this.mockMvc
-			.perform(get("/user/become-tutor"))
-			.andExpect(status().isOk())
-			.andExpect(forwardedUrl("/pages/user/become-tutor.jsp"))
-			.andExpect(model().attributeExists("becomeTutorForm"))
-			.andExpect(model().attribute("becomeTutorForm", hasProperty("description", is("Hi I'm Hermione"))))
-			.andExpect(model().attribute("becomeTutorForm", hasProperty("price", is("99.90"))));
-	}
-	
-	@Test
-	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
-	public void testGetIsAlreadyTutor() throws Exception{
-		user.setIsTutor(true);
-		user = userDao.save(user);
-		
+	@WithMockUser(username="percy.weasley@hogwarts.com", roles={"USER"})
+	public void testGetIsAlreadyTutor() throws Exception{		
 		this.mockMvc
 			.perform(get("/user/become-tutor"))
 			.andExpect(status().isFound())
@@ -122,11 +72,8 @@ public class TutorControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
+	@WithMockUser(username="percy.weasley@hogwarts.com", roles={"USER"})
 	public void testPostIsAlreadyTutor() throws Exception{
-		user.setIsTutor(true);
-		user = userDao.save(user);
-		
 		this.mockMvc
 			.perform(post("/user/become-tutor"))
 			.andExpect(status().isFound())
@@ -134,54 +81,54 @@ public class TutorControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
+	@WithMockUser(username="ginevra.weasley@hogwarts.com", roles={"USER"})
 	public void testInvalidBecomeTutorForm() throws Exception{
 		
 		this.mockMvc
 			.perform(post("/user/become-tutor"))
 			.andExpect(status().isOk())
 			.andExpect(forwardedUrl("/pages/user/become-tutor.jsp"))
-			.andExpect(model().attributeHasFieldErrors("becomeTutorForm", "price"));
+			.andExpect(model().attributeHasFieldErrors("becomeTutorForm", "price", "description", "lecture"));
 	}
 	
 	@Test
-	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
+	@WithMockUser(username="ginevra.weasley@hogwarts.com", roles={"USER"})
 	public void testValidBecomeTutorForm() throws Exception{
 		
 		this.mockMvc
 			.perform(post("/user/become-tutor")
-					.param("grade", "" +4)
+					.param("grade", "4")
 					.param("lecture", "Transformation")
-					.param("price", Float.toString( 50 ))
-					.param("description", "Hi I'm Hermione"))
+					.param("price", "50")
+					.param("description", "Hi I'm Ginny"))
 			.andExpect(status().isFound())
 			.andExpect(redirectedUrl("/user/profile"));
 	}
 	
 	@Test
-	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
+	@WithMockUser(username="ginevra.weasley@hogwarts.com", roles={"USER"})
 	public void testInvalidPriceExceptionNoFloat() throws Exception{
 		
 		this.mockMvc
 			.perform(post("/user/become-tutor")
-					.param("grade", "" +4)
+					.param("grade", "4")
 					.param("lecture", "Defense against the dark arts")
 					.param("price", "hello")
-					.param("description", "Hi I'm Hermione"))
+					.param("description", "Hi I'm Ginny"))
 			.andExpect(status().isOk())
 			.andExpect(forwardedUrl("/pages/user/become-tutor.jsp"))
 			.andExpect(model().attribute("exception_message", "Please enter a valid price!"));
 	}
 	
 	@Test
-	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
+	@WithMockUser(username="ginevra.weasley@hogwarts.com", roles={"USER"})
 	public void testInvalidPriceExceptionLessThanZero() throws Exception{
 		
 		this.mockMvc
 			.perform(post("/user/become-tutor")
-					.param("grade", "" +4)
+					.param("grade", "4")
 					.param("lecture", "Defense against the dark arts")
-					.param("price", "" + -5)
+					.param("price", "-5")
 					.param("description", "Hi I'm Hermione"))
 			.andExpect(status().isOk())
 			.andExpect(forwardedUrl("/pages/user/become-tutor.jsp"))
@@ -189,7 +136,7 @@ public class TutorControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
+	@WithMockUser(username="ginevra.weasley@hogwarts.com", roles={"USER"})
 	public void testGetAddLecturesIsNoTutor() throws Exception{
 		
 		this.mockMvc
@@ -199,11 +146,8 @@ public class TutorControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
-	public void testValidAddLecture() throws Exception{
-		user.setIsTutor(true);
-		user = userDao.save(user);
-		
+	@WithMockUser(username="percy.weasley@hogwarts.com", roles={"USER"})
+	public void testValidAddLecture() throws Exception{		
 		this.mockMvc
 			.perform(get("/user/add-lecture"))
 			.andExpect(status().isOk())
@@ -212,7 +156,7 @@ public class TutorControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
+	@WithMockUser(username="ginevra.weasley@hogwarts.com", roles={"USER"})
 	public void testPostAddLecturesIsNoTutor() throws Exception{
 		
 		this.mockMvc
@@ -222,41 +166,33 @@ public class TutorControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
+	@WithMockUser(username="percy.weasley@hogwarts.com", roles={"USER"})
 	public void testInvalidAddLectureForm() throws Exception{
-		user.setIsTutor(true);
-		user = userDao.save(user);
-		
 		this.mockMvc
 			.perform(post("/user/add-lecture"))
 			.andExpect(status().isOk())
+			.andExpect(model().attributeHasFieldErrors("addLectureForm", "lecture"))
 			.andExpect(forwardedUrl("/pages/user/add-lecture.jsp"));
 	}
 	
 	@Test
-	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
+	@WithMockUser(username="percy.weasley@hogwarts.com", roles={"USER"})
 	public void testValidAddLectureForm() throws Exception{
-		user.setIsTutor(true);
-		user = userDao.save(user);
-		
 		this.mockMvc
 			.perform(post("/user/add-lecture")
-					.param("grade", "" +4)
+					.param("grade", "4")
 					.param("lecture", "Charms"))
 				.andExpect(status().isFound())
 				.andExpect(redirectedUrl("/user/profile"));
 	}
 	
 	@Test
-	@WithMockUser(username="hermione@hogwarts.ch", roles={"USER"})
+	@WithMockUser(username="percy.weasley@hogwarts.com", roles={"USER"})
 	public void testTutorLectureAlreadyExistsException() throws Exception{
-		user.setIsTutor(true);
-		user = userDao.save(user);
-		
 		this.mockMvc
 			.perform(post("/user/add-lecture")
-					.param("grade", "" +4)
-					.param("lecture", "Potions"))
+					.param("grade", "4")
+					.param("lecture", "Apparition"))
 				.andExpect(status().isOk())
 				.andExpect(forwardedUrl("/pages/user/add-lecture.jsp"))
 				.andExpect(model().attribute("exception_message", "You've already registered this lecture!"));
