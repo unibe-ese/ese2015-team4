@@ -6,8 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.hamcrest.Matchers.*;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,13 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
-
-import ch.ututor.model.Lecture;
-import ch.ututor.model.TutorLecture;
-import ch.ututor.model.User;
-import ch.ututor.model.dao.LectureDao;
-import ch.ututor.model.dao.TutorLectureDao;
-import ch.ututor.model.dao.UserDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
