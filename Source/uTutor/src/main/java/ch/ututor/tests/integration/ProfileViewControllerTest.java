@@ -97,7 +97,7 @@ public class ProfileViewControllerTest {
 	@WithMockUser(username="fred.weasley@hogwarts.com",roles={"USER"})
 	public void testProfileViewLastLecture() throws Exception{
 		User user = userDao.findByUsername("fred.weasley@hogwarts.com");
-		List<TutorLecture> tutorLectures = tutorLectureDao.findByTutor(user);
+		List<TutorLecture> tutorLectures = tutorLectureDao.findByTutorOrderByLectureName(user);
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "deleteLecture")
 					.param("objectId", tutorLectures.get(0).getId().toString()))

@@ -10,8 +10,8 @@ import ch.ututor.model.User;
 
 public interface TutorLectureDao extends CrudRepository<TutorLecture,Long> {
 	
-	public List<TutorLecture> findByLectureNameLike( String lecture );
+	public List<TutorLecture> findByLectureNameLikeOrderByLectureName( String lecture );
 	public TutorLecture findByTutorAndLecture( User tutor, Lecture lecture );
 	public TutorLecture findByTutorAndId( User tutor, Long tutorLectureId );
-	public List<TutorLecture> findByTutor( User tutor );
+	public List<TutorLecture> findByTutorOrderByLectureName( User tutor );
 }

@@ -116,7 +116,7 @@ public class TestDataSeeder implements InitializingBean {
 	}
 	
 	private void removeLectures(User user){
-		List<TutorLecture> tutorLectures = tutorLectureDao.findByTutor(user);
+		List<TutorLecture> tutorLectures = tutorLectureDao.findByTutorOrderByLectureName(user);
 		for(TutorLecture tutorLecture : tutorLectures){
 			tutorLectureDao.delete(tutorLecture);
 		}

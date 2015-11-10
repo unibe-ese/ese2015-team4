@@ -116,7 +116,7 @@ public class TutorServiceImpl implements TutorService {
 	public List<TutorLecture> findLecturesByTutor( User tutor ) {
 		assert( tutor != null );
 		
-		List<TutorLecture> lectures = tutorLectureDao.findByTutor( tutor );
+		List<TutorLecture> lectures = tutorLectureDao.findByTutorOrderByLectureName( tutor );
 		
 		if( lectures.size() == 0 ) {
 			throw new NoLecturesFoundException( "No lectures found for this tutor!" );
@@ -164,7 +164,7 @@ public class TutorServiceImpl implements TutorService {
 	public boolean hasLectures( User tutor ) {
 		assert( tutor != null );
 		
-		if( tutorLectureDao.findByTutor( tutor ).isEmpty() )
+		if( tutorLectureDao.findByTutorOrderByLectureName( tutor ).isEmpty() )
 			return false;
 		else
 			return true;

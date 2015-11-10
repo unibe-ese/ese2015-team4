@@ -140,7 +140,7 @@ public class TutorServiceTest {
 	
 	private void setupEmptyTutorLectures() {
 		authLectures = new ArrayList<TutorLecture>();
-		when(tutorLectureDao.findByTutor(any(User.class))).thenReturn(authLectures);
+		when(tutorLectureDao.findByTutorOrderByLectureName(any(User.class))).thenReturn(authLectures);
 		when(tutorLectureDao.findByTutorAndLecture(any(User.class), any(Lecture.class))).thenReturn(null);
 		when(tutorLectureDao.findByTutorAndId(any(User.class), any(Long.class))).thenReturn(null);
 	}
@@ -152,7 +152,7 @@ public class TutorServiceTest {
 		tutorLecture.setTutor(tutor);
 		authLectures.add(tutorLecture);
 		
-		when(tutorLectureDao.findByTutor(any(User.class))).thenReturn(authLectures);
+		when(tutorLectureDao.findByTutorOrderByLectureName(any(User.class))).thenReturn(authLectures);
 		when(tutorLectureDao.findByTutorAndLecture(any(User.class), any(Lecture.class))).thenReturn(tutorLecture);
 		when(tutorLectureDao.findByTutorAndId(any(User.class), any(Long.class))).thenReturn(tutorLecture);
 	}

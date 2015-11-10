@@ -37,7 +37,7 @@ public class SearchServiceTest {
 			dbLectures = new ArrayList<TutorLecture>();
 			dbLectures.add(new TutorLecture());
 			
-			when(tutorLectureDao.findByLectureNameLike(any(String.class))).thenReturn(dbLectures);
+			when(tutorLectureDao.findByLectureNameLikeOrderByLectureName(any(String.class))).thenReturn(dbLectures);
 			
 			List<TutorLecture> lectures = searchService.searchByLecture("lecture");
 			assertFalse(lectures.isEmpty());
