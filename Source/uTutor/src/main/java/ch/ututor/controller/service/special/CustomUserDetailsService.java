@@ -1,4 +1,4 @@
-package ch.ututor.controller.service;
+package ch.ututor.controller.service.special;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -28,7 +28,7 @@ import ch.ututor.controller.service.AuthenticatedUserService;
 import ch.ututor.controller.service.ProfilePictureService;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
-import ch.ututor.tests.utils.MultipartFileMocker;
+import ch.ututor.utils.MultipartFileMocker;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/test/authenticatedUserService.xml"})

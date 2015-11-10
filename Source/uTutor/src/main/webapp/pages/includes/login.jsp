@@ -16,5 +16,6 @@
 				<input id="password" name="password" type="password" placeholder="Password"<c:if test="${param.username!=null}"> autofocus</c:if>/>
 			</label>
 	<label><input type="submit" value="Login"/></label>
+	<small><strong>Demo users:</strong><br/>student: ginevra.weasley@hogwarts.com<br/>password: h4rryisth3b3st<br/>tutor: percy.weasley@hogwarts.com<br/>password: imsorrydad123</small>
 </form>
 <!-- END LOGIN FORM -->

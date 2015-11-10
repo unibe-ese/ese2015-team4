@@ -21,7 +21,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
-import ch.ututor.tests.utils.MultipartFileMocker;
+import ch.ututor.utils.MultipartFileMocker;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
