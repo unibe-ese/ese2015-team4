@@ -1,4 +1,4 @@
-package ch.ututor.tests.integration;
+package ch.ututor.controller.tests;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

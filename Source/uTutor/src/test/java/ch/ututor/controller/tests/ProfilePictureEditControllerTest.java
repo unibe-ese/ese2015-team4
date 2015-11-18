@@ -1,4 +1,4 @@
-package ch.ututor.tests.integration;
+package ch.ututor.controller.tests;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
@@ -17,6 +17,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
+
+import ch.ututor.model.User;
+import ch.ututor.model.dao.UserDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -27,10 +31,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 		})
 @Transactional
 @Rollback
-public class SearchControllerTest {
-	
+public class ProfilePictureEditControllerTest {
 	@Autowired
 	private WebApplicationContext wac;
+	@Autowired
+	private UserDao userDao;
 	
 	private MockMvc mockMvc;
 	
@@ -38,23 +43,15 @@ public class SearchControllerTest {
 	public void setup() {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
-	
+
 	@Test
-	public void testNoLecturesFoundException() throws Exception{
-		
-		this.mockMvc
-			.perform(get("/search?query=KeineLektion"))
-			.andExpect(status().isOk())
-			.andExpect(forwardedUrl("/pages/search.jsp"))
-			.andExpect(model().attribute("exception_message", "No lectures found."));
-	}
-	
-	@Test
-	public void testLecturesFound() throws Exception{
-		this.mockMvc
-		.perform(get("/search?query=transfiguration"))
-		.andExpect(status().isOk())
-		.andExpect(forwardedUrl("/pages/search.jsp"))
-		.andExpect(model().attributeExists("results"));
+	@WithMockUser(username = "ginevra.weasley@hogwarts.com", roles = { "USER" })
+	public void testValidProfilePictureEdit() throws Exception {
+		User user = userDao.findByUsername("ginevra.weasley@hogwarts.com");
+		this.mockMvc.perform(get("/user/profile/picture"))
+				.andExpect(status().isOk())
+				.andExpect(model().attribute("userId", user.getId()))
+				.andExpect(model().attribute("hasProfilePic", true))
+				.andExpect(forwardedUrl("/pages/user/profile-picture.jsp"));
 	}
 }

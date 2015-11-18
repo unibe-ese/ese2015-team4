@@ -1,4 +1,4 @@
-package ch.ututor.tests.integration;
+package ch.ututor.controller.tests;
 
 import org.junit.Before;
 import org.junit.Test;

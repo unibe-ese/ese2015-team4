@@ -1,4 +1,4 @@
-package ch.ututor.tests.unit;
+package ch.ututor.controller.service.tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Matchers.any;
