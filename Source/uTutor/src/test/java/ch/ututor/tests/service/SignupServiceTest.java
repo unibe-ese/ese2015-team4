@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.AdditionalAnswers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/test/signupService.xml"})
+@ContextConfiguration(locations={"file:src/test/resources/signupService.xml"})
 public class SignupServiceTest {
 	
 	@Autowired SignupService signupService;

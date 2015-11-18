@@ -25,8 +25,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import ch.ututor.model.TutorLecture;
 import ch.ututor.model.User;
-import ch.ututor.model.dao.TutorLectureDao;
-import ch.ututor.model.dao.UserDao;
+import ch.ututor.service.interfaces.TutorService;
+import ch.ututor.service.interfaces.UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -39,8 +39,8 @@ import ch.ututor.model.dao.UserDao;
 
 public class ProfileViewControllerTest {
 	@Autowired private WebApplicationContext wac;
-	@Autowired private UserDao userDao;
-	@Autowired private TutorLectureDao tutorLectureDao;
+	@Autowired private UserService userService;
+	@Autowired private TutorService tutorService;
 	
 	private MockMvc mockMvc;
 	
@@ -52,7 +52,7 @@ public class ProfileViewControllerTest {
 	@Test
 	@WithMockUser(username="ginevra.weasley@hogwarts.com",roles={"USER"})
 	public void testProfileViewOwn() throws Exception{
-		User user = userDao.findByUsername("ginevra.weasley@hogwarts.com");
+		User user = userService.load("ginevra.weasley@hogwarts.com");
 		this.mockMvc.perform(get("/user/profile"))		
 					.andExpect(status().isOk())
 					.andExpect(forwardedUrl("/pages/user/profile.jsp"))
@@ -63,7 +63,7 @@ public class ProfileViewControllerTest {
 	@Test
 	@WithMockUser(username="percy.weasley@hogwarts.com",roles={"USER"})
 	public void testProfileViewOtherUserNotTutor() throws Exception{
-		User otherUser = userDao.findByUsername("ginevra.weasley@hogwarts.com");
+		User otherUser = userService.load("ginevra.weasley@hogwarts.com");
 		this.mockMvc.perform(get("/user/profile?userId="+otherUser.getId()))		
 					.andExpect(status().isOk())
 					.andExpect(forwardedUrl("/pages/user/profile.jsp"))
@@ -84,7 +84,7 @@ public class ProfileViewControllerTest {
 	@Test
 	@WithMockUser(username="ginevra.weasley@hogwarts.com",roles={"USER"})
 	public void testProfileViewOtherUserTutor() throws Exception{
-		User otherUser = userDao.findByUsername("percy.weasley@hogwarts.com");
+		User otherUser = userService.load("percy.weasley@hogwarts.com");
 		this.mockMvc.perform(get("/user/profile?userId="+otherUser.getId()))		
 					.andExpect(status().isOk())
 					.andExpect(forwardedUrl("/pages/user/profile.jsp"))
@@ -96,8 +96,8 @@ public class ProfileViewControllerTest {
 	@Test
 	@WithMockUser(username="fred.weasley@hogwarts.com",roles={"USER"})
 	public void testProfileViewLastLecture() throws Exception{
-		User user = userDao.findByUsername("fred.weasley@hogwarts.com");
-		List<TutorLecture> tutorLectures = tutorLectureDao.findByTutorOrderByLectureName(user);
+		User user = userService.load("fred.weasley@hogwarts.com");
+		List<TutorLecture> tutorLectures = tutorService.findLecturesByTutor(user);
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "deleteLecture")
 					.param("objectId", tutorLectures.get(0).getId().toString()))

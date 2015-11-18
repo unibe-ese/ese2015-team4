@@ -23,8 +23,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import ch.ututor.model.Message;
 import ch.ututor.model.User;
-import ch.ututor.model.dao.MessageDao;
-import ch.ututor.model.dao.UserDao;
+import ch.ututor.service.interfaces.MessageCenterService;
+import ch.ututor.service.interfaces.UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -40,25 +40,26 @@ public class MessageCenterControllerTest {
 	@Autowired
 	private WebApplicationContext wac;
 	@Autowired
-	UserDao userDao;
+	UserService userService;
 	@Autowired
-	MessageDao messageDao;
+	MessageCenterService messageCenterService;
+	
 	private MockMvc mockMvc;
 	private Message message;
 	private User sender;
 	private User receiver;
 
 	private void dataSetup(){		
-		sender = userDao.findByUsername("fred.weasley@hogwarts.com");
+		sender = userService.load("fred.weasley@hogwarts.com");
 		
-		receiver = userDao.findByUsername("ginevra.weasley@hogwarts.com");
+		receiver = userService.load("ginevra.weasley@hogwarts.com");
 		
 		message = new Message();
 		message.setSender(sender);
 		message.setReceiver(receiver);
 		message.setSubject("Hello Ginny");
 		message.setMessage("How are you?");
-		message = messageDao.save(message);
+		message = messageCenterService.sendMessage(message);
 	}
 	
 	@Before

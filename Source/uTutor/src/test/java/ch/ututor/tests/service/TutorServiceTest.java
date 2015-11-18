@@ -32,7 +32,7 @@ import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.TutorService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/test/tutorService.xml"})
+@ContextConfiguration(locations={"file:src/test/resources/tutorService.xml"})
 public class TutorServiceTest {
 
 	@Autowired TutorService tutorService;

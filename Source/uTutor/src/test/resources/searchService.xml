@@ -5,8 +5,8 @@
 
 	<!-- MOCK data access classes (DAO) -->
 	<bean class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="ch.ututor.model.dao.UserDao"/>
+		<constructor-arg value="ch.ututor.model.dao.TutorLectureDao"/>
 	</bean>
 	<!-- AUTOWIRE services -->
-	<bean class="ch.ututor.controller.service.implementation.UserServiceImpl" />
+	<bean class="ch.ututor.service.SearchServiceImpl" />
 </beans>

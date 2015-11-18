@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import ch.ututor.model.User;
-import ch.ututor.model.dao.UserDao;
+import ch.ututor.service.interfaces.UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -35,7 +35,7 @@ public class ProfilePictureEditControllerTest {
 	@Autowired
 	private WebApplicationContext wac;
 	@Autowired
-	private UserDao userDao;
+	private UserService userService;
 	
 	private MockMvc mockMvc;
 	
@@ -47,7 +47,7 @@ public class ProfilePictureEditControllerTest {
 	@Test
 	@WithMockUser(username = "ginevra.weasley@hogwarts.com", roles = { "USER" })
 	public void testValidProfilePictureEdit() throws Exception {
-		User user = userDao.findByUsername("ginevra.weasley@hogwarts.com");
+		User user = userService.load("ginevra.weasley@hogwarts.com");
 		this.mockMvc.perform(get("/user/profile/picture"))
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("userId", user.getId()))

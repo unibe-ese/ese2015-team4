@@ -16,7 +16,7 @@ import ch.ututor.model.dao.UserDao;
 import ch.ututor.service.interfaces.UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/test/userService.xml"})
+@ContextConfiguration(locations={"file:src/test/resources/userService.xml"})
 public class UserServiceTest {
 
 	@Autowired UserDao userDao;

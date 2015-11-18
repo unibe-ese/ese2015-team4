@@ -14,7 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import ch.ututor.model.User;
-import ch.ututor.model.dao.UserDao;
+import ch.ututor.service.interfaces.UserService;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SignupControllerTest {
 	
 	@Autowired private WebApplicationContext wac;
-	@Autowired UserDao userDao;
+	@Autowired UserService userService;
 	
 	private MockMvc mockMvc;
 	
@@ -54,10 +55,6 @@ public class SignupControllerTest {
 	
 	@Test
 	public void testValidSignupForm() throws Exception{
-		User user = userDao.findByUsername("john@doe.com");
-		if(user!=null){
-			userDao.delete(user);
-		}
 		this.mockMvc.perform(
 				post("/signup")
 					.param("firstName", "John")

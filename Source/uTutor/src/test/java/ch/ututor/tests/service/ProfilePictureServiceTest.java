@@ -21,7 +21,7 @@ import ch.ututor.service.interfaces.ProfilePictureService;
 import ch.ututor.utils.MultipartFileMocker;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/test/profilePictureService.xml"})
+@ContextConfiguration(locations={"file:src/test/resources/profilePictureService.xml"})
 public class ProfilePictureServiceTest {
 	@Autowired ProfilePictureService profilePictureService;
 	

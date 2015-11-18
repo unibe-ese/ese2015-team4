@@ -31,7 +31,7 @@ import ch.ututor.service.interfaces.ProfilePictureService;
 import ch.ututor.utils.MultipartFileMocker;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/test/authenticatedUserService.xml"})
+@ContextConfiguration(locations={"file:src/test/resources/authenticatedUserService.xml"})
 public class AuthenticatedUserServiceTest {
 	@Autowired AuthenticatedUserService authenticatedUserService;
 	@Autowired AuthenticatedUserLoaderService authenticatedUserLoaderService;

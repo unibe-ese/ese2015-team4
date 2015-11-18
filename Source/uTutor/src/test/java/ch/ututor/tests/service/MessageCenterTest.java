@@ -27,7 +27,7 @@ import ch.ututor.service.interfaces.MessageCenterService;
 import ch.ututor.service.interfaces.UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration( locations = { "file:src/main/webapp/WEB-INF/test/messageCenterService.xml" } )
+@ContextConfiguration( locations = { "file:src/test/resources/messageCenterService.xml" } )
 public class MessageCenterTest {
 	@Autowired MessageDao messageDao;
 	@Autowired UserService userService;

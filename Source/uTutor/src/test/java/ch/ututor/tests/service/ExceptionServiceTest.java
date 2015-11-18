@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ch.ututor.service.interfaces.ExceptionService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/test/exceptionService.xml"})
+@ContextConfiguration(locations={"file:src/test/resources/exceptionService.xml"})
 public class ExceptionServiceTest {
 
 	@Autowired ExceptionService exceptionService;

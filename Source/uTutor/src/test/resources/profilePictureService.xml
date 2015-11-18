@@ -2,11 +2,9 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-
-	<!-- MOCK data access classes (DAO) -->
-	<bean class="org.mockito.Mockito" factory-method="mock">
-		<constructor-arg value="ch.ututor.model.dao.TutorLectureDao"/>
-	</bean>
 	<!-- AUTOWIRE services -->
-	<bean class="ch.ututor.controller.service.implementation.SearchServiceImpl" />
+	<bean class="ch.ututor.service.ProfilePictureServiceImpl" />
+
+	
+
 </beans>

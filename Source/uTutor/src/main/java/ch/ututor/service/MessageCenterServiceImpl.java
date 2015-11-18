@@ -137,7 +137,12 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 		message.setSender( sender );
 		message.setMessage( newMessageForm.getMessage() );
 		message.setSubject( newMessageForm.getSubject() );
-		return messageDao.save( message );
+		return sendMessage( message );
+	}
+	
+	public Message sendMessage( Message message ) {
+		messageDao.save( message );
+		return message;
 	}
 	
 	private void prefillReceiverToMessageForm( NewMessageForm newMessageForm, User user ){

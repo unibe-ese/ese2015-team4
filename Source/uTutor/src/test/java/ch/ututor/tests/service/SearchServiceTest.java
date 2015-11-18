@@ -19,7 +19,7 @@ import ch.ututor.model.dao.TutorLectureDao;
 import ch.ututor.service.interfaces.SearchService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/test/searchService.xml"})
+@ContextConfiguration(locations={"file:src/test/resources/searchService.xml"})
 public class SearchServiceTest {
 
 		@Autowired SearchService searchService;

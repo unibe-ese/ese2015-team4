@@ -14,5 +14,6 @@ public interface MessageCenterService {
 	public NewMessageForm prefillNewMessageForm(long receiverId);
 	public NewMessageForm prefillReplyMessageForm(long replyToMessageId);
 	public Message sendMessage(NewMessageForm newMessageForm);
+	public Message sendMessage(Message message);
 	public Message setRead(long messageId);
 }
