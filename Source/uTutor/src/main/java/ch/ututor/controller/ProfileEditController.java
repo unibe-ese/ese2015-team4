@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ch.ututor.controller.exceptions.CustomException;
-import ch.ututor.controller.pojos.ProfileEditForm;
-import ch.ututor.controller.service.AuthenticatedUserLoaderService;
-import ch.ututor.controller.service.AuthenticatedUserService;
-import ch.ututor.controller.service.ExceptionService;
+import ch.ututor.exceptions.CustomException;
 import ch.ututor.model.User;
+import ch.ututor.pojos.ProfileEditForm;
+import ch.ututor.service.AuthenticatedUserLoaderService;
+import ch.ututor.service.AuthenticatedUserService;
+import ch.ututor.service.ExceptionService;
 
 @Controller
 public class ProfileEditController {

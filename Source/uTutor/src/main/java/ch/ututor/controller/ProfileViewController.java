@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.ututor.controller.exceptions.CustomException;
-import ch.ututor.controller.service.AuthenticatedUserLoaderService;
-import ch.ututor.controller.service.ExceptionService;
-import ch.ututor.controller.service.TutorService;
-import ch.ututor.controller.service.UserService;
+import ch.ututor.exceptions.CustomException;
 import ch.ututor.model.User;
+import ch.ututor.service.AuthenticatedUserLoaderService;
+import ch.ututor.service.ExceptionService;
+import ch.ututor.service.TutorService;
+import ch.ututor.service.UserService;
 
 @Controller
 public class ProfileViewController {

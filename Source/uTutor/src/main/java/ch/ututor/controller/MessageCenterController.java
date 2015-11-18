@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.ututor.controller.pojos.NewMessageForm;
-import ch.ututor.controller.service.AuthenticatedUserLoaderService;
-import ch.ututor.controller.service.ExceptionService;
-import ch.ututor.controller.service.MessageCenterService;
-import ch.ututor.controller.exceptions.CustomException;
-import ch.ututor.controller.exceptions.custom.MessageNotFoundException;
-import ch.ututor.controller.exceptions.custom.UserNotFoundException;
+import ch.ututor.exceptions.CustomException;
+import ch.ututor.exceptions.custom.MessageNotFoundException;
+import ch.ututor.exceptions.custom.UserNotFoundException;
+import ch.ututor.pojos.NewMessageForm;
+import ch.ututor.service.AuthenticatedUserLoaderService;
+import ch.ututor.service.ExceptionService;
+import ch.ututor.service.MessageCenterService;
 
 @Controller
 public class MessageCenterController {

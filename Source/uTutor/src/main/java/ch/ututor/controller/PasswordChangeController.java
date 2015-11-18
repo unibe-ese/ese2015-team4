@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ch.ututor.controller.exceptions.CustomException;
-import ch.ututor.controller.pojos.ChangePasswordForm;
-import ch.ututor.controller.service.AuthenticatedUserService;
-import ch.ututor.controller.service.ExceptionService;
+import ch.ututor.exceptions.CustomException;
+import ch.ututor.pojos.ChangePasswordForm;
+import ch.ututor.service.AuthenticatedUserService;
+import ch.ututor.service.ExceptionService;
 
 @Controller
 public class PasswordChangeController {

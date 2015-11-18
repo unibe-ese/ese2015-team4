@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ch.ututor.controller.exceptions.CustomException;
-import ch.ututor.controller.pojos.AddLectureForm;
-import ch.ututor.controller.pojos.BecomeTutorForm;
-import ch.ututor.controller.service.AuthenticatedUserService;
-import ch.ututor.controller.service.ExceptionService;
-import ch.ututor.controller.service.TutorService;
+import ch.ututor.exceptions.CustomException;
+import ch.ututor.pojos.AddLectureForm;
+import ch.ututor.pojos.BecomeTutorForm;
+import ch.ututor.service.AuthenticatedUserService;
+import ch.ututor.service.ExceptionService;
+import ch.ututor.service.TutorService;
 
 @Controller
 public class TutorController {

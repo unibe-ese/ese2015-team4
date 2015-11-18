@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ch.ututor.controller.exceptions.CustomException;
-import ch.ututor.controller.pojos.SignUpForm;
-import ch.ututor.controller.service.ExceptionService;
-import ch.ututor.controller.service.SignupService;
+import ch.ututor.exceptions.CustomException;
+import ch.ututor.pojos.SignUpForm;
+import ch.ututor.service.ExceptionService;
+import ch.ututor.service.SignupService;
 
 @Controller
 public class SignUpController {
