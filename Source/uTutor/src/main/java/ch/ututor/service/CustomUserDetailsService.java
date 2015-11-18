@@ -1,4 +1,4 @@
-package ch.ututor.service.interfaces;
+package ch.ututor.service;
 
 import java.util.ArrayList;
 import java.util.Collection;

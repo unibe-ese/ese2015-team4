@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ch.ututor.model.User;
-import ch.ututor.model.dao.UserDao;
+import ch.ututor.service.interfaces.UserService;
 
 @Controller
 public class ProfilePictureViewController {
 	
-	@Autowired   private UserDao userDao;
+	@Autowired   private UserService userService;
 	@Autowired	 private ServletContext servletContext;
     
     /** 
@@ -35,7 +35,7 @@ public class ProfilePictureViewController {
     @RequestMapping( value = "/img/user", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE )
     @ResponseBody
     public byte[] pictureJpeg( @RequestParam( value = "userId" ) Long userId ) throws IOException {
-    	User user = userDao.findById( userId );
+    	User user = userService.load(userId);
     	if( !user.hasProfilePic() ){
     		InputStream image = servletContext.getResourceAsStream( "/img/default_avatar.jpg" );
     		return IOUtils.toByteArray( image );
