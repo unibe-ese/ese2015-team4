@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.ututor.exceptions.CustomException;
-import ch.ututor.service.ExceptionService;
-import ch.ututor.service.SearchService;
+import ch.ututor.service.interfaces.ExceptionService;
+import ch.ututor.service.interfaces.SearchService;
 
 @Controller
 public class SearchController {

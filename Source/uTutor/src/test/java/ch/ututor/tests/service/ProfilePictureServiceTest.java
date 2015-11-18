@@ -17,7 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ututor.exceptions.custom.ProfilePictureException;
-import ch.ututor.service.ProfilePictureService;
+import ch.ututor.service.interfaces.ProfilePictureService;
 import ch.ututor.utils.MultipartFileMocker;
 
 @RunWith(SpringJUnit4ClassRunner.class)

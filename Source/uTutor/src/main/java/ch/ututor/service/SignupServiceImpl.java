@@ -1,4 +1,4 @@
-package ch.ututor.service.implementation;
+package ch.ututor.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,7 @@ import ch.ututor.exceptions.custom.UserAlreadyExistsException;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
 import ch.ututor.pojos.SignUpForm;
-import ch.ututor.service.SignupService;
+import ch.ututor.service.interfaces.SignupService;
 
 @Service
 public class SignupServiceImpl implements SignupService {

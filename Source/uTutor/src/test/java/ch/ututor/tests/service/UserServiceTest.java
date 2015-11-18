@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ch.ututor.exceptions.custom.UserNotFoundException;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
-import ch.ututor.service.UserService;
+import ch.ututor.service.interfaces.UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/test/userService.xml"})

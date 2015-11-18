@@ -1,4 +1,4 @@
-package ch.ututor.service.implementation;
+package ch.ututor.service;
 
 import java.util.List;
 
@@ -16,8 +16,8 @@ import ch.ututor.model.dao.TutorLectureDao;
 import ch.ututor.model.dao.UserDao;
 import ch.ututor.pojos.AddLectureForm;
 import ch.ututor.pojos.BecomeTutorForm;
-import ch.ututor.service.AuthenticatedUserLoaderService;
-import ch.ututor.service.TutorService;
+import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
+import ch.ututor.service.interfaces.TutorService;
 
 @Service
 public class TutorServiceImpl implements TutorService {

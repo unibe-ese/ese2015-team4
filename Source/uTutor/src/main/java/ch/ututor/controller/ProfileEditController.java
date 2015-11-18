@@ -13,9 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ch.ututor.exceptions.CustomException;
 import ch.ututor.model.User;
 import ch.ututor.pojos.ProfileEditForm;
-import ch.ututor.service.AuthenticatedUserLoaderService;
-import ch.ututor.service.AuthenticatedUserService;
-import ch.ututor.service.ExceptionService;
+import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
+import ch.ututor.service.interfaces.AuthenticatedUserService;
+import ch.ututor.service.interfaces.ExceptionService;
 
 @Controller
 public class ProfileEditController {

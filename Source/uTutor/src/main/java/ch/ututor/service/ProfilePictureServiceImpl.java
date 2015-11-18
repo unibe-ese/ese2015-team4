@@ -1,4 +1,4 @@
-package ch.ututor.service.implementation;
+package ch.ututor.service;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ch.ututor.exceptions.custom.ProfilePictureException;
 import ch.ututor.model.User;
-import ch.ututor.service.ProfilePictureService;
+import ch.ututor.service.interfaces.ProfilePictureService;
 
 /**
  *	This class provides methods to handle uploaded profile pictures.

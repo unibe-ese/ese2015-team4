@@ -1,4 +1,4 @@
-package ch.ututor.service;
+package ch.ututor.service.interfaces;
 
 import ch.ututor.model.User;
 import ch.ututor.pojos.SignUpForm;

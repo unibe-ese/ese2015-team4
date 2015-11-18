@@ -9,10 +9,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ch.ututor.exceptions.CustomException;
 import ch.ututor.model.User;
-import ch.ututor.service.AuthenticatedUserLoaderService;
-import ch.ututor.service.ExceptionService;
-import ch.ututor.service.TutorService;
-import ch.ututor.service.UserService;
+import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
+import ch.ututor.service.interfaces.ExceptionService;
+import ch.ututor.service.interfaces.TutorService;
+import ch.ututor.service.interfaces.UserService;
 
 @Controller
 public class ProfileViewController {

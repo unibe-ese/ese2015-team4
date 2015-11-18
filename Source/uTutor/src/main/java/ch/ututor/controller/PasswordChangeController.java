@@ -12,8 +12,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.ututor.exceptions.CustomException;
 import ch.ututor.pojos.ChangePasswordForm;
-import ch.ututor.service.AuthenticatedUserService;
-import ch.ututor.service.ExceptionService;
+import ch.ututor.service.interfaces.AuthenticatedUserService;
+import ch.ututor.service.interfaces.ExceptionService;
 
 @Controller
 public class PasswordChangeController {

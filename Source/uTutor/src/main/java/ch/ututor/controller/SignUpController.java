@@ -12,8 +12,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.ututor.exceptions.CustomException;
 import ch.ututor.pojos.SignUpForm;
-import ch.ututor.service.ExceptionService;
-import ch.ututor.service.SignupService;
+import ch.ututor.service.interfaces.ExceptionService;
+import ch.ututor.service.interfaces.SignupService;
 
 @Controller
 public class SignUpController {

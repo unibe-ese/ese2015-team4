@@ -28,8 +28,8 @@ import ch.ututor.model.dao.TutorLectureDao;
 import ch.ututor.model.dao.UserDao;
 import ch.ututor.pojos.AddLectureForm;
 import ch.ututor.pojos.BecomeTutorForm;
-import ch.ututor.service.AuthenticatedUserLoaderService;
-import ch.ututor.service.TutorService;
+import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
+import ch.ututor.service.interfaces.TutorService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/test/tutorService.xml"})

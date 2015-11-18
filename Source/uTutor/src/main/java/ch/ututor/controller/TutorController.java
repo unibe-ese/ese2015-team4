@@ -13,9 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ch.ututor.exceptions.CustomException;
 import ch.ututor.pojos.AddLectureForm;
 import ch.ututor.pojos.BecomeTutorForm;
-import ch.ututor.service.AuthenticatedUserService;
-import ch.ututor.service.ExceptionService;
-import ch.ututor.service.TutorService;
+import ch.ututor.service.interfaces.AuthenticatedUserService;
+import ch.ututor.service.interfaces.ExceptionService;
+import ch.ututor.service.interfaces.TutorService;
 
 @Controller
 public class TutorController {

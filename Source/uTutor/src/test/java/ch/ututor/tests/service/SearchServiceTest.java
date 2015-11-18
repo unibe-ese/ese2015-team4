@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ch.ututor.exceptions.custom.NoResultFoundException;
 import ch.ututor.model.TutorLecture;
 import ch.ututor.model.dao.TutorLectureDao;
-import ch.ututor.service.SearchService;
+import ch.ututor.service.interfaces.SearchService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/test/searchService.xml"})

@@ -1,4 +1,4 @@
-package ch.ututor.service;
+package ch.ututor.service.interfaces;
 
 import java.io.IOException;
 import java.util.ArrayList;

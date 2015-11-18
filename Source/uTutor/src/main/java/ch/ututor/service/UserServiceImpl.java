@@ -1,4 +1,4 @@
-package ch.ututor.service.implementation;
+package ch.ututor.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ch.ututor.exceptions.custom.UserNotFoundException;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
-import ch.ututor.service.UserService;
+import ch.ututor.service.interfaces.UserService;
 
 
 @Service

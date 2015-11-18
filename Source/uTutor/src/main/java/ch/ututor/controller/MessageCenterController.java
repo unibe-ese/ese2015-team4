@@ -15,9 +15,9 @@ import ch.ututor.exceptions.CustomException;
 import ch.ututor.exceptions.custom.MessageNotFoundException;
 import ch.ututor.exceptions.custom.UserNotFoundException;
 import ch.ututor.pojos.NewMessageForm;
-import ch.ututor.service.AuthenticatedUserLoaderService;
-import ch.ututor.service.ExceptionService;
-import ch.ututor.service.MessageCenterService;
+import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
+import ch.ututor.service.interfaces.ExceptionService;
+import ch.ututor.service.interfaces.MessageCenterService;
 
 @Controller
 public class MessageCenterController {

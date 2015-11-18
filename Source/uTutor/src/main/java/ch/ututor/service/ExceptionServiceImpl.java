@@ -1,9 +1,9 @@
-package ch.ututor.service.implementation;
+package ch.ututor.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.ututor.service.ExceptionService;
+import ch.ututor.service.interfaces.ExceptionService;
 
 @Service
 public class ExceptionServiceImpl implements ExceptionService {

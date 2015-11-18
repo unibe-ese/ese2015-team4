@@ -13,7 +13,7 @@ import ch.ututor.exceptions.custom.UserAlreadyExistsException;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
 import ch.ututor.pojos.SignUpForm;
-import ch.ututor.service.SignupService;
+import ch.ututor.service.interfaces.SignupService;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;

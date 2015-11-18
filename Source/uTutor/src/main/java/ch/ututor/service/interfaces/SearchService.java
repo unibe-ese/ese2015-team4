@@ -1,4 +1,4 @@
-package ch.ututor.service;
+package ch.ututor.service.interfaces;
 import ch.ututor.model.TutorLecture;
 
 import java.util.List;

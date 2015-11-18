@@ -1,4 +1,4 @@
-package ch.ututor.service.implementation;
+package ch.ututor.service;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import ch.ututor.exceptions.custom.NoResultFoundException;
 import ch.ututor.model.TutorLecture;
 import ch.ututor.model.dao.TutorLectureDao;
-import ch.ututor.service.SearchService;
+import ch.ututor.service.interfaces.SearchService;
 
 @Service
 public class SearchServiceImpl implements SearchService {

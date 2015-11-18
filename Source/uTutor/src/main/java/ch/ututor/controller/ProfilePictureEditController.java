@@ -12,10 +12,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ch.ututor.exceptions.CustomException;
 import ch.ututor.model.User;
-import ch.ututor.service.AuthenticatedUserLoaderService;
-import ch.ututor.service.AuthenticatedUserService;
-import ch.ututor.service.ExceptionService;
-import ch.ututor.service.ProfilePictureService;
+import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
+import ch.ututor.service.interfaces.AuthenticatedUserService;
+import ch.ututor.service.interfaces.ExceptionService;
+import ch.ututor.service.interfaces.ProfilePictureService;
 
 /**
  *	This class handles all requests concerning the adaption of the user's profile picture.  
