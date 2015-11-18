@@ -1,6 +1,7 @@
 package ch.ututor.tests.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -153,7 +154,7 @@ public class AuthenticatedUserServiceTest {
 		when(profilePictureService.validateUploadedPicture(any(MultipartFile.class))).thenReturn(true);
 		when(profilePictureService.resizeProfilePicture(file.getBytes())).then(returnsFirstArg());
 		User user = authenticatedUserService.updateProfilePicture(file);
-		assertEquals(file.getBytes(), user.getProfilePic());
+		assertArrayEquals(file.getBytes(), user.getProfilePic());
 	}
 	
 	@Test

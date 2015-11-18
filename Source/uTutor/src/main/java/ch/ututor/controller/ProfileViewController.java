@@ -31,7 +31,7 @@ public class ProfileViewController {
     	User user = null;
     	User authUser = authenticatedUserLoaderService.getAuthenticatedUser();
     	
-    	if( userId == null || authUser.getId() == userId ) {
+    	if( userId == null || authUser.getId().longValue() == userId.longValue() ) {
     		model.addObject( "ownProfile", true );
     		user = authUser;
     	} else {
