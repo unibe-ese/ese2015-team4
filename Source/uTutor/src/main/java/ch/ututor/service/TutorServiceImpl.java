@@ -1,29 +1,20 @@
 package ch.ututor.service;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.ututor.exceptions.custom.InvalidDateException;
 import ch.ututor.exceptions.custom.InvalidPriceException;
 import ch.ututor.exceptions.custom.NoLecturesFoundException;
 import ch.ututor.exceptions.custom.TutorLectureAlreadyExistsException;
 import ch.ututor.model.Lecture;
-import ch.ututor.model.TimeSlot;
 import ch.ututor.model.TutorLecture;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.LectureDao;
-import ch.ututor.model.dao.TimeSlotDao;
 import ch.ututor.model.dao.TutorLectureDao;
 import ch.ututor.model.dao.UserDao;
 import ch.ututor.pojos.AddLectureForm;
-import ch.ututor.pojos.AddTimeslotsForm;
 import ch.ututor.pojos.BecomeTutorForm;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.TutorService;
@@ -35,8 +26,6 @@ public class TutorServiceImpl implements TutorService {
 	@Autowired	private UserDao userDao;
 	@Autowired	private LectureDao lectureDao;
 	@Autowired	private TutorLectureDao tutorLectureDao;
-	@Autowired	private TimeSlotDao timeSlotDao;
-	
 	/**
 	 *	Adds the required information (price, description and first lecture)
 	 *	to the user profile so that he becomes a tutor.
