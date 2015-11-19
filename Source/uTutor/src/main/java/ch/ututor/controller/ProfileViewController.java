@@ -65,9 +65,8 @@ public class ProfileViewController {
      *	@throws NumberFormatException if objectId is not a valid Long
      */
     @RequestMapping( value = "/user/profile", method = RequestMethod.POST )
-    public ModelAndView deleteLectureFromProfile(	@RequestParam( "action" ) String action, 
+    public ModelAndView handleProfileActions(	@RequestParam( "action" ) String action, 
     												@RequestParam( "objectId" ) String objectId ) {
-    	assert( action.equals( "deleteLecture" ) );
     	
     	Long tutorLectureId = Long.parseLong( objectId );
     	
