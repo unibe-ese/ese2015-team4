@@ -1,5 +1,6 @@
 package ch.ututor.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -144,16 +145,15 @@ public class TutorController {
 			return new ModelAndView( "redirect:/user/become-tutor" );
 		}
 		
-		System.out.println(addTimeslotsForm.getDate());
-		
 		ModelAndView model = new ModelAndView( "user/add-timeslots" );
-		
 		if ( !result.hasErrors() ) {
 			try {
-				//tutorService.addTimeslots( addTimeslotsForm );
-				//return new ModelAndView( "redirect:/user/profile" );
+				tutorService.addTimeSlots( addTimeslotsForm );
+				return new ModelAndView( "redirect:/user/profile" );
 			} catch ( CustomException e ) {
 				model = exceptionService.addException( model, e.getMessage() );
+			} catch ( ParseException e ) {
+				model = exceptionService.addException( null, e.getMessage() );
 			}
 		}
 		

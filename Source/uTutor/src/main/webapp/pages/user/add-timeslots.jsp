@@ -10,7 +10,7 @@
 			</div>
 		</c:if>
 		<label>
-			<form:input type="date" path="date" id="field-date" placeholder="dd.mm.yyyy"/>
+			<form:input type="date" path="date" id="field-date" placeholder="yyyy-mm-dd"/>
    			<form:errors path="date" element="div" class="error"/>
 		</label>
 		<label>

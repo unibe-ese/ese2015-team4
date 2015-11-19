@@ -32,13 +32,14 @@ public class Timeslot {
 	@GeneratedValue
 	private long id;
 	
-	private Status status;
+	private Status status = Status.AVAILABLE;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Date beginDateTime;
 	
 	@ManyToOne
 	private User tutor;
+	
 	@ManyToOne
 	private User student;
 	

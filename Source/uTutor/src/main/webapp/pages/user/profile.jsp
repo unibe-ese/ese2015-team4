@@ -150,6 +150,42 @@
 			</c:if>
 		</div>
 	<!-- END LECTURES -->
+	
+	<!-- BEGIN AVAILABILITIES -->
+		<h3>Availability:</h3>
+		<div class="list table">
+			<div class="row header">
+				<div class="cell">
+					Date
+				</div>
+				<div class="cell">
+					Time
+				</div>
+			</div>
+			
+			<!-- BEGIN FOREACH -->
+				<div class="row">
+					<div class="cell">
+						20.03.2016
+					</div>
+					<div class="cell">
+						08:00 - 08:59
+					</div>
+				</div>
+			<!-- END FOREACH -->
+			<c:if test="${ownProfile}">
+				<div class="row">
+					<div class="cell">
+						<a class="button action" href="<%=request.getContextPath()%>/user/add-timeslots">
+							+ add time-slots
+						</a>
+					</div>
+				</div>
+			</c:if>
+		</div>
+	<!-- END AVAILABILITIES -->
+	
+	
 	</c:if>
 
 	<c:if test="${!user.isTutor && ownProfile}">	
