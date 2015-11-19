@@ -1,4 +1,5 @@
 <%@include file="../includes/header.jsp"%>
+<jsp:useBean id="now" class="java.util.Date"/>
 
 <c:if test="${ownProfile}">	
 	<%@include file="includes/hidden-actions.jsp"%>
@@ -112,10 +113,19 @@
 	</div>
 	<!-- END USER DATA -->
 	<div class="clear"></div>
+	
+	<c:if test="${!user.isTutor && ownProfile}">	
+		<div>
+			<a href="<%=request.getContextPath()%>/user/become-tutor" class="button">
+				Become Tutor!
+			</a>
+		</div>
+	</c:if>
+	
 	<c:if test="${user.isTutor}">
 	<!-- BEGIN LECTURES -->
 		<h3>Lectures:</h3>	
-		<div class="list table">
+		<div class="list table striped">
 			<div class="row header">
 				<div class="cell">
 					Lecture
@@ -132,68 +142,55 @@
 		    		<div class="cell">
 		    			<c:out value="${result.grade}" />
 		    		</div>
-		    		<div class="cell icon">
+		    		<div class="cell">
 		    			<c:if test="${ownProfile}">
 		    				<img class="action-icon" src="<%=request.getContextPath()%>/img/delete.png" onClick="hiddenAction('deleteLecture',<c:out value="${result.id}"/>);" />
 		    			</c:if>
 		    		</div>
 				</div>
 			</c:forEach>
-			<c:if test="${ownProfile}">
-				<div class="row">
-					<div class="cell">
-						<a class="button action" href="<%=request.getContextPath()%>/user/add-lecture">
-							+ add lecture
-						</a>
-					</div>
-				</div>
-			</c:if>
 		</div>
-	<!-- END LECTURES -->
-	
-	<!-- BEGIN AVAILABILITIES -->
-		<h3>Availability:</h3>
-		<div class="list table">
-			<div class="row header">
-				<div class="cell">
-					Date
-				</div>
-				<div class="cell">
-					Time
-				</div>
-			</div>
-			
-			<!-- BEGIN FOREACH -->
-				<div class="row">
-					<div class="cell">
-						20.03.2016
-					</div>
-					<div class="cell">
-						08:00 - 08:59
-					</div>
-				</div>
-			<!-- END FOREACH -->
-			<c:if test="${ownProfile}">
-				<div class="row">
-					<div class="cell">
-						<a class="button action" href="<%=request.getContextPath()%>/user/add-timeslots">
-							+ add time-slots
-						</a>
-					</div>
-				</div>
-			</c:if>
-		</div>
-	<!-- END AVAILABILITIES -->
-	
-	
-	</c:if>
-
-	<c:if test="${!user.isTutor && ownProfile}">	
-		<div>
-			<a href="<%=request.getContextPath()%>/user/become-tutor" class="button">
-				Become Tutor!
+		<c:if test="${ownProfile}">
+			<a class="button action" href="<%=request.getContextPath()%>/user/add-lecture">
+				+ add lecture
 			</a>
-		</div>
+		</c:if>
+	<!-- END LECTURES -->
+	<p></p>
+	<!-- BEGIN AVAILABILITIES -->
+			<c:set var="timeSlotListSettingTitle" value="Availability" />
+			<c:set var="timeSlotListSettingStatus" value="AVAILABLE" />
+			<c:set var="timeSlotListSettingFuture" value="${true}" />
+			<c:set var="timeSlotListSettingPast" value="${false}" />
+			<%@include file="includes/timeslot-list.jsp"%>
+	<!-- END AVAILABILITIES -->	
+	<p></p>
+	</c:if>
+	
+	<c:if test="${ownProfile}">
+	<!-- BEGIN REQUESTS -->
+			<c:set var="timeSlotListSettingTitle" value="Requests" />
+			<c:set var="timeSlotListSettingStatus" value="REQUESTED" />
+			<c:set var="timeSlotListSettingFuture" value="${true}" />
+			<c:set var="timeSlotListSettingPast" value="${false}" />
+			<%@include file="includes/timeslot-list.jsp"%>
+	<!-- END REQUESTS -->
+	<p></p>
+	<!-- BOOKED -->
+			<c:set var="timeSlotListSettingTitle" value="Booked" />
+			<c:set var="timeSlotListSettingStatus" value="ACCEPTED" />
+			<c:set var="timeSlotListSettingFuture" value="${true}" />
+			<c:set var="timeSlotListSettingPast" value="${false}" />
+			<%@include file="includes/timeslot-list.jsp"%>
+	<!-- END BOOKED -->
+	<p></p>
+	<!-- HISTORY -->
+			<c:set var="timeSlotListSettingTitle" value="History" />
+			<c:set var="timeSlotListSettingStatus" value="ACCEPTED" />
+			<c:set var="timeSlotListSettingFuture" value="${false}" />
+			<c:set var="timeSlotListSettingPast" value="${true}" />
+			<%@include file="includes/timeslot-list.jsp"%>
+	<!-- END HISTORY -->
 	</c:if>
 </div>
 <!-- END PROFIL DATA -->

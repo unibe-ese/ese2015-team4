@@ -23,12 +23,14 @@ import ch.ututor.pojos.AddTimeslotsForm;
 import ch.ututor.pojos.BecomeTutorForm;
 import ch.ututor.service.interfaces.AuthenticatedUserService;
 import ch.ututor.service.interfaces.ExceptionService;
+import ch.ututor.service.interfaces.TimeSlotService;
 import ch.ututor.service.interfaces.TutorService;
 
 @Controller
 public class TutorController {
 	
 	@Autowired 	private TutorService tutorService;
+	@Autowired 	private TimeSlotService timeSlotService;
 	@Autowired 	private AuthenticatedUserService authenticatedUserService;
 	@Autowired	private ExceptionService exceptionService;
 	
@@ -127,7 +129,7 @@ public class TutorController {
 		}
 		ModelAndView model = new ModelAndView( "user/add-timeslots" );
 		model.addObject( "addTimeslotsForm", new AddTimeslotsForm() );
-		model.addObject( "possibleTimeslots", tutorService.getPossibleTimeslots());
+		model.addObject( "possibleTimeslots", timeSlotService.getPossibleTimeslots());
 		
     	return model;
     }
@@ -148,7 +150,7 @@ public class TutorController {
 		ModelAndView model = new ModelAndView( "user/add-timeslots" );
 		if ( !result.hasErrors() ) {
 			try {
-				tutorService.addTimeSlots( addTimeslotsForm );
+				timeSlotService.addTimeSlots( addTimeslotsForm );
 				return new ModelAndView( "redirect:/user/profile" );
 			} catch ( CustomException e ) {
 				model = exceptionService.addException( model, e.getMessage() );
@@ -157,7 +159,7 @@ public class TutorController {
 			}
 		}
 		
-		model.addObject( "possibleTimeslots", tutorService.getPossibleTimeslots());
+		model.addObject( "possibleTimeslots", timeSlotService.getPossibleTimeslots());
     	return model;
 	}
 }

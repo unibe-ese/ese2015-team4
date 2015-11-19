@@ -65,6 +65,16 @@ a.button.action{
 	color:rgb(83,95,146);
 }
 
+a.button.green{
+	background-color:rgb(0, 136, 0);
+	color:white;
+}
+
+a.button.red{
+	background-color:rgb(255, 0, 0);
+	color:white;
+}
+
 a.button:hover, a.button.action:hover{
 	background-color:rgb(83,95,146);
 	color:rgb(250,251,252);

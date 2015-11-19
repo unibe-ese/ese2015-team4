@@ -23,7 +23,7 @@ import java.util.Date;
 ))
 
 @Entity
-public class Timeslot {
+public class TimeSlot {
 	public static enum Status {
 		AVAILABLE, REQUESTED, ACCEPTED
 	}
@@ -34,7 +34,6 @@ public class Timeslot {
 	
 	private Status status = Status.AVAILABLE;
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Date beginDateTime;
 	
 	@ManyToOne

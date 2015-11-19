@@ -11,6 +11,7 @@ import ch.ututor.exceptions.CustomException;
 import ch.ututor.model.User;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.ExceptionService;
+import ch.ututor.service.interfaces.TimeSlotService;
 import ch.ututor.service.interfaces.TutorService;
 import ch.ututor.service.interfaces.UserService;
 
@@ -20,6 +21,7 @@ public class ProfileViewController {
 	@Autowired 	 private AuthenticatedUserLoaderService authenticatedUserLoaderService;
 	@Autowired 	 private UserService userService;
 	@Autowired   private TutorService tutorService;
+	@Autowired   private TimeSlotService timeSlotService;
 	@Autowired   private ExceptionService exceptionService;
 	
 	/**
@@ -52,6 +54,7 @@ public class ProfileViewController {
     				model = exceptionService.addException( model, e.getMessage() );
     			}
     		}
+    		model.addObject( "timeSlotList", timeSlotService.getTimeSlotsByUser(user) );
     	}
         return model;
     }
@@ -70,7 +73,20 @@ public class ProfileViewController {
     	
     	if( action.equals( "deleteLecture" ) ){
     		tutorService.deleteTutorLecture( tutorLectureId );
+    	}else if( action.equals( "requestTimeSlot" ) ){
+    		//TODO: the authenticated user requested the timeslot with the id saved in objectId
+    		//check if state of timeslot AVAILABLE - if so save and send request message to tutor in timeslot otherwise throw exception
+    	}else if( action.equals( "deleteTimeSlot" ) ){
+    		//TODO: the authenticated user wants to delete the timeslot with the id saved in objectId
+    		//check if state of timeslot is AVAILABLE and tutor equals authenticated user - if so delete timeslot otherwise throw exception (or do nothing???)
+    	}else if( action.equals( "acceptTimeSlot" ) ){
+    		//TODO: the authenticated user wants to accept a request for the timeslot with the id saved in objectId
+    		//check if state of timeslot is REQUEST and tutor equals authenticated user - if so, add authenticated user as student and set state to ACCEPTED otherwise throw exception (or do nothing???)
+    	}else if( action.equals( "rejectTimeSlot" ) ){
+    		//TODO: the authenticated user wants to reject a request for the timeslot with the id saved in objectId
+    		//check if state of timeslot is REQUEST and tutor equals authenticated user - if so, set state to AVAILABLE otherwise throw exception (or do nothing???)
     	}
+    	
     	
     	ModelAndView model = new ModelAndView( "redirect:/user/profile" );
     	return model;

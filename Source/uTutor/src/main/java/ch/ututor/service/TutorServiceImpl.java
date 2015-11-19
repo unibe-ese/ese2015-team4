@@ -15,11 +15,11 @@ import ch.ututor.exceptions.custom.InvalidPriceException;
 import ch.ututor.exceptions.custom.NoLecturesFoundException;
 import ch.ututor.exceptions.custom.TutorLectureAlreadyExistsException;
 import ch.ututor.model.Lecture;
-import ch.ututor.model.Timeslot;
+import ch.ututor.model.TimeSlot;
 import ch.ututor.model.TutorLecture;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.LectureDao;
-import ch.ututor.model.dao.TimeslotDao;
+import ch.ututor.model.dao.TimeSlotDao;
 import ch.ututor.model.dao.TutorLectureDao;
 import ch.ututor.model.dao.UserDao;
 import ch.ututor.pojos.AddLectureForm;
@@ -35,7 +35,7 @@ public class TutorServiceImpl implements TutorService {
 	@Autowired	private UserDao userDao;
 	@Autowired	private LectureDao lectureDao;
 	@Autowired	private TutorLectureDao tutorLectureDao;
-	@Autowired	private TimeslotDao timeSlotDao;
+	@Autowired	private TimeSlotDao timeSlotDao;
 	
 	/**
 	 *	Adds the required information (price, description and first lecture)
@@ -204,72 +204,4 @@ public class TutorServiceImpl implements TutorService {
 		user.setIsTutor( hasLectures(user) );
 		userDao.save( user );
 	}
-	
-	
-	public List<String> getPossibleTimeslots(){
-		List<String> possibleTimeslots = new ArrayList<String>();
-		for(Integer i=6; i<23; i++){
-			String hour = i.toString();
-			
-			if(i < 10){
-				hour = "0" + i;
-			}
-			possibleTimeslots.add(hour + ":00 - " + hour + ":59");
-		}
-		return possibleTimeslots;
-	}
-
-	public List<Timeslot> addTimeSlots(AddTimeslotsForm addTimeSlotsForm) throws ParseException {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		
-		String selectedDateString = addTimeSlotsForm.getDate();
-		Date currentDate = new Date();
-		Date selectedDate;
-		
-		try{	
-			selectedDate = parseStringToDate( dateFormat, selectedDateString );
-		} catch ( ParseException e ){
-			throw new InvalidDateException( "The entered date is invalid!" );
-		}
-		
-		if ( selectedDate.after( currentDate ) ){
-			throw new InvalidDateException( "Please enter a date which is in the future!" );
-		}
-		
-		dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		List<Timeslot> timeSlots = new ArrayList<Timeslot>();
-		User tutor = authenticatedUserLoaderService.getAuthenticatedUser();
-		
-		for( String s: addTimeSlotsForm.getTimeslots() ){
-			Date date;
-			
-			date = parseStringToDate( dateFormat, selectedDateString + " " + s.substring( 0, 5 ) );			
-			
-			Timeslot timeSlot;
-			timeSlot = timeSlotDao.findByBeginDateTimeAndTutor( date, tutor);
-			
-			//TODO: refactor
-			if ( timeSlot == null ){
-				timeSlot = new Timeslot();
-				timeSlot.setBeginDateTime( date );
-				timeSlot.setTutor( tutor );
-				
-				timeSlot = timeSlotDao.save( timeSlot );
-			}
-			
-			timeSlots.add( timeSlot );
-			
-		}
-			
-		return timeSlots;
-	}
-	
-	private Date parseStringToDate( SimpleDateFormat simpleDateFormat, String dateToParse ) throws ParseException{
-		Date date;
-		
-		date = simpleDateFormat.parse( dateToParse );
-		
-		return date;
-	}
-	
 }

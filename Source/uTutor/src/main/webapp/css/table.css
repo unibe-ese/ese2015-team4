@@ -6,6 +6,14 @@
 	display:table-row;
 }
 
+.table.striped .row:nth-child(even){
+	background-color:rgb(212, 215, 228);
+}
+
+.row.unstriped{
+	background-color:transparent;
+}
+
 .cell{
 	display:table-cell;
 }
