@@ -1,3 +1,4 @@
+				
 				<h3><c:out value="${timeSlotListSettingTitle}"/></h3>
 				<div class="list table striped">
 				<div class="row header">
@@ -22,3 +23,4 @@
 					</c:if>
 				</div>
 				<c:set var="timeSlotHeaderShowed" value="${true}"/>
+				
