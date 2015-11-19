@@ -1,5 +1,11 @@
 package ch.ututor.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.ututor.exceptions.CustomException;
 import ch.ututor.pojos.AddLectureForm;
+import ch.ututor.pojos.AddTimeslotsForm;
 import ch.ututor.pojos.BecomeTutorForm;
 import ch.ututor.service.interfaces.AuthenticatedUserService;
 import ch.ututor.service.interfaces.ExceptionService;
@@ -104,6 +111,53 @@ public class TutorController {
 			}
 		}
 		
+    	return model;
+	}
+	
+	/**
+	 * @return	If the user's already tutor, the method returns a ModelAndView 
+	 * 			with an AddTimeslotForm to add availability. Otherwise a ModelAndView
+	 * 			to become tutor is returned.
+	 */
+	@RequestMapping( value = {"/user/add-timeslots"}, method = RequestMethod.GET )
+    public ModelAndView displayAddTimeslotForm() {
+		if( !authenticatedUserService.getIsTutor() ) {
+			return new ModelAndView( "redirect:/user/become-tutor" );
+		}
+		ModelAndView model = new ModelAndView( "user/add-timeslots" );
+		model.addObject( "addTimeslotsForm", new AddTimeslotsForm() );
+		model.addObject( "possibleTimeslots", tutorService.getPossibleTimeslots());
+		
+    	return model;
+    }
+	
+	/**
+	 * @return	A ModelAndView of the own profile if the lecture has been added correctly.
+	 * 			Otherwise a ModelAndView to add the availability again. If the current logged in user
+	 * 			isn't yet tutor, a ModelAndView to become tutor is returned.
+	 */
+	@RequestMapping( value = {"/user/add-timeslots"}, method = RequestMethod.POST )
+	public ModelAndView addTimeslots(	@Valid AddTimeslotsForm addTimeslotsForm, 
+									BindingResult result, 
+									RedirectAttributes redirectAttributes) {
+		if( !authenticatedUserService.getIsTutor() ) {
+			return new ModelAndView( "redirect:/user/become-tutor" );
+		}
+		
+		System.out.println(addTimeslotsForm.getDate());
+		
+		ModelAndView model = new ModelAndView( "user/add-timeslots" );
+		
+		if ( !result.hasErrors() ) {
+			try {
+				//tutorService.addTimeslots( addTimeslotsForm );
+				//return new ModelAndView( "redirect:/user/profile" );
+			} catch ( CustomException e ) {
+				model = exceptionService.addException( model, e.getMessage() );
+			}
+		}
+		
+		model.addObject( "possibleTimeslots", tutorService.getPossibleTimeslots());
     	return model;
 	}
 }

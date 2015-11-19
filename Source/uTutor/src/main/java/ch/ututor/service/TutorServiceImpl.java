@@ -1,5 +1,6 @@
 package ch.ututor.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -193,5 +194,18 @@ public class TutorServiceImpl implements TutorService {
 		User user = authenticatedUserLoaderService.getAuthenticatedUser();
 		user.setIsTutor( hasLectures(user) );
 		userDao.save( user );
+	}
+	
+	
+	public List<String> getPossibleTimeslots(){
+		List<String> possibleTimeslots = new ArrayList<String>();
+		for(int i=6; i<23; i++){
+			String hour = "0" + i;
+			if(i>9){
+				hour = "" + i;
+			}
+			possibleTimeslots.add(hour + ":00 - " + hour + ":59");
+		}
+		return possibleTimeslots;
 	}
 }

@@ -4,7 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
+
+@Table(
+		uniqueConstraints = @UniqueConstraint(
+				columnNames = {"lecture_id", "tutor_id"}
+))
 
 @Entity
 public class TutorLecture {
