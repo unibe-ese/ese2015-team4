@@ -10,17 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ch.ututor.exceptions.custom.InvalidDateException;
+import ch.ututor.exceptions.custom.TimeSlotException;
+import ch.ututor.model.Message;
 import ch.ututor.model.TimeSlot;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.TimeSlotDao;
 import ch.ututor.pojos.AddTimeslotsForm;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
+import ch.ututor.service.interfaces.MessageCenterService;
 import ch.ututor.service.interfaces.TimeSlotService;
 
 @Service
 public class TimeSlotServiceImpl implements TimeSlotService {
 	
 	@Autowired 	private AuthenticatedUserLoaderService authenticatedUserLoaderService;
+	@Autowired	private MessageCenterService messageCenterService;
 	@Autowired 	private TimeSlotDao timeSlotDao;
 	
 	public List<String> getPossibleTimeslots(){
@@ -94,5 +98,78 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 
 	public List<TimeSlot> getTimeSlotsByUser(User user) {
 		return timeSlotDao.findByTutorOrStudentOrderByBeginDateTimeAsc(user, user);
+	}
+
+	@Override
+	public TimeSlot requestForTimeSlot(long id) {
+		TimeSlot timeSlot = timeSlotDao.findById( id );
+		User student = authenticatedUserLoaderService.getAuthenticatedUser();
+		if( 
+				timeSlot != null
+				&& timeSlot.getStatus() == TimeSlot.Status.AVAILABLE
+				&& !student.equals( timeSlot.getTutor() )
+		){
+			
+			timeSlot.setStatus( TimeSlot.Status.REQUESTED );
+			timeSlot.setStudent( student );
+			timeSlotDao.save( timeSlot );
+			
+			String messageBody = "Hello "+timeSlot.getTutor().getFirstName() + "\n\n"
+							   + "I have made a request for an appointment.\n"
+					           + "Please checkout your profile.\n\n"
+							   + "Cheers\n"
+					           + student.getFirstName() + " " + student.getLastName();
+			
+			Message message = new Message();
+			message.setSender( student );
+			message.setReceiver( timeSlot.getTutor() );
+			message.setSubject( "New appointment request!" );
+			message.setMessage( messageBody );
+			messageCenterService.sendMessage( message );
+		}else{
+			throw new TimeSlotException( "The time-slot you wanted to request is no longer available!" );
+		}
+		return timeSlot;
+	}
+
+	@Override
+	public void deleteTimeSlot(long timeSlotId) {
+		TimeSlot timeSlot = timeSlotDao.findById( timeSlotId );
+		if( timeSlot != null && authenticatedUserLoaderService.getAuthenticatedUser().equals(timeSlot.getTutor())){
+			if( timeSlot.getStatus() !=  TimeSlot.Status.AVAILABLE){
+				throw new TimeSlotException( "The time-slot you wanted to delete has no longer AVAILABLE as state." );
+			}
+			
+			timeSlotDao.delete(timeSlot);
+		}
+	}
+
+	@Override
+	public TimeSlot acceptTimeSlotRequest(long timeSlotId) {
+		TimeSlot timeSlot = timeSlotDao.findById( timeSlotId );
+		if( timeSlot != null && authenticatedUserLoaderService.getAuthenticatedUser().equals(timeSlot.getTutor())){
+			if( timeSlot.getStatus() !=  TimeSlot.Status.REQUESTED){
+				throw new TimeSlotException( "The time-slot request you wanted to accept has no longer REQUESTED as state." );
+			}
+			
+			timeSlot.setStatus(TimeSlot.Status.ACCEPTED);
+			timeSlotDao.save(timeSlot);
+		}
+		return timeSlot;
+	}
+
+	@Override
+	public TimeSlot rejectTimeSlotRequest(long timeSlotId) {
+		TimeSlot timeSlot = timeSlotDao.findById( timeSlotId );
+		if( timeSlot != null && authenticatedUserLoaderService.getAuthenticatedUser().equals(timeSlot.getTutor())){
+			if( timeSlot.getStatus() !=  TimeSlot.Status.REQUESTED){
+				throw new TimeSlotException( "The time-slot request you wanted to reject has no longer REQUESTED as state." );
+			}
+			
+			timeSlot.setStatus(TimeSlot.Status.AVAILABLE);
+			timeSlot.setStudent(null);
+			timeSlotDao.save(timeSlot);
+		}
+		return timeSlot;
 	}
 }

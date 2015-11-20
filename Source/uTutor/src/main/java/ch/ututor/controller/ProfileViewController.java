@@ -29,6 +29,61 @@ public class ProfileViewController {
 	 */
     @RequestMapping( value = { "/user/profile" }, method = RequestMethod.GET )
     public ModelAndView viewProfile( @RequestParam( value = "userId", required = false ) Long userId ) {
+    	return createUserProfileView( userId );
+    }
+    
+    /**
+     *	@param action	Should be 'deleteLecture'
+     *	@return ModelAndView of the user's profile
+     *	@throws NumberFormatException if objectId is not a valid Long
+     */
+    @RequestMapping( value = "/user/profile", method = RequestMethod.POST )
+    public ModelAndView handleProfileActions(	@RequestParam( "action" ) String action, 
+    												@RequestParam( "objectId" ) String objectId,  @RequestParam( value = "userId", required = false ) Long userId ) {
+    	
+    	
+    	if( userId== null ){
+    		userId=authenticatedUserLoaderService.getAuthenticatedUser().getId();
+    	}
+    	ModelAndView model = new ModelAndView( "redirect:/user/profile/?userId=" + userId );
+ 
+    	long requestId;
+    	try{
+    		requestId = Long.parseLong( objectId );
+    	}catch( NumberFormatException e ){
+    		return exceptionService.addException(null , e.getMessage());
+    	}
+    	
+    	try{
+    		if( action.equals( "deleteLecture" ) ){
+    			
+    			tutorService.deleteTutorLecture( requestId );
+    			
+    		}else if( action.equals( "requestTimeSlot" ) ){
+    			
+    			timeSlotService.requestForTimeSlot( requestId );
+    			
+    		}else if( action.equals( "deleteTimeSlot" ) ){
+    			
+    			timeSlotService.deleteTimeSlot( requestId );
+    			
+    		}else if( action.equals( "acceptTimeSlot" ) ){
+    			
+    			timeSlotService.acceptTimeSlotRequest( requestId );
+
+    		}else if( action.equals( "rejectTimeSlot" ) ){
+    			
+    			timeSlotService.rejectTimeSlotRequest( requestId );
+    			
+    		}
+    	}catch( CustomException e ){
+    		model = createUserProfileView( userId );
+    		return exceptionService.addException(model, e.getMessage() );
+    	}
+    	return model;
+    }
+    
+    private ModelAndView createUserProfileView( Long userId ){
     	ModelAndView model = new ModelAndView( "user/profile" );
     	User user = null;
     	User authUser = authenticatedUserLoaderService.getAuthenticatedUser();
@@ -41,7 +96,7 @@ public class ProfileViewController {
     		try {
     			user = userService.load( userId );
     		} catch(CustomException e) {
-    			model = exceptionService.addException( null, e.getMessage() );
+    			return exceptionService.addException( null, e.getMessage() );
     		}
     	}
     	
@@ -57,37 +112,5 @@ public class ProfileViewController {
     		model.addObject( "timeSlotList", timeSlotService.getTimeSlotsByUser(user) );
     	}
         return model;
-    }
-    
-    /**
-     *	@param action	Should be 'deleteLecture'
-     *	@return ModelAndView of the user's profile
-     *	@throws NumberFormatException if objectId is not a valid Long
-     */
-    @RequestMapping( value = "/user/profile", method = RequestMethod.POST )
-    public ModelAndView handleProfileActions(	@RequestParam( "action" ) String action, 
-    												@RequestParam( "objectId" ) String objectId ) {
-    	
-    	Long tutorLectureId = Long.parseLong( objectId );
-    	
-    	if( action.equals( "deleteLecture" ) ){
-    		tutorService.deleteTutorLecture( tutorLectureId );
-    	}else if( action.equals( "requestTimeSlot" ) ){
-    		//TODO: the authenticated user requested the timeslot with the id saved in objectId
-    		//check if state of timeslot AVAILABLE - if so save and send request message to tutor in timeslot otherwise throw exception
-    	}else if( action.equals( "deleteTimeSlot" ) ){
-    		//TODO: the authenticated user wants to delete the timeslot with the id saved in objectId
-    		//check if state of timeslot is AVAILABLE and tutor equals authenticated user - if so delete timeslot otherwise throw exception (or do nothing???)
-    	}else if( action.equals( "acceptTimeSlot" ) ){
-    		//TODO: the authenticated user wants to accept a request for the timeslot with the id saved in objectId
-    		//check if state of timeslot is REQUEST and tutor equals authenticated user - if so, add authenticated user as student and set state to ACCEPTED otherwise throw exception (or do nothing???)
-    	}else if( action.equals( "rejectTimeSlot" ) ){
-    		//TODO: the authenticated user wants to reject a request for the timeslot with the id saved in objectId
-    		//check if state of timeslot is REQUEST and tutor equals authenticated user - if so, set state to AVAILABLE otherwise throw exception (or do nothing???)
-    	}
-    	
-    	
-    	ModelAndView model = new ModelAndView( "redirect:/user/profile" );
-    	return model;
     }
 }

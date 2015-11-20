@@ -14,4 +14,6 @@ public interface TimeSlotDao extends CrudRepository<TimeSlot, Long> {
 	
 	public List<TimeSlot> findByTutorOrStudentOrderByBeginDateTimeAsc( User tutor, User student );
 
+	public TimeSlot findById( long id );
+
 }

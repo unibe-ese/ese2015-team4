@@ -7,7 +7,7 @@
 }
 
 .table.striped .row:nth-child(even){
-	background-color:rgb(212, 215, 228);
+	background-color:rgb(233, 235, 241);
 }
 
 .row.unstriped{

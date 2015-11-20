@@ -18,4 +18,12 @@ public interface TimeSlotService {
 	
 	public List<String> getPossibleTimeslots();
 	
+	public TimeSlot requestForTimeSlot( long timeSlotId );
+	
+	public void deleteTimeSlot( long timeSlotId );
+	
+	public TimeSlot acceptTimeSlotRequest( long timeSlotId );
+	
+	public TimeSlot rejectTimeSlotRequest( long timeSlotId );
+	
 }
