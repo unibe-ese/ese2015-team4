@@ -1,3 +1,7 @@
+h1 img.action-icon{
+	float:right; margin:47px 0px 0px 15px;
+}
+
 .action-icon{
 	cursor:pointer;
 	-webkit-transition: opacity 250ms linear;
@@ -12,6 +16,33 @@
 	opacity:1;
 }
 
-h1 img.action-icon{
-	float:right; margin:47px 0px 0px 15px;
+.star-container{
+	width:145px;
+}
+
+.star{
+	float:left;
+	margin-right:5px;
+	width:24px;
+	height:24px;
+	background-image:url('/ututor/img/star_full.png');
+}
+
+.star.clickable{
+	cursor:pointer;
+}
+
+.star.empty{
+	background-image:url('/ututor/img/star_empty.png');
+}
+
+.star.unrated{
+	opacity:0.25;
+	background-image:url('/ututor/img/star_empty.png');
+}
+
+.star.clickable:hover{
+	opacity:inherit;
+	margin-top:-2px;
+	background-image:url('/ututor/img/star_full.png');
 }

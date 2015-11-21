@@ -19,6 +19,7 @@ import ch.ututor.pojos.AddTimeslotsForm;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.MessageCenterService;
 import ch.ututor.service.interfaces.TimeSlotService;
+import ch.ututor.utils.TimeHelper;
 
 @Service
 public class TimeSlotServiceImpl implements TimeSlotService {
@@ -44,7 +45,6 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		
 		String selectedDateString = addTimeSlotsForm.getDate();
-		Date currentDate = new Date();
 		Date selectedDate;
 		
 		try{	
@@ -53,7 +53,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 			throw new InvalidDateException( "The entered date is invalid!" );
 		}
 		
-		if ( currentDate.after( selectedDate ) ){
+		if ( TimeHelper.isPast( selectedDate ) ){
 			throw new InvalidDateException( "Please enter a date which is in the future!" );
 		}
 		
@@ -109,7 +109,9 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 				&& timeSlot.getStatus() == TimeSlot.Status.AVAILABLE
 				&& !student.equals( timeSlot.getTutor() )
 		){
-			
+			if(TimeHelper.isPast(timeSlot.getBeginDateTime())){
+				throw new TimeSlotException("You can not request a past time-slot!");
+			}
 			timeSlot.setStatus( TimeSlot.Status.REQUESTED );
 			timeSlot.setStudent( student );
 			timeSlotDao.save( timeSlot );
@@ -151,6 +153,9 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 			if( timeSlot.getStatus() !=  TimeSlot.Status.REQUESTED){
 				throw new TimeSlotException( "The time-slot request you wanted to accept has no longer REQUESTED as state." );
 			}
+			if(TimeHelper.isPast(timeSlot.getBeginDateTime())){
+				throw new TimeSlotException("You can not accept a past time-slot request!");
+			}
 			
 			timeSlot.setStatus(TimeSlot.Status.ACCEPTED);
 			timeSlotDao.save(timeSlot);
@@ -171,5 +176,35 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 			timeSlotDao.save(timeSlot);
 		}
 		return timeSlot;
+	}
+
+	@Override
+	public TimeSlot rateTimeSlot(long timeSlotId, int rating) {
+		TimeSlot timeSlot = timeSlotDao.findById( timeSlotId );
+		if( timeSlot != null && authenticatedUserLoaderService.getAuthenticatedUser().equals(timeSlot.getStudent())){
+			if(TimeHelper.isFuture(timeSlot.getBeginDateTime())){
+				throw new TimeSlotException("You can not rate a future time-slot!");
+			}
+			if(rating < 1 || rating > 5 ){
+				throw new TimeSlotException("Invalid rating. The value must been between 1 and 5!");
+			}
+			timeSlot.setRating(rating);
+			timeSlotDao.save(timeSlot);
+		}
+		return timeSlot;
+	}
+
+	@Override
+	public Integer getTimeSlotAvgRatingByTutor(User tutor) {
+		Integer rating = null;
+		List<TimeSlot> timeSlots = timeSlotDao.findByTutorAndRatingNotNull(tutor);
+		int total = 0;
+		for(TimeSlot timeSlot : timeSlots){
+			total += timeSlot.getRating();
+		}
+		if(timeSlots.size()>0){
+			rating = total/timeSlots.size();
+		}
+		return rating;
 	}
 }

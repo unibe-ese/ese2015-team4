@@ -42,6 +42,10 @@ public class TimeSlot {
 	@ManyToOne
 	private User student;
 	
+	//Use of Integer instead of int because this can be null.
+	//We need null instead of 0 in DB for correct AVG calculation.
+	private Integer rating;
+	
 	public long getId() {
 		return id;
 	}
@@ -80,5 +84,13 @@ public class TimeSlot {
 	
 	public void setStudent(User student) {
 		this.student = student;
+	}
+
+	public Integer getRating() {
+		return rating;
+	}
+
+	public void setRating(Integer rating) {
+		this.rating = rating;
 	}
 }

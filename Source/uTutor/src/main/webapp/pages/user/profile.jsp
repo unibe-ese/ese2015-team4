@@ -94,6 +94,25 @@
 	    			</div>
 				</div>
 				<div class="row">
+					<div class="cell key">
+						Rating
+					</div>
+	    			<div class="cell value" style="font-weight:normal">
+	    				<c:choose>
+	    					<c:when test="${tutorRating == null}">
+	    						<i>Not rated yet.</i>
+	    					</c:when>
+	    					<c:otherwise>
+								<div class="star-container" style="width:145px">
+									<c:forEach var="i" begin="1" end="5">
+										<div class="star clickable<c:if test="${i > tutorRating}"> empty</c:if>"></div>
+									</c:forEach>
+								</div>
+	    					</c:otherwise>
+	    				</c:choose>
+	    			</div>
+				</div>
+				<div class="row">
 					<div class="cell key multiline" style="padding-top:15px">
 						Description
 					</div>

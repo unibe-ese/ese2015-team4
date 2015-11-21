@@ -39,7 +39,7 @@ public class ProfileViewController {
      */
     @RequestMapping( value = "/user/profile", method = RequestMethod.POST )
     public ModelAndView handleProfileActions(	@RequestParam( "action" ) String action, 
-    												@RequestParam( "objectId" ) String objectId,  @RequestParam( value = "userId", required = false ) Long userId ) {
+    												@RequestParam( "objectId" ) String objectIdString,  @RequestParam( value = "userId", required = false ) Long userId ) {
     	
     	
     	if( userId== null ){
@@ -47,9 +47,21 @@ public class ProfileViewController {
     	}
     	ModelAndView model = new ModelAndView( "redirect:/user/profile/?userId=" + userId );
  
-    	long requestId;
+    	long objectId;
+    	int  rating = 0;
+    	
+    	if( objectIdString.contains("-") ){
+    		String[] arr = objectIdString.split("-");
+    		objectIdString = arr[0];
+    		try{
+        		rating = Integer.parseInt( arr[1] );
+        	}catch( NumberFormatException e ){
+        		return exceptionService.addException(null , e.getMessage());
+        	}
+    	}
+
     	try{
-    		requestId = Long.parseLong( objectId );
+    		objectId = Long.parseLong( objectIdString );
     	}catch( NumberFormatException e ){
     		return exceptionService.addException(null , e.getMessage());
     	}
@@ -57,23 +69,27 @@ public class ProfileViewController {
     	try{
     		if( action.equals( "deleteLecture" ) ){
     			
-    			tutorService.deleteTutorLecture( requestId );
+    			tutorService.deleteTutorLecture( objectId );
     			
     		}else if( action.equals( "requestTimeSlot" ) ){
     			
-    			timeSlotService.requestForTimeSlot( requestId );
+    			timeSlotService.requestForTimeSlot( objectId );
     			
     		}else if( action.equals( "deleteTimeSlot" ) ){
     			
-    			timeSlotService.deleteTimeSlot( requestId );
+    			timeSlotService.deleteTimeSlot( objectId );
     			
     		}else if( action.equals( "acceptTimeSlot" ) ){
     			
-    			timeSlotService.acceptTimeSlotRequest( requestId );
+    			timeSlotService.acceptTimeSlotRequest( objectId );
 
     		}else if( action.equals( "rejectTimeSlot" ) ){
     			
-    			timeSlotService.rejectTimeSlotRequest( requestId );
+    			timeSlotService.rejectTimeSlotRequest( objectId );
+    			
+    		}else if( action.equals( "rateTimeSlot" ) ){
+    			
+    			timeSlotService.rateTimeSlot( objectId, rating );
     			
     		}
     	}catch( CustomException e ){
@@ -108,6 +124,7 @@ public class ProfileViewController {
     			} catch(CustomException e) {
     				model = exceptionService.addException( model, e.getMessage() );
     			}
+        		model.addObject( "tutorRating", timeSlotService.getTimeSlotAvgRatingByTutor(user) );
     		}
     		model.addObject( "timeSlotList", timeSlotService.getTimeSlotsByUser(user) );
     	}

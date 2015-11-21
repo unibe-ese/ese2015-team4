@@ -26,4 +26,8 @@ public interface TimeSlotService {
 	
 	public TimeSlot rejectTimeSlotRequest( long timeSlotId );
 	
+	public TimeSlot rateTimeSlot( long timeSlotId, int rating );
+	
+	public Integer getTimeSlotAvgRatingByTutor( User tutor );
+	
 }

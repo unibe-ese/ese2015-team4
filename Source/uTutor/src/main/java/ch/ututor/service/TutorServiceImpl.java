@@ -17,6 +17,7 @@ import ch.ututor.model.dao.UserDao;
 import ch.ututor.pojos.AddLectureForm;
 import ch.ututor.pojos.BecomeTutorForm;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
+import ch.ututor.service.interfaces.TimeSlotService;
 import ch.ututor.service.interfaces.TutorService;
 
 @Service
@@ -26,6 +27,8 @@ public class TutorServiceImpl implements TutorService {
 	@Autowired	private UserDao userDao;
 	@Autowired	private LectureDao lectureDao;
 	@Autowired	private TutorLectureDao tutorLectureDao;
+	@Autowired	private TimeSlotService timeSlotService;
+	
 	/**
 	 *	Adds the required information (price, description and first lecture)
 	 *	to the user profile so that he becomes a tutor.

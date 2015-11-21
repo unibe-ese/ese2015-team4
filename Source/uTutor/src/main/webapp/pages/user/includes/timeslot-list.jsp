@@ -48,31 +48,49 @@
 								<fmt:formatDate value="${timeSlot.beginDateTime}" pattern="HH" />:00 - <fmt:formatDate value="${timeSlot.beginDateTime}" pattern="HH" />:59
 							</div>
 							<div class="cell" style="text-align:right">
-							<c:choose>
-								<c:when test="${ownProfile}">
-									<c:if test="${timeSlotListSettingStatus == 'AVAILABLE'}">
-					    					<img class="action-icon" src="<%=request.getContextPath()%>/img/delete.png" onClick="hiddenAction('deleteTimeSlot',<c:out value="${timeSlot.id}"/>);" />
-									</c:if>
-									<c:if test="${timeSlotListSettingStatus == 'REQUESTED' && user.id == timeSlot.tutor.id}">
-					    					<a class="button action green" href="javascript:void(0);" onClick="hiddenAction('acceptTimeSlot',<c:out value="${timeSlot.id}"/>);">
-												accept
-											</a> 
-											<a class="button action red" href="javascript:void(0);" onClick="hiddenAction('rejectTimeSlot',<c:out value="${timeSlot.id}"/>);">
-												reject
-											</a>
-									</c:if>
-									<c:if test="${ownProfile && user.isTutor && user.id == timeSlot.tutor.id && timeSlotListSettingStatus == 'ACCEPTED' && timeSlot.beginDateTime < now}">
-										CHF <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${user.price}" />
-										<c:set var="billableHours" value="${billableHours+1}"/>
-									</c:if>
-								</c:when>
-								<c:otherwise>
-									<c:if test="${timeSlotListSettingStatus == 'AVAILABLE'}">
-					    					<a class="button action" href="javascript:void(0);" onClick="hiddenAction('requestTimeSlot',<c:out value="${timeSlot.id}"/>);">
-												send request
-											</a> 
-									</c:if>
-								</c:otherwise>
+								<c:choose>
+									<c:when test="${ownProfile}">
+										<c:if test="${timeSlotListSettingStatus == 'AVAILABLE'}">
+						    					<img class="action-icon" src="<%=request.getContextPath()%>/img/delete.png" onClick="hiddenAction('deleteTimeSlot',<c:out value="${timeSlot.id}"/>);" />
+										</c:if>
+										<c:if test="${timeSlotListSettingStatus == 'REQUESTED' && user.id == timeSlot.tutor.id}">
+						    					<a class="button action green" href="javascript:void(0);" onClick="hiddenAction('acceptTimeSlot',<c:out value="${timeSlot.id}"/>);">
+													accept
+												</a> 
+												<a class="button action red" href="javascript:void(0);" onClick="hiddenAction('rejectTimeSlot',<c:out value="${timeSlot.id}"/>);">
+													reject
+												</a>
+										</c:if>
+										<c:if test="${user.isTutor && user.id == timeSlot.tutor.id && timeSlotListSettingStatus == 'ACCEPTED' && timeSlot.beginDateTime < now}">
+											CHF <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${user.price}" />
+											<c:set var="billableHours" value="${billableHours+1}"/>
+										</c:if>
+										<c:if test="${user.id == timeSlot.student.id && timeSlotListSettingStatus == 'ACCEPTED' && timeSlot.beginDateTime < now}">
+											<div class="star-container" style="width:145px">
+												<c:forEach var="i" begin="1" end="5">
+													<div class="star clickable
+														<c:choose>
+															<c:when test="${timeSlot.rating == null}">
+																 unrated
+															</c:when>
+															<c:otherwise>
+																<c:if test="${i > timeSlot.rating}">
+																	 empty
+																</c:if>
+															</c:otherwise>
+														</c:choose>
+													" onClick="hiddenAction('rateTimeSlot', '<c:out value="${timeSlot.id}-${i}"/>');"></div>
+												</c:forEach>
+											</div>
+										</c:if>
+									</c:when>
+									<c:otherwise>
+										<c:if test="${timeSlotListSettingStatus == 'AVAILABLE'}">
+						    					<a class="button action" href="javascript:void(0);" onClick="hiddenAction('requestTimeSlot',<c:out value="${timeSlot.id}"/>);">
+													send request
+												</a> 
+										</c:if>
+									</c:otherwise>
 								</c:choose>
 							</div>
 						</div>
