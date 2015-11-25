@@ -23,7 +23,7 @@ public class SearchServiceImpl implements SearchService {
 	public List<TutorLecture> searchByLecture( String query ) throws NoResultFoundException {
 		assert ( query != null );
 		
-		List<TutorLecture> lectures = tutorLectureDao.findByLectureNameLikeOrderByLectureName( '%' + query + '%' );
+		List<TutorLecture> lectures = tutorLectureDao.findByLectureNameLikeOrderByLectureNameAscTutorRatingDesc( '%' + query + '%' );
 		
 		if( lectures.size() == 0 ) {
 			throw new NoResultFoundException( "No lectures found." );

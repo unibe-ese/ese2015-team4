@@ -34,6 +34,8 @@ public class User{
 	
 	private Float price = 0F;
 	
+	private Integer rating;
+	
 	public Long getId(){
 		return id;
 	}
@@ -140,5 +142,13 @@ public class User{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public Integer getRating() {
+		return rating;
+	}
+
+	public void setRating(Integer rating) {
+		this.rating = rating;
 	}
 }

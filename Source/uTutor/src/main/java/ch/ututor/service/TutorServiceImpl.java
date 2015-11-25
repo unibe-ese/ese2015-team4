@@ -196,4 +196,13 @@ public class TutorServiceImpl implements TutorService {
 		user.setIsTutor( hasLectures(user) );
 		userDao.save( user );
 	}
+
+	@Override
+	public User updateTutorRating(User tutor, Integer rating) {
+		if( tutor.getIsTutor() ){
+			tutor.setRating( rating );
+			tutor = userDao.save( tutor );
+		}
+		return tutor;
+	}
 }

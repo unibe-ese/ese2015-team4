@@ -22,14 +22,8 @@
 					<div class="price">CHF <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${result.tutor.price}" />/h</div>
 					<div class="clear"></div>
 				</div>
-				<c:forEach var="i" begin="1" end="5">
-					<c:if test="${i <= rating}">
-						<img src="<%=request.getContextPath()%>/img/star_full.png"/>
-					</c:if>
-					<c:if test="${i > rating}">
-						<img src="<%=request.getContextPath()%>/img/star_empty.png"/>
-					</c:if>
-				</c:forEach>
+				<c:set var="rating" value="${result.tutor.rating}" />
+	    		<%@include file="includes/rating.jsp"%>
 			</div>
 		</div>
 	</c:forEach>

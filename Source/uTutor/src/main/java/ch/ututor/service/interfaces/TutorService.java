@@ -17,7 +17,9 @@ public interface TutorService {
 	
 	public void deleteTutorLecture( Long lectureId );
 	
-	public boolean hasLectures(User tutor);
+	public User updateTutorRating( User tutor, Integer rating );
+	
+	public boolean hasLectures( User tutor );
 	
 	public BecomeTutorForm preFillBecomeTutorForm( BecomeTutorForm becomeTutorForm );
 }

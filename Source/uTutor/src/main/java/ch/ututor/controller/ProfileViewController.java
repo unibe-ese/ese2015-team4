@@ -124,7 +124,6 @@ public class ProfileViewController {
     			} catch(CustomException e) {
     				model = exceptionService.addException( model, e.getMessage() );
     			}
-        		model.addObject( "tutorRating", timeSlotService.getTimeSlotAvgRatingByTutor(user) );
     		}
     		model.addObject( "timeSlotList", timeSlotService.getTimeSlotsByUser(user) );
     	}

@@ -19,6 +19,7 @@ import ch.ututor.pojos.AddTimeslotsForm;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.MessageCenterService;
 import ch.ututor.service.interfaces.TimeSlotService;
+import ch.ututor.service.interfaces.TutorService;
 import ch.ututor.utils.TimeHelper;
 
 @Service
@@ -27,6 +28,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 	@Autowired 	private AuthenticatedUserLoaderService authenticatedUserLoaderService;
 	@Autowired	private MessageCenterService messageCenterService;
 	@Autowired 	private TimeSlotDao timeSlotDao;
+	@Autowired  private TutorService tutorService;
 	
 	public List<String> getPossibleTimeslots(){
 		List<String> possibleTimeslots = new ArrayList<String>();
@@ -190,6 +192,8 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 			}
 			timeSlot.setRating(rating);
 			timeSlotDao.save(timeSlot);
+			User tutor = timeSlot.getTutor();
+			tutorService.updateTutorRating(tutor, getTimeSlotAvgRatingByTutor( tutor ));
 		}
 		return timeSlot;
 	}
