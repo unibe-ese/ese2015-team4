@@ -137,6 +137,15 @@ public class TutorServiceTest {
 		tutorService.becomeTutor(becomeTutorForm);
 	}
 	
+	@Test
+	public void testUpdateTutorRating(){
+		User tutorUser = new User();
+		Integer rating = 3;
+		tutorUser.setIsTutor(true);
+		tutorUser = tutorService.updateTutorRating(tutorUser, rating);
+		assertEquals(rating, tutorUser.getRating());
+	}
+	
 	
 	private void setupEmptyTutorLectures() {
 		authLectures = new ArrayList<TutorLecture>();

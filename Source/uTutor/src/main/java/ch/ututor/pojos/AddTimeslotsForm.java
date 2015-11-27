@@ -1,14 +1,10 @@
 package ch.ututor.pojos;
 
-import java.util.Date;
 import java.util.List;
-
-import javax.validation.constraints.Future;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
 
 public class AddTimeslotsForm {
 	@NotBlank( message = "Please enter a valid date!" )

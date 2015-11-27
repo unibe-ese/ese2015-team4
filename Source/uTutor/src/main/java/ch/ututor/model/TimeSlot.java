@@ -12,9 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.Date;
 
 @Table(

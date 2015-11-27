@@ -102,7 +102,7 @@ public class ProfileViewControllerTest {
 					.param("action", "deleteLecture")
 					.param("objectId", tutorLectures.get(0).getId().toString()))
 					.andExpect(status().is(302))
-					.andExpect(redirectedUrl("/user/profile"));
+					.andExpect(redirectedUrl("/user/profile/?userId=1"));
 		
 		this.mockMvc.perform(get("/user/profile"))		
 			.andExpect(status().isOk())

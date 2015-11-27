@@ -214,20 +214,6 @@ public class MessageCenterControllerTest {
 				.andExpect(model().attributeHasFieldErrors("newMessageForm", "subject"))
 				.andExpect(model().attributeHasFieldErrors("newMessageForm", "message"));
 	}
-	
-	@Test
-	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
-	public void testInvalidReplyMessageForm() throws Exception{
-		this.mockMvc
-			.perform(post("/user/messagecenter/reply")
-				.param("receiverId", receiver.getId().toString())
-				.param("receiverDisplayName", receiver.getFirstName() + " " +receiver.getLastName())
-				.param("subject", "")
-				.param("message", ""))
-				.andExpect(forwardedUrl("/pages/user/new-message.jsp"))
-				.andExpect(model().attributeHasFieldErrors("newMessageForm", "subject"))
-				.andExpect(model().attributeHasFieldErrors("newMessageForm", "message"));
-	}
 
 	@Test
 	@WithMockUser(username = "fred.weasley@hogwarts.com", roles = { "USER" })
