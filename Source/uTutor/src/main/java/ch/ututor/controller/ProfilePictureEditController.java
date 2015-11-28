@@ -58,7 +58,7 @@ public class ProfilePictureEditController {
             } catch( CustomException e ) {
                	model = exceptionService.addException( model, e.getMessage() );
             } catch( IOException e ) {
-            	model = exceptionService.addException( model, e.getMessage() );
+            	model = exceptionService.addException( e.getMessage() );
             }
     	} else if ( action.equals( "delete" ) ) {
     		authenticatedUserService.removeProfilePicture();

@@ -86,7 +86,7 @@ public class MessageCenterController {
         	model.addObject( "newMessageForm" , messageCenterService.prefillNewMessageForm( receiverId ));
         	return model;
         } catch( CustomException e ) {
-        	return exceptionService.addException( null, e.getMessage() );
+        	return exceptionService.addException( e.getMessage() );
         }
     }
 	
@@ -105,9 +105,9 @@ public class MessageCenterController {
         	model.addObject( "newMessageForm" , messageCenterService.prefillReplyMessageForm( messageId ) );
         	return model;
         } catch( MessageNotFoundException e ) {
-        	return exceptionService.addException( null, e.getMessage() );
+        	return exceptionService.addException( e.getMessage() );
         } catch( UserNotFoundException e ) {
-        	return exceptionService.addException( null, e.getMessage() );
+        	return exceptionService.addException( e.getMessage() );
         }
     }
 	
@@ -127,7 +127,7 @@ public class MessageCenterController {
 				messageCenterService.sendMessage( newMessageForm );
 				return new ModelAndView( "redirect:/user/messagecenter/?view=outbox" );
 			} catch( UserNotFoundException e ) {
-		        return exceptionService.addException( null, e.getMessage() );
+		        return exceptionService.addException( e.getMessage() );
 		    }
 		}
 		ModelAndView model = new ModelAndView( "user/new-message" );

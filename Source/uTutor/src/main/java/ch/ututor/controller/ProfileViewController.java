@@ -56,14 +56,14 @@ public class ProfileViewController {
     		try{
         		rating = Integer.parseInt( arr[1] );
         	}catch( NumberFormatException e ){
-        		return exceptionService.addException(null , e.getMessage());
+        		return exceptionService.addException(e.getMessage());
         	}
     	}
 
     	try{
     		objectId = Long.parseLong( objectIdString );
     	}catch( NumberFormatException e ){
-    		return exceptionService.addException(null , e.getMessage());
+    		return exceptionService.addException(e.getMessage());
     	}
     	
     	try{
@@ -112,7 +112,7 @@ public class ProfileViewController {
     		try {
     			user = userService.load( userId );
     		} catch(CustomException e) {
-    			return exceptionService.addException( null, e.getMessage() );
+    			return exceptionService.addException( e.getMessage() );
     		}
     	}
     	

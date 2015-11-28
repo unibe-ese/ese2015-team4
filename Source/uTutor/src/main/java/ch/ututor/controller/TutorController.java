@@ -150,7 +150,7 @@ public class TutorController {
 			} catch ( CustomException e ) {
 				model = exceptionService.addException( model, e.getMessage() );
 			} catch ( ParseException e ) {
-				model = exceptionService.addException( null, e.getMessage() );
+				model = exceptionService.addException( e.getMessage() );
 			}
 		}
 		
