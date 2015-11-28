@@ -1,9 +1,29 @@
 <%@include file="includes/header.jsp"%>
+<h1>Searched for 
+<c:choose>
+	<c:when test="${query!=''}">
+		&quot;<c:out value="${query}" />&quot;
+	</c:when>
+	<c:otherwise>
+		all lectures
+	</c:otherwise>
+</c:choose></h1>
 
-<!-- TEMP RATING VALUE -->
-<c:set var="rating" scope="page" value="${4}"/>
-
-<h1>Searched for &quot;<c:out value="${query}" />&quot;</h1>
+<c:if test="${exception_message == null}">
+	<form method="get" name="searchsort">
+	<input type="hidden" id="query" name="query" value="<c:out value="${query}"/>"/>
+	<input type="hidden" id="sort" name="sort" value="<c:out value="${sort}"/>"/>
+	</form>
+	<p>
+		Sort by 
+		<select onChange="document.getElementById('sort').value=this.options[this.selectedIndex].value;document.searchsort.submit();">
+			<option value="lecture.name"<c:if test="${sort == 'lecture.name'}"> selected</c:if>>lecture name</option>
+			<option value="tutor.rating"<c:if test="${sort == 'tutor.rating'}"> selected</c:if>>tutor rating</option>
+			<option value="grade"<c:if test="${sort == 'grade'}"> selected</c:if>>tutor grade</option>
+			<option value="tutor.price"<c:if test="${sort == 'tutor.price'}"> selected</c:if>>tutor price</option>
+		</select>
+	</p>
+</c:if>
 
 <%@include file="includes/exception.jsp"%>
 

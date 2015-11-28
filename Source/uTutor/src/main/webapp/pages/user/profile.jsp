@@ -2,7 +2,7 @@
 <jsp:useBean id="now" class="java.util.Date"/>
 
 <c:if test="${ownProfile || user.isTutor}">
-	<%@include file="includes/hidden-actions.jsp"%>
+	<%@include file="../includes/hidden-actions.jsp"%>
 </c:if>
 
 <h1><c:out value="${user.firstName}" /> <c:out value="${user.lastName}" /></h1>

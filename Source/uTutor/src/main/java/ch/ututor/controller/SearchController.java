@@ -21,13 +21,15 @@ public class SearchController {
 	 *					if no lectures are found.
 	 */
 	@RequestMapping( "/search" )
-    public ModelAndView search( @RequestParam( value = "query" ) String query ) {
+    public ModelAndView search( @RequestParam( value = "query" ) String query,
+    		@RequestParam(value = "sort", required=false) String sort) {
 		
 		ModelAndView model = new ModelAndView( "search" );
     	model.addObject( "query", query );
+    	model.addObject( "sort", sort );
     	
     	try {
-    		model.addObject( "results", searchService.searchByLecture( query ) );
+    		model.addObject( "results", searchService.searchByLecture( query, sort ) );
     	} catch( CustomException e ) {
     		exceptionService.addException( model, e.getMessage() );
     	}

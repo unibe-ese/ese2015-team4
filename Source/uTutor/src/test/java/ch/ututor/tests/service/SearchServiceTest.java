@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -29,7 +30,7 @@ public class SearchServiceTest {
 		
 		@Test(expected = NoResultFoundException.class)
 		public void testNoResultFoundException() {
-			searchService.searchByLecture("");
+			searchService.searchByLecture("", null);
 		}
 		
 		@Test
@@ -37,9 +38,9 @@ public class SearchServiceTest {
 			dbLectures = new ArrayList<TutorLecture>();
 			dbLectures.add(new TutorLecture());
 			
-			when(tutorLectureDao.findByLectureNameLikeOrderByLectureNameAscTutorRatingDesc(any(String.class))).thenReturn(dbLectures);
+			when(tutorLectureDao.findByLectureNameLike(any(String.class), any(Sort.class))).thenReturn(dbLectures);
 			
-			List<TutorLecture> lectures = searchService.searchByLecture("lecture");
+			List<TutorLecture> lectures = searchService.searchByLecture("lecture", null);
 			assertFalse(lectures.isEmpty());
 		}
 }

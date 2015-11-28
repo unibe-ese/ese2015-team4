@@ -1,6 +1,6 @@
 <%@include file="../includes/header.jsp"%>
 
-<%@include file="includes/hidden-actions.jsp"%>
+<%@include file="../includes/hidden-actions.jsp"%>
 
 <c:choose>
 	<c:when test="${empty param.view}">
