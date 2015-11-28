@@ -16,6 +16,7 @@ import ch.ututor.pojos.ProfileEditForm;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.AuthenticatedUserService;
 import ch.ututor.service.interfaces.ExceptionService;
+import ch.ututor.utils.FlashMessage;
 
 @Controller
 public class ProfileEditController {
@@ -52,6 +53,7 @@ public class ProfileEditController {
     	if ( !result.hasErrors() ) {
             try {
             	authenticatedUserService.updateUserData( profileEditForm );
+            	FlashMessage.addMessage(redirectAttributes, "Profile successfully updated.", FlashMessage.Type.SUCCESS);
             	model = new ModelAndView( "redirect:/user/profile" );
             } catch ( CustomException e ) {
             	model = exceptionService.addException( model, e.getMessage() );

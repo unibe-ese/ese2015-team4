@@ -14,6 +14,7 @@ import ch.ututor.exceptions.CustomException;
 import ch.ututor.pojos.ChangePasswordForm;
 import ch.ututor.service.interfaces.AuthenticatedUserService;
 import ch.ututor.service.interfaces.ExceptionService;
+import ch.ututor.utils.FlashMessage;
 
 @Controller
 public class PasswordChangeController {
@@ -41,6 +42,7 @@ public class PasswordChangeController {
     	if ( !result.hasErrors() ) {
             try {
             	authenticatedUserService.updatePassword( changePasswordForm );
+            	FlashMessage.addMessage(redirectAttributes, "Password successfully changed.", FlashMessage.Type.SUCCESS);
             	return new ModelAndView( "redirect:/user/profile" );
             } catch ( CustomException e ) {
             	return exceptionService.addException( model, e.getMessage() );

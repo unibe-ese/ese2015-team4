@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.ututor.exceptions.CustomException;
 import ch.ututor.exceptions.custom.MessageNotFoundException;
@@ -18,6 +19,7 @@ import ch.ututor.pojos.NewMessageForm;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.ExceptionService;
 import ch.ututor.service.interfaces.MessageCenterService;
+import ch.ututor.utils.FlashMessage;
 
 @Controller
 public class MessageCenterController {
@@ -57,7 +59,8 @@ public class MessageCenterController {
 	public ModelAndView messageCenterAction( 	@RequestParam( value = "action" ) String actionString,
 												@RequestParam( value = "objectId" ) String objectIdString,
 												@RequestParam( value = "view", required = false ) String viewString,
-												@RequestParam( value = "show", required = false ) String showString) {
+												@RequestParam( value = "show", required = false ) String showString,
+												final RedirectAttributes redirectAttributes) {
 			
 		String action = messageCenterService.normalizeString( actionString );
 		long objectId = messageCenterService.normalizeLong( objectIdString );
@@ -66,6 +69,7 @@ public class MessageCenterController {
 		
 		if( action.equals( "delete" ) ) {
 			messageCenterService.deleteMessage( objectId );
+			FlashMessage.addMessage(redirectAttributes, "Message successfully deleted.", FlashMessage.Type.SUCCESS);
 		}
 		
 		return new ModelAndView( "redirect:/user/messagecenter/?view=" + view + "&show=" + show );
@@ -121,10 +125,12 @@ public class MessageCenterController {
 	@RequestMapping( value={"/user/messagecenter/new", "/user/messagecenter/reply"}, method = RequestMethod.POST )
     public ModelAndView messageCenterMessageSave( 	@Valid NewMessageForm newMessageForm, 
     												BindingResult result,
-    												HttpServletRequest request ) {
+    												HttpServletRequest request,
+    												final RedirectAttributes redirectAttributes ) {
 		if ( !result.hasErrors() ) {
 			try {
 				messageCenterService.sendMessage( newMessageForm );
+				FlashMessage.addMessage(redirectAttributes, "Message successfully sent.", FlashMessage.Type.SUCCESS);
 				return new ModelAndView( "redirect:/user/messagecenter/?view=outbox" );
 			} catch( UserNotFoundException e ) {
 		        return exceptionService.addException( e.getMessage() );

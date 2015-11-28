@@ -20,6 +20,7 @@ import ch.ututor.service.interfaces.AuthenticatedUserService;
 import ch.ututor.service.interfaces.ExceptionService;
 import ch.ututor.service.interfaces.TimeSlotService;
 import ch.ututor.service.interfaces.TutorService;
+import ch.ututor.utils.FlashMessage;
 
 @Controller
 public class TutorController {
@@ -62,6 +63,7 @@ public class TutorController {
 		if ( !result.hasErrors() ) {
 			try {
 				tutorService.becomeTutor( becomeTutorForm );
+				FlashMessage.addMessage(redirectAttributes, "Account successfully updated to tutor.", FlashMessage.Type.SUCCESS);
 				return new ModelAndView( "redirect:/user/profile" );
 			} catch ( CustomException e ) {
 				model = exceptionService.addException( model, e.getMessage() );

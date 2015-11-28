@@ -5,8 +5,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ch.ututor.service.interfaces.ExceptionService;
 
-//TODO: overload addException()
-
 @Service
 public class ExceptionServiceImpl implements ExceptionService {
 	

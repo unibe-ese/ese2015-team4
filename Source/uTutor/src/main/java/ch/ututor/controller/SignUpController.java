@@ -14,6 +14,7 @@ import ch.ututor.exceptions.CustomException;
 import ch.ututor.pojos.SignUpForm;
 import ch.ututor.service.interfaces.ExceptionService;
 import ch.ututor.service.interfaces.SignupService;
+import ch.ututor.utils.FlashMessage;
 
 @Controller
 public class SignUpController {
@@ -41,6 +42,7 @@ public class SignUpController {
     	if ( !result.hasErrors() ) {
             try {
             	signupService.createUserAccount( signupForm );
+            	FlashMessage.addMessage(redirectAttributes, "Account successfully created.", FlashMessage.Type.SUCCESS);
             	model = new ModelAndView( "redirect:/login?username=" + signupForm.getEmail() );
             } catch ( CustomException e ){
             	model = exceptionService.addException( model, e.getMessage() );

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.ututor.exceptions.CustomException;
 import ch.ututor.model.User;
@@ -16,6 +17,7 @@ import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.AuthenticatedUserService;
 import ch.ututor.service.interfaces.ExceptionService;
 import ch.ututor.service.interfaces.ProfilePictureService;
+import ch.ututor.utils.FlashMessage;
 
 /**
  *	This class handles all requests concerning the adaption of the user's profile picture.  
@@ -46,7 +48,8 @@ public class ProfilePictureEditController {
      */
     @RequestMapping (value = "/user/profile/picture", method = RequestMethod.POST )
     public ModelAndView uploadNewProfilePicture(	@RequestParam( "action" ) String action, 
-    												@RequestParam( "picture" ) MultipartFile file) {
+    												@RequestParam( "picture" ) MultipartFile file,
+    												final RedirectAttributes redirectAttributes ) {
     	
     	User user = authenticatedUserLoaderService.getAuthenticatedUser();
     	ModelAndView model = new ModelAndView( "user/profile-picture" );
@@ -54,6 +57,7 @@ public class ProfilePictureEditController {
     	if( action.equals( "upload" )){
     		try {
     			authenticatedUserService.updateProfilePicture( file );
+    			FlashMessage.addMessage(redirectAttributes, "Profile picture successfully updated.", FlashMessage.Type.SUCCESS);
         		return new ModelAndView( "redirect:/user/profile" );
             } catch( CustomException e ) {
                	model = exceptionService.addException( model, e.getMessage() );

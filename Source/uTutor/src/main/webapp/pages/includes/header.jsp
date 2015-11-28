@@ -18,6 +18,7 @@
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/messages.css">
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/table.css">
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/text.css">
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/flash-messages.css">
 	
 	<link rel="apple-touch-icon" sizes="57x57" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-60x60.png">
@@ -79,3 +80,10 @@
 	</div>
 	<div id="content-container">
 <!-- BEGIN CONTENT -->
+<c:if test="${flash_message!=null}">
+	<!-- BEGIN FLASH MESSAGE -->
+	<div class="flash ${flash_type}">
+		<c:out value="${flash_message}"/>
+	</div>
+	<!-- END FLASH MESSAGE -->
+</c:if>
