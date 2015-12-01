@@ -32,7 +32,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 	
 	public List<String> getPossibleTimeslots(){
 		List<String> possibleTimeslots = new ArrayList<String>();
-		for(Integer i=6; i<23; i++){
+		for(Integer i = 6; i < 23; i++){
 			String hour = i.toString();
 			
 			if(i < 10){
@@ -56,7 +56,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 		}
 		
 		if ( TimeHelper.isPast( selectedDate ) ){
-			throw new InvalidDateException( "Please enter a date which is in the future!" );
+			throw new InvalidDateException( "Please enter a future date !" );
 		}
 		
 		dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -110,7 +110,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 				timeSlot != null
 				&& timeSlot.getStatus() == TimeSlot.Status.AVAILABLE
 				&& !student.equals( timeSlot.getTutor() )
-		){
+		) {
 			if(TimeHelper.isPast(timeSlot.getBeginDateTime())){
 				throw new TimeSlotException("You can not request a past time-slot!");
 			}
@@ -118,10 +118,10 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 			timeSlot.setStudent( student );
 			timeSlotDao.save( timeSlot );
 			
-			String messageBody = "Hello "+timeSlot.getTutor().getFirstName() + "\n\n"
+			String messageBody = "Dear " + timeSlot.getTutor().getFirstName() + "\n\n"
 							   + "I have made a request for an appointment.\n"
-					           + "Please checkout your profile.\n\n"
-							   + "Cheers\n"
+					           + "Please check out your profile.\n\n"
+							   + "Greetings\n"
 					           + student.getFirstName() + " " + student.getLastName();
 			
 			Message message = new Message();
@@ -130,8 +130,8 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 			message.setSubject( "New appointment request!" );
 			message.setMessage( messageBody );
 			messageCenterService.sendMessage( message );
-		}else{
-			throw new TimeSlotException( "The time-slot you wanted to request is no longer available!" );
+		} else {
+			throw new TimeSlotException( "The time slot you wanted to request is no longer available!" );
 		}
 		return timeSlot;
 	}
@@ -141,7 +141,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 		TimeSlot timeSlot = timeSlotDao.findById( timeSlotId );
 		if( timeSlot != null && authenticatedUserLoaderService.getAuthenticatedUser().equals(timeSlot.getTutor())){
 			if( timeSlot.getStatus() !=  TimeSlot.Status.AVAILABLE){
-				throw new TimeSlotException( "The time-slot you wanted to delete has no longer AVAILABLE as state." );
+				throw new TimeSlotException( "The time slot you wanted to delete is no longer in the AVAILABLE state." );
 			}
 			
 			timeSlotDao.delete(timeSlot);
@@ -153,10 +153,10 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 		TimeSlot timeSlot = timeSlotDao.findById( timeSlotId );
 		if( timeSlot != null && authenticatedUserLoaderService.getAuthenticatedUser().equals(timeSlot.getTutor())){
 			if( timeSlot.getStatus() !=  TimeSlot.Status.REQUESTED){
-				throw new TimeSlotException( "The time-slot request you wanted to accept has no longer REQUESTED as state." );
+				throw new TimeSlotException( "The time slot request you wanted to accept is no longer in the REQUESTED state." );
 			}
 			if(TimeHelper.isPast(timeSlot.getBeginDateTime())){
-				throw new TimeSlotException("You can not accept a past time-slot request!");
+				throw new TimeSlotException("You can not accept a time slot request for a date in the past!");
 			}
 			
 			timeSlot.setStatus(TimeSlot.Status.ACCEPTED);
@@ -170,7 +170,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 		TimeSlot timeSlot = timeSlotDao.findById( timeSlotId );
 		if( timeSlot != null && authenticatedUserLoaderService.getAuthenticatedUser().equals(timeSlot.getTutor())){
 			if( timeSlot.getStatus() !=  TimeSlot.Status.REQUESTED){
-				throw new TimeSlotException( "The time-slot request you wanted to reject has no longer REQUESTED as state." );
+				throw new TimeSlotException( "The time slot request you wanted to reject is no longer in the REQUESTED state." );
 			}
 			
 			timeSlot.setStatus(TimeSlot.Status.AVAILABLE);
@@ -185,10 +185,10 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 		TimeSlot timeSlot = timeSlotDao.findById( timeSlotId );
 		if( timeSlot != null && authenticatedUserLoaderService.getAuthenticatedUser().equals(timeSlot.getStudent())){
 			if(TimeHelper.isFuture(timeSlot.getBeginDateTime())){
-				throw new TimeSlotException("You can not rate a future time-slot!");
+				throw new TimeSlotException("You can not rate a time-slot with a date in the future!");
 			}
 			if(rating < 1 || rating > 5 ){
-				throw new TimeSlotException("Invalid rating. The value must been between 1 and 5!");
+				throw new TimeSlotException("Invalid rating. The value must be between 1 and 5!");
 			}
 			timeSlot.setRating(rating);
 			timeSlotDao.save(timeSlot);

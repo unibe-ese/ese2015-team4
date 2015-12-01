@@ -63,7 +63,7 @@ public class TutorController {
 		if ( !result.hasErrors() ) {
 			try {
 				tutorService.becomeTutor( becomeTutorForm );
-				FlashMessage.addMessage(redirectAttributes, "Account successfully updated to tutor.", FlashMessage.Type.SUCCESS);
+				FlashMessage.addMessage(redirectAttributes, "Account successfully upgraded to tutor.", FlashMessage.Type.SUCCESS);
 				return new ModelAndView( "redirect:/user/profile" );
 			} catch ( CustomException e ) {
 				model = exceptionService.addException( model, e.getMessage() );

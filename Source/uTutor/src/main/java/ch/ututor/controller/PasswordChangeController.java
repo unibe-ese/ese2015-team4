@@ -42,7 +42,7 @@ public class PasswordChangeController {
     	if ( !result.hasErrors() ) {
             try {
             	authenticatedUserService.updatePassword( changePasswordForm );
-            	FlashMessage.addMessage(redirectAttributes, "Password successfully changed.", FlashMessage.Type.SUCCESS);
+            	FlashMessage.addMessage(redirectAttributes, "Password has been changed.", FlashMessage.Type.SUCCESS);
             	return new ModelAndView( "redirect:/user/profile" );
             } catch ( CustomException e ) {
             	return exceptionService.addException( model, e.getMessage() );
