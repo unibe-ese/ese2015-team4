@@ -12,6 +12,12 @@
 	<bean class="org.mockito.Mockito" factory-method="mock">
 		<constructor-arg value="ch.ututor.model.dao.UserDao"/>
 	</bean>
+		<bean class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="ch.ututor.model.dao.LectureDao"/>
+	</bean>
+	<bean class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="ch.ututor.model.dao.TutorLectureDao"/>
+	</bean>
 	<!-- MOCK services -->
 	<bean class="org.mockito.Mockito" factory-method="mock">
 		<constructor-arg value="ch.ututor.service.UserServiceImpl"/>
@@ -21,6 +27,9 @@
 	</bean>
 	<bean class="org.mockito.Mockito" factory-method="mock">
 		<constructor-arg value="ch.ututor.service.MessageCenterServiceImpl"/>
+	</bean>
+		<bean class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="ch.ututor.service.TutorServiceImpl"/>
 	</bean>
 	<!-- AUTOWIRE services -->
 	<bean class="ch.ututor.service.TimeSlotServiceImpl" />

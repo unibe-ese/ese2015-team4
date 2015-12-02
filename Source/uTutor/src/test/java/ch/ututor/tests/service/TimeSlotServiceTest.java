@@ -19,9 +19,9 @@ import ch.ututor.model.TimeSlot;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.TimeSlotDao;
 import ch.ututor.pojos.AddTimeslotsForm;
-import ch.ututor.service.TimeSlotServiceImpl;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.MessageCenterService;
+import ch.ututor.service.interfaces.TimeSlotService;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.AdditionalAnswers.*;
@@ -30,7 +30,7 @@ import static org.mockito.AdditionalAnswers.*;
 @ContextConfiguration(locations={"file:src/test/resources/timeSlotService.xml"})
 public class TimeSlotServiceTest {
 
-	@Autowired TimeSlotServiceImpl timeSlotService;
+	@Autowired TimeSlotService timeSlotService;
 	@Autowired TimeSlotDao timeSlotDao;
 	@Autowired AuthenticatedUserLoaderService authenticatedUserLoaderService;
 	@Autowired MessageCenterService messageCenterService;
