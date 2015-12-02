@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.ututor.exceptions.CustomException;
 import ch.ututor.model.User;
@@ -14,6 +15,7 @@ import ch.ututor.service.interfaces.ExceptionService;
 import ch.ututor.service.interfaces.TimeSlotService;
 import ch.ututor.service.interfaces.TutorService;
 import ch.ututor.service.interfaces.UserService;
+import ch.ututor.utils.FlashMessage;
 
 @Controller
 public class ProfileViewController {
@@ -39,7 +41,9 @@ public class ProfileViewController {
      */
     @RequestMapping( value = "/user/profile", method = RequestMethod.POST )
     public ModelAndView handleProfileActions(	@RequestParam( "action" ) String action, 
-    												@RequestParam( "objectId" ) String objectIdString,  @RequestParam( value = "userId", required = false ) Long userId ) {
+    												@RequestParam( "objectId" ) String objectIdString,
+    												@RequestParam( value = "userId", required = false ) Long userId,
+    												final RedirectAttributes redirectAttributes ) {
     	
     	
     	if( userId== null ){
@@ -70,26 +74,32 @@ public class ProfileViewController {
     		if( action.equals( "deleteLecture" ) ){
     			
     			tutorService.deleteTutorLecture( objectId );
+    			FlashMessage.addMessage(redirectAttributes, "Lecture successfully deleted.", FlashMessage.Type.SUCCESS);
     			
     		}else if( action.equals( "requestTimeSlot" ) ){
-    			
+    	
     			timeSlotService.requestForTimeSlot( objectId );
+    			FlashMessage.addMessage(redirectAttributes, "Request successfully sent.", FlashMessage.Type.SUCCESS);
     			
     		}else if( action.equals( "deleteTimeSlot" ) ){
     			
     			timeSlotService.deleteTimeSlot( objectId );
+    			FlashMessage.addMessage(redirectAttributes, "Time-slot successfully deleted.", FlashMessage.Type.SUCCESS);
     			
     		}else if( action.equals( "acceptTimeSlot" ) ){
     			
     			timeSlotService.acceptTimeSlotRequest( objectId );
+    			FlashMessage.addMessage(redirectAttributes, "Time-slot accepted.", FlashMessage.Type.INFO);
 
     		}else if( action.equals( "rejectTimeSlot" ) ){
     			
     			timeSlotService.rejectTimeSlotRequest( objectId );
+    			FlashMessage.addMessage(redirectAttributes, "Time-slot rejected.", FlashMessage.Type.INFO);
     			
     		}else if( action.equals( "rateTimeSlot" ) ){
     			
     			timeSlotService.rateTimeSlot( objectId, rating );
+    			FlashMessage.addMessage(redirectAttributes, "Time-slot rated.", FlashMessage.Type.INFO);
     			
     		}
     	}catch( CustomException e ){
