@@ -35,7 +35,7 @@ public class ExceptionServiceTest {
 	public void testDefaultException() {
 		exceptionMessage = "Something went wrong somewhere!";
 		
-		ModelAndView model = exceptionService.addException(null, exceptionMessage);
+		ModelAndView model = exceptionService.addException(new ModelAndView("exception"), exceptionMessage);
 		
 		assertEquals(exceptionMessage, model.getModel().get("exception_message"));
 		assertEquals("exception", model.getViewName());

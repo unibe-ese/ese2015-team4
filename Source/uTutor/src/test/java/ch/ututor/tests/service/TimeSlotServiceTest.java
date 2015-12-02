@@ -1,8 +1,8 @@
 package ch.ututor.tests.service;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -22,6 +22,7 @@ import ch.ututor.pojos.AddTimeslotsForm;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.MessageCenterService;
 import ch.ututor.service.interfaces.TimeSlotService;
+import ch.ututor.utils.TimeHelper;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.AdditionalAnswers.*;
@@ -137,6 +138,7 @@ public class TimeSlotServiceTest {
 		TimeSlot timeSlot = new TimeSlot();
 		timeSlot.setStatus(TimeSlot.Status.AVAILABLE);
 		timeSlot.setTutor(tutor);
+		timeSlot.setBeginDateTime(TimeHelper.addDays(new Date(), 1));
 		
 		long anyIdNumber = 1;
 		
@@ -224,6 +226,7 @@ public class TimeSlotServiceTest {
 		TimeSlot timeSlot = new TimeSlot();
 		timeSlot.setStatus(TimeSlot.Status.REQUESTED);
 		timeSlot.setTutor(tutor);
+		timeSlot.setBeginDateTime(TimeHelper.addDays(new Date(), 1));
 		
 		when( authenticatedUserLoaderService.getAuthenticatedUser() ).thenReturn(tutor);
 		when(timeSlotDao.findById(any(Long.class))).thenReturn(timeSlot);
@@ -234,7 +237,7 @@ public class TimeSlotServiceTest {
 	}
 	
 	@Test(expected = TimeSlotException.class)
-	public void testInvalidTimeSlotAcception(){
+	public void testInvalidTimeSlotAcceptionStatusIsNotRequested(){
 		User tutor = new User();
 		long tutorId = 1;
 		tutor.setId(tutorId);
@@ -242,6 +245,23 @@ public class TimeSlotServiceTest {
 		TimeSlot timeSlot = new TimeSlot();
 		timeSlot.setStatus(TimeSlot.Status.AVAILABLE);
 		timeSlot.setTutor(tutor);
+		
+		when( authenticatedUserLoaderService.getAuthenticatedUser() ).thenReturn(tutor);
+		when(timeSlotDao.findById(any(Long.class))).thenReturn(timeSlot);
+		
+		timeSlot = timeSlotService.acceptTimeSlotRequest(1);
+	}
+	
+	@Test(expected = TimeSlotException.class)
+	public void testInvalidTimeSlotAcceptionDateIsInThePast(){
+		User tutor = new User();
+		long tutorId = 1;
+		tutor.setId(tutorId);
+		
+		TimeSlot timeSlot = new TimeSlot();
+		timeSlot.setStatus(TimeSlot.Status.AVAILABLE);
+		timeSlot.setTutor(tutor);
+		timeSlot.setBeginDateTime(TimeHelper.addDays(new Date(), -1));
 		
 		when( authenticatedUserLoaderService.getAuthenticatedUser() ).thenReturn(tutor);
 		when(timeSlotDao.findById(any(Long.class))).thenReturn(timeSlot);
