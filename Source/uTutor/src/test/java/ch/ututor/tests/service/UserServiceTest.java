@@ -1,6 +1,8 @@
 package ch.ututor.tests.service;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
@@ -43,5 +45,16 @@ public class UserServiceTest {
 		when(userDao.findByUsername(any(String.class))).thenReturn(new User());
 		user = userService.load("");
 		assertNotNull(user);
+	}
+	
+	@Test
+	public void testUserSave() { 
+		when(userDao.save(any(User.class))).then(returnsFirstArg());
+		User user = new User();
+		user.setId(1L);
+		user.setFirstName("John");
+		user.setLastName("Doe");
+		User savedUser = userService.save(user);
+		assertEquals(savedUser, user);
 	}
 }
