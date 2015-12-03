@@ -6,6 +6,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -187,5 +191,17 @@ public class TutorControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(forwardedUrl("/pages/user/add-lecture.jsp"))
 				.andExpect(model().attribute("exception_message", "You've already registered this lecture!"));
+	}
+	
+	@Test
+	@WithMockUser(username="percy.weasley@hogwarts.com", roles={"USER"})
+	public void testValidAddTimeSlot() throws Exception{
+		
+		this.mockMvc
+			.perform(post("/user/add-timeslots")
+					.param("date", "2015-12-24")
+					.param("timeslots", "08:00 - 08:59"))
+				.andExpect(status().isFound())
+				.andExpect(redirectedUrl("/user/profile"));
 	}
 }

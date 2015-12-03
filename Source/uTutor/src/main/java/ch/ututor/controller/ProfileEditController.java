@@ -56,7 +56,7 @@ public class ProfileEditController {
             	FlashMessage.addMessage(redirectAttributes, "Profile successfully updated.", FlashMessage.Type.SUCCESS);
             	model = new ModelAndView( "redirect:/user/profile" );
             } catch ( CustomException e ) {
-            	model = exceptionService.addException( model, e.getMessage() );
+            	model = exceptionService.addException( e.getMessage() );
             }
         }
     	
