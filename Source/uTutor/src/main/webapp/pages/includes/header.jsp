@@ -40,6 +40,9 @@
 	<meta name="msapplication-TileImage" content="<%=request.getContextPath()%>/favicon/mstile-144x144.png">
 	<meta name="theme-color" content="#ffffff">
 
+<sec:authorize access="isAuthenticated()">
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/new-message.js"></script>
+</sec:authorize>
 </head>
 
 <body>
@@ -75,12 +78,11 @@
 			<div style="background:rgb(8,16,60);;">
 				<div style="width:960px;margin:0px auto;">
 					<a href="<%=request.getContextPath()%>/user/profile" class="navigation<c:if test="${fn:contains(contextUrl, 'profile')}"> active</c:if>">My profile</a>
-					<a href="<%=request.getContextPath()%>/user/messagecenter" class="navigation<c:if test="${fn:contains(contextUrl, 'message')}"> active</c:if>">Message center</a>
+					<a href="<%=request.getContextPath()%>/user/messagecenter" class="navigation<c:if test="${fn:contains(contextUrl, 'message')}"> active</c:if>">Message center<span id="new-messages" class="hidden"></span></a>
 					<a href="<%=request.getContextPath()%>/user/password" class="navigation<c:if test="${fn:contains(contextUrl, 'password')}"> active</c:if>">Change password</a>
 					<a href="<%=request.getContextPath()%>/logout" class="navigation logout">Logout</a>
 					<div class="clear"></div>
 				</div>
-			
 			</div>
 		</sec:authorize>
 		

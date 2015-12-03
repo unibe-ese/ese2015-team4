@@ -84,3 +84,25 @@
 	text-align:center;
 	font-style:italic;
 }
+
+#new-messages.hidden{
+	visibility:hidden;
+	position:absolute;
+}
+
+#new-messages.show{
+	position:relative;
+	visibility:inherit;
+}
+
+#new-messages{
+	display:inline-block;
+	float:right;
+	margin-left:5px;
+	font-size:12px;
+	background-color:red;
+	padding:2px 5px 1px;
+	border:2px solid white;
+	border-radius:10px;
+	font-weight:bold;
+}
