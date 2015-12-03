@@ -8,12 +8,12 @@ import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 
 @Service
 public class FakeServiceImpl implements FakeService {
-	@Autowired AuthenticatedUserLoaderService authUserLoader;
+	@Autowired FakeServiceOther fakeServiceOther;
 	
 	
 	@Override
 	public void doSomething() {
-		User user = authUserLoader.getAuthenticatedUser();
+		fakeServiceOther.doSomething();
 	}
 	
 }
