@@ -38,7 +38,7 @@ public class ProfilePictureEditController {
     public ModelAndView displayProfilePicturePage() {
     	ModelAndView model = new ModelAndView( "user/profile-picture" );
     	User user = authenticatedUserLoaderService.getAuthenticatedUser();
-    	model = profilePictureService.addProfilePictureInfoToModel( model, user );
+    	model = addProfilePictureInfoToModel( model, user );
     	return model;
     }
     
@@ -69,7 +69,20 @@ public class ProfilePictureEditController {
     		return new ModelAndView( "redirect:/user/profile" );
     	}   	
     	
-    	model = profilePictureService.addProfilePictureInfoToModel( model, user );
+    	model = addProfilePictureInfoToModel( model, user );
     	return model;
     }
+    
+	/**
+	 *	@param model	mustn't be null
+	 *	@param user		mustn't be null
+	 */
+	private ModelAndView addProfilePictureInfoToModel( ModelAndView model, User user ){
+		assert( model != null );
+		assert( user != null );
+		
+		model.addObject( "userId", user.getId() );
+    	model.addObject( "hasProfilePic", user.hasProfilePic() );
+    	return model;
+	}
 }

@@ -103,17 +103,4 @@ public class ProfilePictureServiceImpl implements ProfilePictureService{
 	
 		return resizedImage;
 	}
-	
-	/**
-	 *	@param model	mustn't be null
-	 *	@param user		mustn't be null
-	 */
-	public ModelAndView addProfilePictureInfoToModel( ModelAndView model, User user ){
-		assert( model != null );
-		assert( user != null );
-		
-		model.addObject( "userId", user.getId() );
-    	model.addObject( "hasProfilePic", user.hasProfilePic() );
-    	return model;
-	}
 }
