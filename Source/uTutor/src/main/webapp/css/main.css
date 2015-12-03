@@ -80,6 +80,30 @@ a.button:hover, a.button.action:hover{
 	color:rgb(250,251,252);
 }
 
+a.navigation{
+	display:inline-block;
+	padding:10px;
+	text-decoration:none;
+	color:rgb(250,251,252);
+	background:rgb(8,16,60);
+	float:left;
+	border-right:1px solid rgb(8,16,60);
+	border-bottom:1px solid rgb(8,16,60);
+}
+
+a.navigation:hover, a.navigation.active{
+	color:rgb(8,16,60);
+	background:rgb(250,251,252);
+}
+
+a.navigation.active{
+	border-bottom: 1px solid rgb(250,251,252);
+}
+
+a.navigation.logout{
+	float:right;
+}
+
 #header-container{
 	position:relative;
 	width:100%;

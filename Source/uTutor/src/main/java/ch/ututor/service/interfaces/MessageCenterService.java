@@ -16,4 +16,5 @@ public interface MessageCenterService {
 	public Message sendMessage(NewMessageForm newMessageForm);
 	public Message sendMessage(Message message);
 	public Message setRead(long messageId);
+	public Long getNumberOfNewMessagesForAuthenticatedUser();
 }

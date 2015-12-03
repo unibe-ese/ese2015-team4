@@ -161,4 +161,10 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 		}
 		return message;
 	}
+
+	@Override
+	public Long getNumberOfNewMessagesForAuthenticatedUser() {
+		User user = authenticatedUserLoaderService.getAuthenticatedUser();
+		return messageDao.countByReceiverAndIsRead( user, false );
+	}
 }

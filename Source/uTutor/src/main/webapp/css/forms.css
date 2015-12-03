@@ -160,6 +160,10 @@ input:-moz-placeholder {
 	margin:6px 0px 0px 305px;
 }
 
+.search-small.authenticated{
+	float:right;
+}
+
 .search-small label{
 	width:100%;
 }

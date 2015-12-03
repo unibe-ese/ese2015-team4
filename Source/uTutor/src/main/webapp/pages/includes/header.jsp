@@ -39,6 +39,7 @@
 	<meta name="msapplication-TileColor" content="#da532c">
 	<meta name="msapplication-TileImage" content="<%=request.getContextPath()%>/favicon/mstile-144x144.png">
 	<meta name="theme-color" content="#ffffff">
+
 </head>
 
 <body>
@@ -47,7 +48,7 @@
 <!-- BEGIN HEADER -->
 			<a href="<%=request.getContextPath()%>"><img id="logo" src="<%=request.getContextPath()%>/img/logo.png"></a>
 	<!-- BEGIN SEARCH FORM -->
-			<form class="search-small" method="GET" action="<%=request.getContextPath()%>/search">
+			<form class="search-small<sec:authorize access='isAuthenticated()'> authenticated</sec:authorize>" method="GET" action="<%=request.getContextPath()%>/search">
 				<label>
 					<input type="text" name="query" placeholder="Search lecture">
 					<input type="submit">
@@ -62,24 +63,32 @@
 				<a href="<%=request.getContextPath()%>/signup" class="button">Sign up</a>
 		<!-- END NOT AUTHENTICATED ACTIONS -->
 				</sec:authorize>
-				<sec:authorize access="isAuthenticated()">
-		<!-- BEGIN AUTHENTICATED ACTIONS -->
-				<select style="max-width:250px;font-size:16px;height:48px;" onChange="var url=this.options[this.selectedIndex].value;if(url!=''){document.location.href='<%=request.getContextPath()%>'+url;}">
-					<option value=""><sec:authentication property="principal.username" /></option>
-					<option value="/user/profile">My profile</option>
-					<option value="/user/messagecenter">Message center</option>
-					<option value="/user/password">Change password</option>
-					<option value="/logout">Logout</option>
-				</select>
-		<!-- END AUTHENTICATED ACTIONS -->
-				</sec:authorize>
+				
 			</div>
 			<div class="clear"></div>
 <!--  END HEADER -->
 		</div>
 	</div>
+	
+	<!--  BEGIN NAVIGATION BAR -->
+		<sec:authorize access="isAuthenticated()">
+			<div style="background:rgb(8,16,60);;">
+				<div style="width:960px;margin:0px auto;">
+					<a href="<%=request.getContextPath()%>/user/profile" class="navigation<c:if test="${fn:contains(contextUrl, 'profile')}"> active</c:if>">My profile</a>
+					<a href="<%=request.getContextPath()%>/user/messagecenter" class="navigation<c:if test="${fn:contains(contextUrl, 'message')}"> active</c:if>">Message center</a>
+					<a href="<%=request.getContextPath()%>/user/password" class="navigation<c:if test="${fn:contains(contextUrl, 'password')}"> active</c:if>">Change password</a>
+					<a href="<%=request.getContextPath()%>/logout" class="navigation logout">Logout</a>
+					<div class="clear"></div>
+				</div>
+			
+			</div>
+		</sec:authorize>
+		
+	<!--  END NAVIGATION BAR -->
+	
 	<div id="content-container">
 <!-- BEGIN CONTENT -->
+
 <c:if test="${flash_message!=null}">
 	<!-- BEGIN FLASH MESSAGE -->
 	<div class="flash ${flash_type}">
