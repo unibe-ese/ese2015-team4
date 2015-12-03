@@ -1,13 +1,13 @@
-<%@include file="../includes/header.jsp"%>
+<%@include file="../partials/header.jsp"%>
 <jsp:useBean id="now" class="java.util.Date"/>
 
 <c:if test="${ownProfile || user.isTutor}">
-	<%@include file="../includes/hidden-actions.jsp"%>
+	<%@include file="../partials/hidden-actions.jsp"%>
 </c:if>
 
 <h1><c:out value="${user.firstName}" /> <c:out value="${user.lastName}" /></h1>
 	
-<%@include file="../includes/exception.jsp"%>
+<%@include file="../partials/exception.jsp"%>
 
 <!-- BEGIN PROFIL DATA -->
 <div class="profile-data">
@@ -99,7 +99,7 @@
 					</div>
 	    			<div class="cell value" style="font-weight:normal">
 	    				<c:set var="rating" value="${user.rating}"/>
-	    				<%@include file="../includes/rating.jsp"%>
+	    				<%@include file="../partials/rating.jsp"%>
 	    			</div>
 				</div>
 				<div class="row">
@@ -171,7 +171,7 @@
 			<c:set var="timeSlotListSettingStatus" value="AVAILABLE" />
 			<c:set var="timeSlotListSettingFuture" value="${true}" />
 			<c:set var="timeSlotListSettingPast" value="${false}" />
-			<%@include file="includes/timeslot-list.jsp"%>
+			<%@include file="partials/timeslot-list.jsp"%>
 	<!-- END AVAILABILITIES -->	
 	<p></p>
 	</c:if>
@@ -182,7 +182,7 @@
 			<c:set var="timeSlotListSettingStatus" value="REQUESTED" />
 			<c:set var="timeSlotListSettingFuture" value="${true}" />
 			<c:set var="timeSlotListSettingPast" value="${false}" />
-			<%@include file="includes/timeslot-list.jsp"%>
+			<%@include file="partials/timeslot-list.jsp"%>
 	<!-- END REQUESTS -->
 	<p></p>
 	<!-- BOOKED -->
@@ -190,7 +190,7 @@
 			<c:set var="timeSlotListSettingStatus" value="ACCEPTED" />
 			<c:set var="timeSlotListSettingFuture" value="${true}" />
 			<c:set var="timeSlotListSettingPast" value="${false}" />
-			<%@include file="includes/timeslot-list.jsp"%>
+			<%@include file="partials/timeslot-list.jsp"%>
 	<!-- END BOOKED -->
 	<p></p>
 	<!-- HISTORY -->
@@ -198,10 +198,10 @@
 			<c:set var="timeSlotListSettingStatus" value="ACCEPTED" />
 			<c:set var="timeSlotListSettingFuture" value="${false}" />
 			<c:set var="timeSlotListSettingPast" value="${true}" />
-			<%@include file="includes/timeslot-list.jsp"%>
+			<%@include file="partials/timeslot-list.jsp"%>
 	<!-- END HISTORY -->
 	</c:if>
 </div>
 <!-- END PROFIL DATA -->
 
-<%@include file="../includes/footer.jsp"%>
+<%@include file="../partials/footer.jsp"%>

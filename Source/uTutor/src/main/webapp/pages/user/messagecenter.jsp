@@ -1,6 +1,6 @@
-<%@include file="../includes/header.jsp"%>
+<%@include file="../partials/header.jsp"%>
 
-<%@include file="../includes/hidden-actions.jsp"%>
+<%@include file="../partials/hidden-actions.jsp"%>
 
 <c:choose>
 	<c:when test="${empty param.view}">
@@ -127,4 +127,4 @@
 	</c:if>
 	<div class="clear"></div>
 </div>
-<%@include file="../includes/footer.jsp"%>
+<%@include file="../partials/footer.jsp"%>

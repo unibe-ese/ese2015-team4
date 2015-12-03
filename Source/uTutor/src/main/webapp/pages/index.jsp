@@ -1,4 +1,4 @@
-<%@include file="includes/header.jsp"%>
+<%@include file="partials/header.jsp"%>
 <div class="center">
 	<h1>Welcome to uTutor</h1>
 	<p style="font-size:75%;font-style:italic">
@@ -21,8 +21,8 @@
 
 <sec:authorize access="not isAuthenticated()">
 	<div class="center top">
-		<%@include file="includes/login.jsp"%>
-		<%@include file="includes/signup.jsp"%>
+		<%@include file="partials/login-form.jsp"%>
+		<%@include file="partials/signup-form.jsp"%>
 	</div>
 </sec:authorize>
-<%@include file="includes/footer.jsp"%>
+<%@include file="partials/footer.jsp"%>

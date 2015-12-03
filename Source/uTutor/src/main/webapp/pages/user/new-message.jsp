@@ -1,4 +1,4 @@
-<%@include file="../includes/header.jsp"%>
+<%@include file="../partials/header.jsp"%>
 
 	<c:if test="${exception_message != null}">
 		<div class="exception">
@@ -38,4 +38,4 @@
 <!-- END NEW MESSAGE FORM -->
 </div>
 
-<%@include file="../includes/footer.jsp"%>
+<%@include file="../partials/footer.jsp"%>

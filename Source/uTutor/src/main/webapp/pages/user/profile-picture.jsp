@@ -1,4 +1,4 @@
-<%@include file="../includes/header.jsp"%>
+<%@include file="../partials/header.jsp"%>
 
 <div class="center">
 <!-- BEGIN PROFILE PICTURE FORM -->
@@ -6,7 +6,7 @@
 		<input type="hidden" name="action" id="action" value="upload">
 		<h1>Profile picture</h1>
 		
-		<%@include file="../includes/exception.jsp"%>
+		<%@include file="../partials/exception.jsp"%>
 		
 		<img src="<%=request.getContextPath()%>/img/user.jpg?userId=<c:out value="${userId}"/>" class="profile-picture"/>
 		
@@ -25,4 +25,4 @@
 <!-- END PROFILE PICTURE FORM -->
 </div>
 
-<%@include file="../includes/footer.jsp"%>
+<%@include file="../partials/footer.jsp"%>

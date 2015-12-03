@@ -1,4 +1,4 @@
-<%@include file="includes/header.jsp"%>
+<%@include file="partials/header.jsp"%>
 <h1>Searched for 
 <c:choose>
 	<c:when test="${query!=''}">
@@ -25,7 +25,7 @@
 	</p>
 </c:if>
 
-<%@include file="includes/exception.jsp"%>
+<%@include file="partials/exception.jsp"%>
 
 <div class="search-result">
 	<c:forEach items="${results}" var="result">
@@ -43,9 +43,9 @@
 					<div class="clear"></div>
 				</div>
 				<c:set var="rating" value="${result.tutor.rating}" />
-	    		<%@include file="includes/rating.jsp"%>
+	    		<%@include file="partials/rating.jsp"%>
 			</div>
 		</div>
 	</c:forEach>
 </div>
-<%@include file="includes/footer.jsp"%>
+<%@include file="partials/footer.jsp"%>

@@ -1,11 +1,11 @@
-<%@include file="../includes/header.jsp"%>
+<%@include file="../partials/header.jsp"%>
 
 <div class="center">
 <!-- BEGIN CHANGE PASSWORD FORM -->
 	<form:form method="post" class="form-box" modelAttribute="changePasswordForm" id="changePasswordForm" autocomplete="off">
 		<h1>Change password</h1>
 		
-		<%@include file="../includes/exception.jsp"%>
+		<%@include file="../partials/exception.jsp"%>
 		
 		<label>
 			<form:input path="oldPassword" type="password" id="field-oldPassword" placeholder="Actual password"/>
@@ -33,4 +33,4 @@
 <!-- END CHANGE PASSWORD FORM -->
 </div>
 
-<%@include file="../includes/footer.jsp"%>
+<%@include file="../partials/footer.jsp"%>

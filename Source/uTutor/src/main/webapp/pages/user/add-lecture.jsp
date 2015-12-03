@@ -1,4 +1,4 @@
-<%@include file="../includes/header.jsp"%>
+<%@include file="../partials/header.jsp"%>
 
 <div class="center">
 <!-- BEGIN ADD LECTURE FORM -->
@@ -9,7 +9,7 @@
 				<c:out value="${exception_message}" />
 			</div>
 		</c:if>
-		<%@include file="includes/add-lecture.jsp" %>
+		<%@include file="partials/add-lecture.jsp" %>
 		<label>
 			<input type="submit" value="Add Lecture!" />
 		</label>
@@ -17,4 +17,4 @@
 <!-- END ADD LECTURE FORM -->
 </div>
 
-<%@include file="../includes/footer.jsp"%>
+<%@include file="../partials/footer.jsp"%>
