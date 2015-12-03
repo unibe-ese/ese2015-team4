@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import ch.ututor.model.User;
-import ch.ututor.model.dao.UserDao;
 import ch.ututor.service.interfaces.UserService;
 import ch.ututor.utils.MultipartFileMocker;
 
@@ -38,8 +37,6 @@ public class ProfilePictureViewControllerTest {
 	private WebApplicationContext wac;
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private UserDao userDao;
 	
 	private MockMvc mockMvc;
 	
@@ -63,7 +60,7 @@ public class ProfilePictureViewControllerTest {
 	public void testProfilePictureViewNoCustomPicture() throws Exception {
 		User user = userService.load("percy.weasley@hogwarts.com");
 		user.setProfilePic(null);
-		userDao.save(user);
+		userService.save(user);
 		MultipartFile multipartFile = MultipartFileMocker.mockJpeg("src/main/webapp/img/default_avatar.jpg");
 		this.mockMvc.perform(get("/img/user.jpg?userId="+user.getId()))
 				.andExpect(status().isOk())

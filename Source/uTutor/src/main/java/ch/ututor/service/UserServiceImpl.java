@@ -33,4 +33,8 @@ public class UserServiceImpl implements UserService {
 		
 		return user;
 	}
+	
+	public User save( User user ) {
+		return userDao.save(user);
+	}
 }
