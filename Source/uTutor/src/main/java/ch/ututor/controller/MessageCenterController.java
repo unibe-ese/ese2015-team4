@@ -63,7 +63,6 @@ public class MessageCenterController {
 												@RequestParam( value = "show", required = false ) String showString,
 												final RedirectAttributes redirectAttributes) {
 			
-		String action = messageCenterService.normalizeString( actionString );
 		String view = messageCenterService.normalizeView( viewString );
 		long show = messageCenterService.normalizeLong( showString );
 		

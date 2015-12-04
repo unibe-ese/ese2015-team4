@@ -15,7 +15,6 @@ import ch.ututor.exceptions.CustomException;
 import ch.ututor.model.User;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.AuthenticatedUserService;
-import ch.ututor.service.interfaces.ProfilePictureService;
 import ch.ututor.utils.ExceptionHelper;
 import ch.ututor.utils.FlashMessage;
 
@@ -28,7 +27,6 @@ public class ProfilePictureEditController {
 	
 	@Autowired 	 private AuthenticatedUserLoaderService authenticatedUserLoaderService;
 	@Autowired 	 private AuthenticatedUserService authenticatedUserService;
-	@Autowired 	 private ProfilePictureService profilePictureService;
 	
 	/**
 	 *	@return ModelAndView containing the needed information to display the profile picture.
