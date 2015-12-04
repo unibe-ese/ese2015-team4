@@ -1,13 +1,15 @@
 <%@include file="partials/header.jsp"%>
+
 <h1>Searched for 
-<c:choose>
-	<c:when test="${query!=''}">
-		&quot;<c:out value="${query}" />&quot;
-	</c:when>
-	<c:otherwise>
-		all lectures
-	</c:otherwise>
-</c:choose></h1>
+	<c:choose>
+		<c:when test="${query!=''}">
+			&quot;<c:out value="${query}" />&quot;
+		</c:when>
+		<c:otherwise>
+			all lectures
+		</c:otherwise>
+	</c:choose>
+</h1>
 
 <c:if test="${exception_message == null}">
 	<form method="get" name="searchsort">
@@ -48,4 +50,5 @@
 		</div>
 	</c:forEach>
 </div>
+
 <%@include file="partials/footer.jsp"%>

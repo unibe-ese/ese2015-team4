@@ -40,6 +40,7 @@
 
 .hashMap .key.multiline{
 	vertical-align:top;
+	padding-top:15px;
 }
 
 .hashMap .value{
@@ -141,4 +142,9 @@
 
 .search-result .data .line{
 	margin-bottom:15px;	
+}
+
+.profile-data-table{
+	max-width:560px;
+	overflow:hidden;
 }

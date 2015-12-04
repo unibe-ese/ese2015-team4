@@ -1,3 +1,13 @@
+<%
+	/**
+	/*	The following parameters needs to be set (using c:set) before including this file
+	/*	@param timeSlotListSettingTitle		the title of the displayed time-slot list
+	/*	@param timeSlotListSettingSatus 	the status of the time-slots which should be displayed (AVAILABLE, REQUESTED, ACCEPTED)
+	/*	@param timeSlotListSettingFuture 	if set to true then future time-slots will be displayed
+	/*	@param timeSlotListSettingPast		if set to true then past time-slots will be displayed
+	*/
+%>
+
 				<c:set var="timeSlotHeaderShowed" value="${false}"/>
 				<c:set var="billableHours" value="0"/>
 				<c:if test="${timeSlotListSettingStatus == 'AVAILABLE'}">
@@ -19,8 +29,8 @@
 										</c:when>
 										<c:otherwise>										
 											<a href="<%=request.getContextPath()%>/user/profile/?userId=${timeSlot.student.id}">
-												<div style="width:32px;height:32px;background-image:url('<%=request.getContextPath()%>/img/user.jpg?userId=${timeSlot.student.id}');background-size:cover;background-position:top center;float:left;margin-right:10px"></div>
-												<div style="float:left;margin-top:4px"><c:out value="${timeSlot.student.firstName} ${timeSlot.student.lastName}" /></div>
+												<div class="timeslot-profile-picture" style="background-image:url('<%=request.getContextPath()%>/img/user.jpg?userId=${timeSlot.student.id}');"></div>
+												<div class="timeslot-profile-name"><c:out value="${timeSlot.student.firstName} ${timeSlot.student.lastName}" /></div>
 											</a>
 											<div class="clear"></div>
 										</c:otherwise>
@@ -33,8 +43,8 @@
 										</c:when>
 										<c:otherwise>										
 											<a href="<%=request.getContextPath()%>/user/profile/?userId=${timeSlot.tutor.id}">
-												<div style="width:32px;height:32px;background-image:url('<%=request.getContextPath()%>/img/user.jpg?userId=${timeSlot.tutor.id}');background-size:cover;background-position:top center;float:left;margin-right:10px"></div>
-												<div style="float:left;margin-top:4px"><c:out value="${timeSlot.tutor.firstName} ${timeSlot.tutor.lastName}" /></div>
+												<div class="timeslot-profile-picture" style="background-image:url('<%=request.getContextPath()%>/img/user.jpg?userId=${timeSlot.tutor.id}');"></div>
+												<div class="timeslot-profile-name"><c:out value="${timeSlot.tutor.firstName} ${timeSlot.tutor.lastName}" /></div>
 											</a>
 											<div class="clear"></div>
 										</c:otherwise>
@@ -47,7 +57,7 @@
 							<div class="cell">
 								<fmt:formatDate value="${timeSlot.beginDateTime}" pattern="HH" />:00 - <fmt:formatDate value="${timeSlot.beginDateTime}" pattern="HH" />:59
 							</div>
-							<div class="cell" style="text-align:right">
+							<div class="cell right">
 								<c:choose>
 									<c:when test="${ownProfile}">
 										<c:if test="${timeSlotListSettingStatus == 'AVAILABLE'}">
@@ -66,7 +76,7 @@
 											<c:set var="billableHours" value="${billableHours+1}"/>
 										</c:if>
 										<c:if test="${user.id == timeSlot.student.id && timeSlotListSettingStatus == 'ACCEPTED' && timeSlot.beginDateTime < now}">
-											<div class="star-container" style="width:145px">
+											<div class="star-container">
 												<c:forEach var="i" begin="1" end="5">
 													<div class="star clickable
 														<c:choose>
@@ -105,7 +115,7 @@
 						<div class="cell"></div>
 						<div class="cell"></div>
 						<div class="cell"></div>
-						<div class="cell" style="text-align:right">
+						<div class="cell right">
 							<strong>CHF <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${user.price * billableHours}" /></strong>
 						</div>
 					</div>
@@ -116,7 +126,7 @@
 						<div class="cell"></div>
 						<div class="cell"></div>
 						<div class="cell"></div>
-						<div class="cell" style="text-align:right">
+						<div class="cell right">
 							<strong>CHF <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${user.price * billableHours * 0.1}" /></strong>
 						</div>
 					</div>

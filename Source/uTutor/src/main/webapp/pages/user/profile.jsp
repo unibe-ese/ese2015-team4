@@ -1,5 +1,4 @@
 <%@include file="../partials/header.jsp"%>
-<jsp:useBean id="now" class="java.util.Date"/>
 
 <c:if test="${ownProfile || user.isTutor}">
 	<%@include file="../partials/hidden-actions.jsp"%>
@@ -30,7 +29,7 @@
 	<!-- END PROFILE PICTURE -->
 	<!-- BEGIN USER DATA -->
 	<div class="float-left">
-		<div class="hashMap table" style="max-width:560px;overflow:hidden">
+		<div class="hashMap table profile-data-table">
 			<div class="row">
 				<div class="cell key">
 					First name
@@ -97,13 +96,13 @@
 					<div class="cell key">
 						Rating
 					</div>
-	    			<div class="cell value" style="font-weight:normal">
+	    			<div class="cell">
 	    				<c:set var="rating" value="${user.rating}"/>
 	    				<%@include file="../partials/rating.jsp"%>
 	    			</div>
 				</div>
 				<div class="row">
-					<div class="cell key multiline" style="padding-top:15px">
+					<div class="cell key multiline">
 						Description
 					</div>
 		<!-- BEGIN DESCRIPTION (don't add white-spaces inside the div!!!)  -->

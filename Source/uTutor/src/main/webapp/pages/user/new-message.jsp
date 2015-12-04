@@ -23,11 +23,11 @@
 				</div>		
 			</div>
 			<label>
-		    	<form:input path="subject" id="field-subject" placeholder="Subject" value="${messageSubject}" style="width:600px"/>
+		    	<form:input path="subject" id="field-subject" placeholder="Subject" value="${messageSubject}"/>
  				<form:errors path="subject" element="div" class="error"/> 						  	
 			</label>
 			<label>
-				<form:textarea path="message" id="field-message" placeholder="Please enter your message..." style="width:600px;height:200px"></form:textarea>
+				<form:textarea path="message" id="field-message" placeholder="Please enter your message..."></form:textarea>
 	    		<form:errors path="message" element="div" class="error"/>
 			</label>
 		

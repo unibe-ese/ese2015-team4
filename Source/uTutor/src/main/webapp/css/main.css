@@ -144,15 +144,24 @@ a.navigation.logout{
 	padding:18px 5px;
 }
 
+#header-actions{
+	margin-top:8px;
+	float:right;
+}
+
 #logo{
 	position:absolute;
 	top:5px;
 	left:5px;
 }
 
-#header-actions{
-	margin-top:8px;
-	float:right;
+#nav-outer{
+	background:rgb(8,16,60);
+}
+
+#nav-inner{
+	width:960px;
+	margin:0px auto;
 }
 
 .center{
@@ -190,4 +199,8 @@ a.navigation.logout{
 	font-style:italic;
 	color:rgba(2,5,15,0.5);
 	font-size:12px;
+}
+
+.right{
+	text-align:right;
 }

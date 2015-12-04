@@ -19,6 +19,7 @@
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/table.css">
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/text.css">
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/flash-messages.css">
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/time-slot.css">
 	
 	<link rel="apple-touch-icon" sizes="57x57" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-60x60.png">
@@ -75,8 +76,8 @@
 	
 	<!--  BEGIN NAVIGATION BAR -->
 		<sec:authorize access="isAuthenticated()">
-			<div style="background:rgb(8,16,60);;">
-				<div style="width:960px;margin:0px auto;">
+			<div class="nav-outer">
+				<div class="nav-inner">
 					<a href="<%=request.getContextPath()%>/user/profile" class="navigation<c:if test="${fn:contains(contextUrl, 'profile')}"> active</c:if>">My profile</a>
 					<a href="<%=request.getContextPath()%>/user/messagecenter" class="navigation<c:if test="${fn:contains(contextUrl, 'message')}"> active</c:if>">Message center<span id="new-messages" class="hidden"></span></a>
 					<a href="<%=request.getContextPath()%>/user/password" class="navigation<c:if test="${fn:contains(contextUrl, 'password')}"> active</c:if>">Change password</a>
