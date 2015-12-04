@@ -56,7 +56,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 		}
 		
 		if ( TimeHelper.isPast( selectedDate ) ){
-			throw new InvalidDateException( "Please enter a future date !" );
+			throw new InvalidDateException( "Please enter a future date!" );
 		}
 		
 		dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");

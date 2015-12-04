@@ -5,8 +5,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.hamcrest.Matchers.*;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -23,10 +27,14 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import ch.ututor.model.TimeSlot;
 import ch.ututor.model.TutorLecture;
 import ch.ututor.model.User;
+import ch.ututor.model.dao.TimeSlotDao;
+import ch.ututor.service.interfaces.AuthenticatedUserService;
 import ch.ututor.service.interfaces.TutorService;
 import ch.ututor.service.interfaces.UserService;
+import ch.ututor.utils.TimeHelper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -41,6 +49,7 @@ public class ProfileViewControllerTest {
 	@Autowired private WebApplicationContext wac;
 	@Autowired private UserService userService;
 	@Autowired private TutorService tutorService;
+	@Autowired private TimeSlotDao timeSlotDao;
 	
 	private MockMvc mockMvc;
 	
@@ -101,7 +110,7 @@ public class ProfileViewControllerTest {
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "deleteLecture")
 					.param("objectId", tutorLectures.get(0).getId().toString()))
-					.andExpect(status().is(302))
+					.andExpect(status().isFound())
 					.andExpect(redirectedUrl("/user/profile/?userId=1"));
 		
 		this.mockMvc.perform(get("/user/profile"))		
@@ -111,5 +120,132 @@ public class ProfileViewControllerTest {
 			.andExpect(model().attribute("user", user))
 			.andExpect(model().attributeDoesNotExist("lectures"))
 			.andExpect(model().attributeDoesNotExist("exeption_message"));
+	}
+	
+	@Test
+	@WithMockUser(username="percy.weasley@hogwarts.com",roles={"USER"})
+	public void testInvalidMultipleObjectIdNumberFormatException() throws Exception{
+		this.mockMvc
+			.perform(post("/user/profile?action=deleteLecture&objectId=wrong-input"))
+			.andExpect(status().isOk())
+			.andExpect(forwardedUrl("/pages/exception.jsp"))
+			.andExpect(model().attribute("exception_message", "For input string: \"input\""));
+	}
+	
+	@Test
+	@WithMockUser(username="percy.weasley@hogwarts.com",roles={"USER"})
+	public void testInvalidSingleObjectIdNumberFormatException() throws Exception{
+		this.mockMvc
+			.perform(post("/user/profile?action=deleteLecture&objectId=wronginput"))
+			.andExpect(status().isOk())
+			.andExpect(forwardedUrl("/pages/exception.jsp"))
+			.andExpect(model().attribute("exception_message", "For input string: \"wronginput\""));
+	}
+	
+	@Test
+	@WithMockUser(username="fred.weasley@hogwarts.com",roles={"USER"})
+	public void testSendTimeSlotRequest() throws Exception{
+		User user = userService.load("percy.weasley@hogwarts.com");
+		TimeSlot timeslot = timeSlotDao.findByTutorAndStatus(user, TimeSlot.Status.AVAILABLE);
+		this.mockMvc.perform(post("/user/profile")
+					.param("action", "requestTimeSlot")
+					.param("objectId", "" + timeslot.getId()))
+					.andExpect(status().isFound())
+					.andExpect(redirectedUrl("/user/profile/?userId=1"))
+					.andExpect(flash().attribute("flash_message", "Request successfully sent."));
+		
+		this.mockMvc.perform(get("/user/profile"))		
+			.andExpect(status().isOk())
+			.andExpect(forwardedUrl("/pages/user/profile.jsp"))
+			.andExpect(model().attribute("ownProfile", true))
+			.andExpect(model().attribute("timeSlotList", hasItem(hasProperty("tutor", is(user)))))
+			.andExpect(model().attribute("timeSlotList", hasItem(hasProperty("status", is(TimeSlot.Status.REQUESTED)))));
+	}
+	
+	@Test
+	@WithMockUser(username="percy.weasley@hogwarts.com",roles={"USER"})
+	public void testDeleteTimeSlot() throws Exception{
+		User user = userService.load("percy.weasley@hogwarts.com");
+		TimeSlot timeslot = timeSlotDao.findByTutorAndStatus(user, TimeSlot.Status.AVAILABLE);
+		this.mockMvc.perform(post("/user/profile")
+					.param("action", "deleteTimeSlot")
+					.param("objectId", "" + timeslot.getId()))
+					.andExpect(status().isFound())
+					.andExpect(redirectedUrl("/user/profile/?userId=4"))
+					.andExpect(flash().attribute("flash_message", "Time-slot successfully deleted."));
+		
+		this.mockMvc.perform(get("/user/profile"))		
+			.andExpect(status().isOk())
+			.andExpect(forwardedUrl("/pages/user/profile.jsp"))
+			.andExpect(model().attribute("ownProfile", true))
+			.andExpect(model().attributeExists("timeSlotList"))
+			.andExpect(model().attribute("timeSlotList", hasSize(2)));
+	}
+	
+	@Test
+	@WithMockUser(username="percy.weasley@hogwarts.com",roles={"USER"})
+	public void testAcceptTimeSlot() throws Exception{
+		User user = userService.load("percy.weasley@hogwarts.com");
+		TimeSlot timeslot = timeSlotDao.findByTutorAndStatus(user, TimeSlot.Status.REQUESTED);
+		this.mockMvc.perform(post("/user/profile")
+					.param("action", "acceptTimeSlot")
+					.param("objectId", "" + timeslot.getId()))
+					.andExpect(status().isFound())
+					.andExpect(redirectedUrl("/user/profile/?userId=4"))
+					.andExpect(flash().attribute("flash_message", "Time-slot accepted."));
+		
+		this.mockMvc.perform(get("/user/profile"))		
+			.andExpect(status().isOk())
+			.andExpect(forwardedUrl("/pages/user/profile.jsp"))
+			.andExpect(model().attribute("ownProfile", true))
+			.andExpect(model().attributeExists("timeSlotList"))
+			.andExpect(model().attribute("timeSlotList", hasSize(3)))
+			.andExpect(model().attribute("timeSlotList", hasItem(hasProperty("tutor", is(user)))))
+			.andExpect(model().attribute("timeSlotList", hasItem(hasProperty("status", is(TimeSlot.Status.ACCEPTED)))));
+	}
+	
+	@Test
+	@WithMockUser(username="percy.weasley@hogwarts.com",roles={"USER"})
+	public void testRejectTimeSlot() throws Exception{
+		User user = userService.load("percy.weasley@hogwarts.com");
+		TimeSlot timeslot = timeSlotDao.findByTutorAndStatus(user, TimeSlot.Status.REQUESTED);
+		this.mockMvc.perform(post("/user/profile")
+					.param("action", "rejectTimeSlot")
+					.param("objectId", "" + timeslot.getId() ))
+					.andExpect(status().isFound())
+					.andExpect(redirectedUrl("/user/profile/?userId=4"))
+					.andExpect(flash().attribute("flash_message", "Time-slot rejected."));
+		
+		this.mockMvc.perform(get("/user/profile"))		
+			.andExpect(status().isOk())
+			.andExpect(forwardedUrl("/pages/user/profile.jsp"))
+			.andExpect(model().attribute("ownProfile", true))
+			.andExpect(model().attributeExists("timeSlotList"))
+			.andExpect(model().attribute("timeSlotList", hasSize(3)))
+			.andExpect(model().attribute("timeSlotList", hasItem(hasProperty("tutor", is(user)))))
+			.andExpect(model().attribute("timeSlotList", hasItem(hasProperty("status", is(TimeSlot.Status.AVAILABLE)))));
+	}
+	
+	@Test
+	@WithMockUser(username="ginevra.weasley@hogwarts.com",roles={"USER"})
+	public void testRateTimeSlot() throws Exception{
+		User user = userService.load("percy.weasley@hogwarts.com");
+		TimeSlot timeslot = timeSlotDao.findByTutorAndStatus(user, TimeSlot.Status.ACCEPTED);
+		this.mockMvc.perform(post("/user/profile")
+					.param("action", "rateTimeSlot")
+					.param("objectId", "" + timeslot.getId() +"-5" ))
+					.andExpect(status().isFound())
+					.andExpect(redirectedUrl("/user/profile/?userId=3"))
+					.andExpect(flash().attribute("flash_message", "Time-slot rated."));
+		
+		this.mockMvc.perform(get("/user/profile"))		
+			.andExpect(status().isOk())
+			.andExpect(forwardedUrl("/pages/user/profile.jsp"))
+			.andExpect(model().attribute("ownProfile", true))
+			.andExpect(model().attributeExists("timeSlotList"))
+			.andExpect(model().attribute("timeSlotList", hasSize(1)))
+			.andExpect(model().attribute("timeSlotList", hasItem(hasProperty("tutor", is(user)))))
+			.andExpect(model().attribute("timeSlotList", hasItem(hasProperty("status", is(TimeSlot.Status.ACCEPTED)))))
+			.andExpect(model().attribute("timeSlotList", hasItem(hasProperty("rating", is(5)))));
 	}
 }

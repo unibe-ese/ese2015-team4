@@ -2,6 +2,7 @@ package ch.ututor.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -10,12 +11,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import ch.ututor.model.Lecture;
+import ch.ututor.model.TimeSlot;
+import ch.ututor.model.TimeSlot.Status;
 import ch.ututor.model.TutorLecture;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.LectureDao;
+import ch.ututor.model.dao.TimeSlotDao;
 import ch.ututor.model.dao.TutorLectureDao;
 import ch.ututor.model.dao.UserDao;
 import ch.ututor.utils.MultipartFileMocker;
+import ch.ututor.utils.TimeHelper;
 
 @Service
 public class TestDataSeeder implements InitializingBean {
@@ -25,6 +30,8 @@ public class TestDataSeeder implements InitializingBean {
 	private LectureDao lectureDao;
 	@Autowired
 	private TutorLectureDao tutorLectureDao;
+	@Autowired
+	private TimeSlotDao timeSlotDao;
 	
 	private List<Lecture> lectures = new ArrayList<Lecture>();
 	
@@ -68,8 +75,22 @@ public class TestDataSeeder implements InitializingBean {
 		}
 	}
 	
+private void createTimeslots(User tutor, User student, Status status, Date beginDateTime, Integer rating){
+		TimeSlot timeslot = new TimeSlot();
+		timeslot.setStatus(status);
+		timeslot.setBeginDateTime(beginDateTime);
+		timeslot.setTutor(tutor);
+		timeslot.setStudent(student);
+		timeslot.setRating(rating);
+		TimeSlot existingTimeSlot = timeSlotDao.findByTutorAndStudentAndBeginDateTime(tutor, student, beginDateTime);
+		if(existingTimeSlot == null){
+			timeSlotDao.save(timeslot);
+		}
+	}
+	
 	private void createUsers(){
 		User user;
+		User tutor;
 		user = createUser(
 				"Fred",
 				"Weasley",
@@ -99,26 +120,38 @@ public class TestDataSeeder implements InitializingBean {
 				"h4rryisth3b3st");
 		user = userDao.save(user);
 		removeLectures(user);
+		removeTimeSlots(user);
 		
-		user = createUser(
+		tutor = createUser(
 				"Percy",
 				"Weasley",
 				"percy.weasley@hogwarts.com",
 				"imsorrydad123",
 				"Percy Ignatius Weasley (b. 22 August, 1976) was a pure-bloodwizard, the third child of Arthur and Molly Weasley (née Prewett).",
 				29.9F);
-		user = userDao.save(user);
-		createTutorLecture(user, lectures.get(3), 6F);
-		createTutorLecture(user, lectures.get(4), 5.5F);
-		createTutorLecture(user, lectures.get(5), 5F);
-		createTutorLecture(user, lectures.get(6), 4.5F);
-		createTutorLecture(user, lectures.get(7), 4F);
+		tutor = userDao.save(tutor);
+		removeTimeSlots(tutor);
+		createTutorLecture(tutor, lectures.get(3), 6F);
+		createTutorLecture(tutor, lectures.get(4), 5.5F);
+		createTutorLecture(tutor, lectures.get(5), 5F);
+		createTutorLecture(tutor, lectures.get(6), 4.5F);
+		createTutorLecture(tutor, lectures.get(7), 4F);
+		createTimeslots(tutor, null, TimeSlot.Status.AVAILABLE, TimeHelper.addDays(new Date(), 1), null);
+		createTimeslots(tutor, null, TimeSlot.Status.REQUESTED, TimeHelper.addDays(new Date(), 2), null);
+		createTimeslots(tutor, user, TimeSlot.Status.ACCEPTED, TimeHelper.addDays(new Date(), -1), null);
 	}
 	
 	private void removeLectures(User user){
 		List<TutorLecture> tutorLectures = tutorLectureDao.findByTutorOrderByLectureName(user);
 		for(TutorLecture tutorLecture : tutorLectures){
 			tutorLectureDao.delete(tutorLecture);
+		}
+	}
+	
+	private void removeTimeSlots(User user){
+		List<TimeSlot> timeslots = timeSlotDao.findByTutorOrStudentOrderByBeginDateTimeAsc(user, user);
+		for(TimeSlot timeslot : timeslots){
+			timeSlotDao.delete(timeslot);
 		}
 	}
 	

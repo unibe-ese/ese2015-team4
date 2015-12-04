@@ -194,14 +194,90 @@ public class TutorControllerTest {
 	}
 	
 	@Test
+	@WithMockUser(username="ginevra.weasley@hogwarts.com", roles={"USER"})
+	public void testGetAddTimeSlotsIsNoTutor() throws Exception{
+		this.mockMvc
+			.perform(get("/user/add-timeslots"))
+				.andExpect(status().isFound())
+				.andExpect(redirectedUrl("/user/become-tutor"));
+	}
+	
+	@Test
+	@WithMockUser(username="percy.weasley@hogwarts.com", roles={"USER"})
+	public void testTutorAddTimeSlots() throws Exception{
+		this.mockMvc
+			.perform(get("/user/add-timeslots"))
+				.andExpect(status().isOk())
+				.andExpect(forwardedUrl("/pages/user/add-timeslots.jsp"))
+				.andExpect(model().attributeExists("addTimeslotsForm"))
+				.andExpect(model().attribute("possibleTimeslots", getPossibleTimeslots()));
+	}
+
+	private List<String> getPossibleTimeslots() {
+		List<String> possibleTimeslots = new ArrayList<String>();
+		for(Integer i = 6; i < 23; i++){
+			String hour = i.toString();
+			
+			if(i < 10){
+				hour = "0" + i;
+			}
+			possibleTimeslots.add(hour + ":00 - " + hour + ":59");
+		}
+		return possibleTimeslots;
+	}
+	
+	@Test
+	@WithMockUser(username="ginevra.weasley@hogwarts.com", roles={"USER"})
+	public void testPostAddTimeSlotsIsNoTutor() throws Exception{
+		this.mockMvc
+			.perform(post("/user/add-timeslots"))
+				.andExpect(status().isFound())
+				.andExpect(redirectedUrl("/user/become-tutor"));
+	}
+	
+	@Test
 	@WithMockUser(username="percy.weasley@hogwarts.com", roles={"USER"})
 	public void testValidAddTimeSlot() throws Exception{
-		
 		this.mockMvc
 			.perform(post("/user/add-timeslots")
 					.param("date", "2015-12-24")
-					.param("timeslots", "08:00 - 08:59"))
+					.param("timeslots", "08:00 - 08:59")
+					.param("timeslots", "09:00 - 09:59"))
 				.andExpect(status().isFound())
 				.andExpect(redirectedUrl("/user/profile"));
+	}
+	
+	@Test
+	@WithMockUser(username="percy.weasley@hogwarts.com", roles={"USER"})
+	public void testInvalidTimeslotsParseException() throws Exception{
+		this.mockMvc
+		.perform(post("/user/add-timeslots")
+				.param("date", "2015-12-24")
+				.param("timeslots", "No Timeslot"))
+			.andExpect(status().isOk())
+			.andExpect(forwardedUrl("/pages/exception.jsp"))
+			.andExpect(model().attribute("exception_message", "Unparseable date: \"2015-12-24 No Ti\""));
+	}
+	
+	@Test
+	@WithMockUser(username="percy.weasley@hogwarts.com", roles={"USER"})
+	public void testInvalidDateCustomException() throws Exception{
+		this.mockMvc
+			.perform(post("/user/add-timeslots")
+					.param("date", "2014-12-24")
+					.param("timeslots", "08:00 - 08:59"))
+				.andExpect(status().isOk())
+				.andExpect(forwardedUrl("/pages/user/add-timeslots.jsp"))
+				.andExpect(model().attribute("exception_message", "Please enter a future date!"));
+	}
+	
+	@Test
+	@WithMockUser(username="percy.weasley@hogwarts.com", roles={"USER"})
+	public void testInvalidAddTimeslotsForm() throws Exception{
+		this.mockMvc
+		.perform(post("/user/add-timeslots"))
+			.andExpect(status().isOk())
+			.andExpect(forwardedUrl("/pages/user/add-timeslots.jsp"))
+			.andExpect(model().attribute("possibleTimeslots", getPossibleTimeslots()));
 	}
 }

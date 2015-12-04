@@ -39,9 +39,14 @@ public class TimeSlotServiceTest {
 	private List<TimeSlot> timeSlotList;
 	private List<String> posTimeSlot;
 	private User user;
+	private User tutor;
+	private User student;
+	private TimeSlot timeslot;
 	
 	@Before
 	public void setupTimeSlotData(){
+		setupUser();
+		
 		user = new User();
 		
 		List<String> timeSlots = new ArrayList<String>();
@@ -55,7 +60,17 @@ public class TimeSlotServiceTest {
 		when( authenticatedUserLoaderService.getAuthenticatedUser() ).thenReturn( user );
 		when(timeSlotDao.findByBeginDateTimeAndTutor(any(Date.class), any(User.class))).thenReturn(null);
 	}
-	
+
+	private void setupUser() {
+		tutor = new User();
+		long id = 1;
+		tutor.setId(id);
+		
+		student = new User();
+		long otherId = 2;
+		student.setId(otherId);
+	}
+
 	@Test
 	public void testValidTimeSlotList(){
 		posTimeSlot = timeSlotService.getPossibleTimeslots();
@@ -128,17 +143,29 @@ public class TimeSlotServiceTest {
 	
 	@Test
 	public void testValidRequestForTimeslot(){
-		User tutor = new User();
-		long id = 1;
-		tutor.setId(id);
-		User student = new User();
-		long otherId = 2;
-		student.setId(otherId);
-		
 		TimeSlot timeSlot = new TimeSlot();
 		timeSlot.setStatus(TimeSlot.Status.AVAILABLE);
 		timeSlot.setTutor(tutor);
 		timeSlot.setBeginDateTime(TimeHelper.addDays(new Date(), 1));
+		
+		long anyIdNumber = 1;
+		
+		when( authenticatedUserLoaderService.getAuthenticatedUser() ).thenReturn(student);
+		when(timeSlotDao.findById(any(Long.class))).thenReturn(timeSlot);
+		when(messageCenterService.sendMessage(any(Message.class))).then(returnsFirstArg());
+		
+		timeSlot = timeSlotService.requestForTimeSlot(anyIdNumber);
+		
+		assertEquals(TimeSlot.Status.REQUESTED, timeSlot.getStatus());
+		assertEquals(student, timeSlot.getStudent());
+	}
+	
+	@Test(expected = TimeSlotException.class)
+	public void testInvalidRequestTimeslotIsInThePast(){
+		TimeSlot timeSlot = new TimeSlot();
+		timeSlot.setStatus(TimeSlot.Status.AVAILABLE);
+		timeSlot.setTutor(tutor);
+		timeSlot.setBeginDateTime(TimeHelper.addDays(new Date(), -1));
 		
 		long anyIdNumber = 1;
 		
@@ -164,13 +191,6 @@ public class TimeSlotServiceTest {
 	 */
 	@Test(expected = TimeSlotException.class)
 	public void testWrongEnumState(){
-		User tutor = new User();
-		long id = 1;
-		tutor.setId(id);
-		User student = new User();
-		long otherId = 2;
-		student.setId(otherId);
-		
 		TimeSlot timeSlot = new TimeSlot();
 		timeSlot.setStatus(TimeSlot.Status.REQUESTED);
 		timeSlot.setTutor(tutor);
@@ -185,10 +205,6 @@ public class TimeSlotServiceTest {
 	
 	@Test(expected = TimeSlotException.class)
 	public void testTutorAndStudentAreTheSame(){
-		User tutor = new User();
-		long id = 1;
-		tutor.setId(id);
-		
 		TimeSlot timeSlot = new TimeSlot();
 		timeSlot.setStatus(TimeSlot.Status.AVAILABLE);
 		timeSlot.setTutor(tutor);
@@ -203,10 +219,6 @@ public class TimeSlotServiceTest {
 	
 	@Test(expected = TimeSlotException.class)
 	public void testInvalidTimeSlotDelete(){
-		User tutor = new User();
-		long id = 1;
-		tutor.setId(id);
-		
 		TimeSlot timeSlot = new TimeSlot();
 		timeSlot.setStatus(TimeSlot.Status.ACCEPTED);
 		timeSlot.setTutor(tutor);
@@ -219,10 +231,6 @@ public class TimeSlotServiceTest {
 	
 	@Test
 	public void testValidTimeSlotAcception(){
-		User tutor = new User();
-		long id = 1;
-		tutor.setId(id);
-		
 		TimeSlot timeSlot = new TimeSlot();
 		timeSlot.setStatus(TimeSlot.Status.REQUESTED);
 		timeSlot.setTutor(tutor);
@@ -238,10 +246,6 @@ public class TimeSlotServiceTest {
 	
 	@Test(expected = TimeSlotException.class)
 	public void testInvalidTimeSlotAcceptionStatusIsNotRequested(){
-		User tutor = new User();
-		long tutorId = 1;
-		tutor.setId(tutorId);
-		
 		TimeSlot timeSlot = new TimeSlot();
 		timeSlot.setStatus(TimeSlot.Status.AVAILABLE);
 		timeSlot.setTutor(tutor);
@@ -254,12 +258,8 @@ public class TimeSlotServiceTest {
 	
 	@Test(expected = TimeSlotException.class)
 	public void testInvalidTimeSlotAcceptionDateIsInThePast(){
-		User tutor = new User();
-		long tutorId = 1;
-		tutor.setId(tutorId);
-		
 		TimeSlot timeSlot = new TimeSlot();
-		timeSlot.setStatus(TimeSlot.Status.AVAILABLE);
+		timeSlot.setStatus(TimeSlot.Status.REQUESTED);
 		timeSlot.setTutor(tutor);
 		timeSlot.setBeginDateTime(TimeHelper.addDays(new Date(), -1));
 		
@@ -271,10 +271,6 @@ public class TimeSlotServiceTest {
 	
 	@Test
 	public void testValidTimeSlotRejection(){
-		User tutor = new User();
-		long id = 1;
-		tutor.setId(id);
-		
 		TimeSlot timeSlot = new TimeSlot();
 		timeSlot.setStatus(TimeSlot.Status.REQUESTED);
 		timeSlot.setTutor(tutor);
@@ -289,17 +285,60 @@ public class TimeSlotServiceTest {
 	
 	@Test(expected = TimeSlotException.class)
 	public void testInvalidTimeSlotRejection(){
-		User tutor = new User();
-		long tutorId = 1;
-		tutor.setId(tutorId);
-		
 		TimeSlot timeSlot = new TimeSlot();
 		timeSlot.setStatus(TimeSlot.Status.ACCEPTED);
 		timeSlot.setTutor(tutor);
+		timeSlot.setBeginDateTime(TimeHelper.addDays(new Date(), 1));
 		
 		when( authenticatedUserLoaderService.getAuthenticatedUser() ).thenReturn(tutor);
 		when(timeSlotDao.findById(any(Long.class))).thenReturn(timeSlot);
 		
-		timeSlot = timeSlotService.acceptTimeSlotRequest(1);
+		timeSlot = timeSlotService.rejectTimeSlotRequest(1);
+	}
+	
+	@Test
+	public void testValidRating(){
+		TimeSlot timeSlot = new TimeSlot();
+		timeSlot.setStatus(TimeSlot.Status.ACCEPTED);
+		timeSlot.setTutor(tutor);
+		timeSlot.setStudent(student);
+		timeSlot.setBeginDateTime(TimeHelper.addDays(new Date(), -1));
+		
+		when(timeSlotDao.findById(any(Long.class))).thenReturn(timeSlot);
+		when( authenticatedUserLoaderService.getAuthenticatedUser() ).thenReturn(student);
+		
+		int rating = 5;
+		
+		timeSlot = timeSlotService.rateTimeSlot(1, rating);
+		
+		assertEquals(rating , (int)timeSlot.getRating());
+	}
+	
+	@Test(expected = TimeSlotException.class)
+	public void testInvalidRatingTimeSlotIsInTheFutur(){
+		TimeSlot timeSlot = new TimeSlot();
+		timeSlot.setStatus(TimeSlot.Status.ACCEPTED);
+		timeSlot.setTutor(tutor);
+		timeSlot.setStudent(student);
+		timeSlot.setBeginDateTime(TimeHelper.addDays(new Date(), 1));
+		
+		when(timeSlotDao.findById(any(Long.class))).thenReturn(timeSlot);
+		when( authenticatedUserLoaderService.getAuthenticatedUser() ).thenReturn(student);
+		
+		timeSlot = timeSlotService.rateTimeSlot(1, 5);
+	}
+	
+	@Test(expected = TimeSlotException.class)
+	public void testInvalidRatingUnknownGrade(){
+		TimeSlot timeSlot = new TimeSlot();
+		timeSlot.setStatus(TimeSlot.Status.ACCEPTED);
+		timeSlot.setTutor(tutor);
+		timeSlot.setStudent(student);
+		timeSlot.setBeginDateTime(TimeHelper.addDays(new Date(), -1));
+		
+		when(timeSlotDao.findById(any(Long.class))).thenReturn(timeSlot);
+		when( authenticatedUserLoaderService.getAuthenticatedUser() ).thenReturn(student);
+		
+		timeSlot = timeSlotService.rateTimeSlot(1, 0);
 	}
 }
