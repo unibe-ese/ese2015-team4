@@ -3,8 +3,6 @@
 	/*	This jsp should only be included from timeslot-list.jsp
 	*/
 %>
-
-<jsp:useBean id="now" class="java.util.Date"/>
 				
 <h3><c:out value="${timeSlotListSettingTitle}"/></h3>
 <div class="list table striped">

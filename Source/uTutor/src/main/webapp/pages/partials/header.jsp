@@ -5,6 +5,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<jsp:useBean id="now" class="java.util.Date"/>
 <c:set var="contextUrl" value="${fn:replace(requestScope['javax.servlet.forward.request_uri'], pageContext.request.contextPath, '')}"/>
 
 <!DOCTYPE html>
@@ -76,8 +77,8 @@
 	
 	<!--  BEGIN NAVIGATION BAR -->
 		<sec:authorize access="isAuthenticated()">
-			<div class="nav-outer">
-				<div class="nav-inner">
+			<div id="nav-outer">
+				<div id="nav-inner">
 					<a href="<%=request.getContextPath()%>/user/profile" class="navigation<c:if test="${fn:contains(contextUrl, 'profile')}"> active</c:if>">My profile</a>
 					<a href="<%=request.getContextPath()%>/user/messagecenter" class="navigation<c:if test="${fn:contains(contextUrl, 'message')}"> active</c:if>">Message center<span id="new-messages" class="hidden"></span></a>
 					<a href="<%=request.getContextPath()%>/user/password" class="navigation<c:if test="${fn:contains(contextUrl, 'password')}"> active</c:if>">Change password</a>

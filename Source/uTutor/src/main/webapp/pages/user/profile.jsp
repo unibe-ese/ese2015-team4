@@ -131,6 +131,14 @@
 	</c:if>
 	
 	<c:if test="${user.isTutor}">
+	<!-- BEGIN AVAILABILITIES -->
+			<c:set var="timeSlotListSettingTitle" value="Availability" />
+			<c:set var="timeSlotListSettingStatus" value="AVAILABLE" />
+			<c:set var="timeSlotListSettingFuture" value="${true}" />
+			<c:set var="timeSlotListSettingPast" value="${false}" />
+			<%@include file="partials/timeslot-list.jsp"%>
+	<!-- END AVAILABILITIES -->	
+	<p></p>
 	<!-- BEGIN LECTURES -->
 		<h3>Lectures:</h3>	
 		<div class="list table striped">
@@ -164,14 +172,6 @@
 			</a>
 		</c:if>
 	<!-- END LECTURES -->
-	<p></p>
-	<!-- BEGIN AVAILABILITIES -->
-			<c:set var="timeSlotListSettingTitle" value="Availability" />
-			<c:set var="timeSlotListSettingStatus" value="AVAILABLE" />
-			<c:set var="timeSlotListSettingFuture" value="${true}" />
-			<c:set var="timeSlotListSettingPast" value="${false}" />
-			<%@include file="partials/timeslot-list.jsp"%>
-	<!-- END AVAILABILITIES -->	
 	<p></p>
 	</c:if>
 	
