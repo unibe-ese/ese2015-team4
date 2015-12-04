@@ -14,4 +14,5 @@ public interface MessageDao extends CrudRepository<Message, Long> {
     public List<Message> findBySenderAndSenderDeletedOrReceiverAndReceiverDeletedOrderByDateAndTimeDesc( User sender, boolean senderDeleted, User receiver, boolean userDeleted );
     public Message findById( Long id );
     public Long countByReceiverAndIsRead( User receiver, boolean isRead );
+    
 }

@@ -36,7 +36,7 @@ public class SearchServiceImpl implements SearchService {
 	}
 	
 	/**
-	 * @param sortString needs to be equal to "lecture.name", "tutor.rating", "tutorlecture.grade" or "tutor.price" otherwise "lecture.name" will be assumed. 
+	 * @param sortString	needs to be equal to "lecture.name", "tutor.rating", "tutorlecture.grade" or "tutor.price" otherwise "lecture.name" will be assumed. 
 	 * @return Sort which sorts the results by lecture name ascending and after according to the given sortString.
 	 */
 	private Sort getSortFromString( String sortString ){

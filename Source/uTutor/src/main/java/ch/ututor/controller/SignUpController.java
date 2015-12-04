@@ -12,15 +12,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.ututor.exceptions.CustomException;
 import ch.ututor.pojos.SignUpForm;
-import ch.ututor.service.interfaces.ExceptionService;
 import ch.ututor.service.interfaces.SignupService;
+import ch.ututor.utils.ExceptionHelper;
 import ch.ututor.utils.FlashMessage;
 
 @Controller
 public class SignUpController {
     
 	@Autowired	private SignupService signupService;
-	@Autowired	private ExceptionService exceptionService;
 	
 	@RequestMapping( value = "/signup", method = RequestMethod.GET )
 	public ModelAndView displaySignUpForm() {
@@ -30,8 +29,8 @@ public class SignUpController {
 	}
 	
 	/**
-	 *	@return	A ModelAndView containing the login form if the registration has been successfully.
-	 *			Otherwise the sign up form with the exception messages.
+	 *	@return	ModelAndView containing the login form if the registration has been successfully.
+	 *			Otherwise the SignUpForm with exception messages.
 	 */
 	@RequestMapping( value = "/signup", method = RequestMethod.POST )
     public ModelAndView createUserAccount( 	@Valid SignUpForm signupForm, 
@@ -45,7 +44,7 @@ public class SignUpController {
             	FlashMessage.addMessage(redirectAttributes, "Account successfully created.", FlashMessage.Type.SUCCESS);
             	model = new ModelAndView( "redirect:/login?username=" + signupForm.getEmail() );
             } catch ( CustomException e ){
-            	model = exceptionService.addException( model, e.getMessage() );
+            	model = ExceptionHelper.addException( e.getMessage(), model );
             }
         }
     	return model;

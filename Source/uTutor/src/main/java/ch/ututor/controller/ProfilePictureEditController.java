@@ -15,8 +15,8 @@ import ch.ututor.exceptions.CustomException;
 import ch.ututor.model.User;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.AuthenticatedUserService;
-import ch.ututor.service.interfaces.ExceptionService;
 import ch.ututor.service.interfaces.ProfilePictureService;
+import ch.ututor.utils.ExceptionHelper;
 import ch.ututor.utils.FlashMessage;
 
 /**
@@ -29,10 +29,9 @@ public class ProfilePictureEditController {
 	@Autowired 	 private AuthenticatedUserLoaderService authenticatedUserLoaderService;
 	@Autowired 	 private AuthenticatedUserService authenticatedUserService;
 	@Autowired 	 private ProfilePictureService profilePictureService;
-	@Autowired 	 private ExceptionService exceptionService;
 	
 	/**
-	 *	@return a ModelAndView containing the needed information to display the profile picture.
+	 *	@return ModelAndView containing the needed information to display the profile picture.
 	 */
     @RequestMapping( value = "/user/profile/picture", method = RequestMethod.GET )
     public ModelAndView displayProfilePicturePage() {
@@ -43,7 +42,7 @@ public class ProfilePictureEditController {
     }
     
     /**
-     *	@return A ModelAndView of the own profile if the update or the cleanup was successful.
+     *	@return ModelAndView of the own profile if the update or the cleanup was successful.
 	 *			Otherwise a ModelAndView to edit the profile picture.
      */
     @RequestMapping (value = "/user/profile/picture", method = RequestMethod.POST )
@@ -60,9 +59,9 @@ public class ProfilePictureEditController {
     			FlashMessage.addMessage(redirectAttributes, "Profile picture successfully updated.", FlashMessage.Type.SUCCESS);
         		return new ModelAndView( "redirect:/user/profile" );
             } catch( CustomException e ) {
-               	model = exceptionService.addException( model, e.getMessage() );
+               	model = ExceptionHelper.addException( e.getMessage(), model );
             } catch( IOException e ) {
-            	model = exceptionService.addException( e.getMessage() );
+            	model = ExceptionHelper.addException( e.getMessage() );
             }
     	} else if ( action.equals( "delete" ) ) {
     		authenticatedUserService.removeProfilePicture();

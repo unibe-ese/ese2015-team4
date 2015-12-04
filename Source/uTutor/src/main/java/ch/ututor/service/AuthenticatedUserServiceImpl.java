@@ -17,7 +17,6 @@ import ch.ututor.service.interfaces.ProfilePictureService;
 
 import java.io.IOException;
 
-
 @Service
 public class AuthenticatedUserServiceImpl implements AuthenticatedUserService {
 	

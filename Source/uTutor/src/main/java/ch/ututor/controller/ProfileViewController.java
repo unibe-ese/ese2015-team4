@@ -11,10 +11,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ch.ututor.exceptions.CustomException;
 import ch.ututor.model.User;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
-import ch.ututor.service.interfaces.ExceptionService;
 import ch.ututor.service.interfaces.TimeSlotService;
 import ch.ututor.service.interfaces.TutorService;
 import ch.ututor.service.interfaces.UserService;
+import ch.ututor.utils.ExceptionHelper;
 import ch.ututor.utils.FlashMessage;
 
 @Controller
@@ -24,7 +24,6 @@ public class ProfileViewController {
 	@Autowired 	 private UserService userService;
 	@Autowired   private TutorService tutorService;
 	@Autowired   private TimeSlotService timeSlotService;
-	@Autowired   private ExceptionService exceptionService;
 	
 	/**
 	 * 	@return	ModelAndView of a user profile
@@ -60,14 +59,14 @@ public class ProfileViewController {
     		try{
         		rating = Integer.parseInt( arr[1] );
         	}catch( NumberFormatException e ){
-        		return exceptionService.addException(e.getMessage());
+        		return ExceptionHelper.addException(e.getMessage());
         	}
     	}
 
     	try{
     		objectId = Long.parseLong( objectIdString );
     	}catch( NumberFormatException e ){
-    		return exceptionService.addException(e.getMessage());
+    		return ExceptionHelper.addException(e.getMessage());
     	}
     	
     	try{
@@ -104,11 +103,12 @@ public class ProfileViewController {
     		}
     	}catch( CustomException e ){
     		model = createUserProfileView( userId );
-    		return exceptionService.addException(model, e.getMessage() );
+    		return ExceptionHelper.addException( e.getMessage(), model );
     	}
     	return model;
     }
     
+    //TODO: move to UserService
     private ModelAndView createUserProfileView( Long userId ){
     	ModelAndView model = new ModelAndView( "user/profile" );
     	User user = null;
@@ -122,7 +122,7 @@ public class ProfileViewController {
     		try {
     			user = userService.load( userId );
     		} catch(CustomException e) {
-    			return exceptionService.addException( e.getMessage() );
+    			return ExceptionHelper.addException( e.getMessage() );
     		}
     	}
     	
@@ -132,7 +132,7 @@ public class ProfileViewController {
     			try {
     				model.addObject( "lectures", tutorService.findLecturesByTutor( user ) );
     			} catch(CustomException e) {
-    				model = exceptionService.addException( model, e.getMessage() );
+    				model = ExceptionHelper.addException( e.getMessage(), model );
     			}
     		}
     		model.addObject( "timeSlotList", timeSlotService.getTimeSlotsByUser(user) );

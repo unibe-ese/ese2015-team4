@@ -19,6 +19,7 @@ import ch.ututor.utils.MultipartFileMocker;
 
 @Service
 public class TestDataSeeder implements InitializingBean {
+	
 	@Autowired
 	private UserDao userDao;
 	@Autowired

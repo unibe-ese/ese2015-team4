@@ -7,18 +7,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.ututor.exceptions.CustomException;
-import ch.ututor.service.interfaces.ExceptionService;
 import ch.ututor.service.interfaces.SearchService;
+import ch.ututor.utils.ExceptionHelper;
 
 @Controller
 public class SearchController {
 	
 	@Autowired	private SearchService searchService;
-	@Autowired	private ExceptionService exceptionService;
 	
 	/**
-	 *	@return			A ModelAndView with the search results or an error message
-	 *					if no lectures are found.
+	 *	@return		ModelAndView with the search results or an error message if no lectures are found.
 	 */
 	@RequestMapping( "/search" )
     public ModelAndView search( @RequestParam( value = "query" ) String query,
@@ -31,7 +29,7 @@ public class SearchController {
     	try {
     		model.addObject( "results", searchService.searchByLecture( query, sort ) );
     	} catch( CustomException e ) {
-    		exceptionService.addException( model, e.getMessage() );
+    		ExceptionHelper.addException( e.getMessage(), model );
     	}
     	
         return model;

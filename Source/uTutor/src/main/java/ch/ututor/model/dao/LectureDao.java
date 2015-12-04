@@ -8,4 +8,5 @@ public interface LectureDao extends CrudRepository<Lecture, Long> {
 	
 	public Lecture findByName( String name );
 	public Lecture findById(Long lectureId);
+	
 }

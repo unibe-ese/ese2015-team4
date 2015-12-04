@@ -2,15 +2,22 @@ package ch.ututor.utils;
 
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ *	Offers methods to add an exception to an existing ModelAndView or
+ *	to create a new ModelAndView with an exception message
+ */
+
 public class ExceptionHelper {
 	/**
 	 *  @param model				mustn't be null
 	 *	@param exceptionMessage		mustn't be null
 	 *  @return ModelAndView with added exceptionMessage
 	 */
-	public static ModelAndView addExpectedException( ModelAndView model, String exceptionMessage ) {
+	public static ModelAndView addException( String exceptionMessage, ModelAndView model ) {
 		assert( model != null && exceptionMessage != null );
+		
 		model.addObject( "exception_message", exceptionMessage );
+		
 		return model;
 	}
 
@@ -18,7 +25,9 @@ public class ExceptionHelper {
 	 *	@param exceptionMessage		mustn't be null
 	 *	@return ModelAndView "exception" with added exceptionMessage
 	 */
-	public static ModelAndView addUnexpectedException( String exceptionMessage ) {
-		return addExpectedException( new ModelAndView( "exception" ), exceptionMessage );
+	public static ModelAndView addException( String exceptionMessage ) {
+		assert( exceptionMessage != null );
+		
+		return addException( exceptionMessage, new ModelAndView( "exception" ) );
 	}
 }

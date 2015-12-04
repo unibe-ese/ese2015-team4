@@ -195,7 +195,8 @@ public class TutorServiceImpl implements TutorService {
 		userDao.save( user );
 	}
 
-	@Override
+	
+	//TODO: assert
 	public User updateTutorRating(User tutor, Integer rating) {
 		if( tutor.getIsTutor() ){
 			tutor.setRating( rating );
