@@ -196,8 +196,15 @@ public class TutorServiceImpl implements TutorService {
 	}
 
 	
-	//TODO: assert
+	//TODO: Mein englisch überprüfen
+	/**
+	 * Updates the rating of a tutor
+	 * 
+	 * @param tutor		The tutor for which the ranting will be updated
+	 * @param rating	The rating of a tutor should be null (to remove the rating) or between 1 and 5.
+	 */
 	public User updateTutorRating(User tutor, Integer rating) {
+		assert(rating==null || (rating>0 && rating<6));
 		if( tutor.getIsTutor() ){
 			tutor.setRating( rating );
 			tutor = userDao.save( tutor );

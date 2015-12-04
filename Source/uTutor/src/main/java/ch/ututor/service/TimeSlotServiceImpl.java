@@ -48,13 +48,13 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 		return possibleTimeslots;
 	}
 
-	//TODO: Kommentar wann ParseException geworfen wird  
+	//TODO: Mein englisch überprüfen
 	/**
 	 *	saves the selected time slots in the tutor's profile
 	 *
 	 *	@param addTimeSlotsForm		should not be null	 
 	 *
-	 * 	@throws ParseException 	
+	 * 	@throws ParseException 		if the date string saved in the AddTimeslotsForm can not be parsed correctly.
 	 */
 	public List<TimeSlot> addTimeSlots(AddTimeslotsForm addTimeSlotsForm) throws ParseException {
 		assert( addTimeSlotsForm != null );

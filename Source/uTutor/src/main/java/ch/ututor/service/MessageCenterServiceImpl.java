@@ -147,7 +147,6 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 		return sendMessage( message );
 	}
 	
-	//TODO: assert korrekt?
 	/**
 	 *	@param message	should not be null
 	 */
@@ -158,7 +157,6 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 		return message;
 	}
 	
-	//TODO: assert korrekt?
 	/**
 	 * @param newMessageForm	should not be null
 	 * @param user				sholud not be null
