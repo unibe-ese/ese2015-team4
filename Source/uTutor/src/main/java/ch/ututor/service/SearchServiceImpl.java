@@ -17,8 +17,8 @@ public class SearchServiceImpl implements SearchService {
 	@Autowired   private TutorLectureDao tutorLectureDao;
 	
 	/**
-	 *	@param query	mustn't be null
-	 *
+	 *	@param query			mustn't be null
+	 *	@param sortAttribute	string which defines the sorting field @see getSortFromString
 	 *	@throws			NoResultFoundException if no lectures are found for the search term
 	 */
 	public List<TutorLecture> searchByLecture( String query, String sortAttribute ) throws NoResultFoundException {
@@ -45,7 +45,7 @@ public class SearchServiceImpl implements SearchService {
 		}
 		
 		Sort.Direction sortDirection = Sort.Direction.DESC;
-		if(sortString == "price"){
+		if(sortString == "tutor.price"){
 			sortDirection = Sort.Direction.ASC;
 		}
 		

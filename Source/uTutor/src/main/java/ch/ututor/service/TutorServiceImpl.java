@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ch.ututor.exceptions.custom.InvalidPriceException;
-import ch.ututor.exceptions.custom.NoLecturesFoundException;
 import ch.ututor.exceptions.custom.TutorLectureAlreadyExistsException;
 import ch.ututor.model.Lecture;
 import ch.ututor.model.TutorLecture;
@@ -116,12 +115,7 @@ public class TutorServiceImpl implements TutorService {
 	public List<TutorLecture> findLecturesByTutor( User tutor ) {
 		assert( tutor != null );
 		
-		List<TutorLecture> lectures = tutorLectureDao.findByTutorOrderByLectureName( tutor );
-		
-		if( lectures.size() == 0 ) {
-			throw new NoLecturesFoundException( "No lectures found for this tutor!" );
-		} 
-		return lectures;		
+		return tutorLectureDao.findByTutorOrderByLectureName( tutor );		
 	}
 	
 	/**

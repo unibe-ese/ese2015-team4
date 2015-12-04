@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.ututor.exceptions.custom.InvalidPriceException;
-import ch.ututor.exceptions.custom.NoLecturesFoundException;
 import ch.ututor.exceptions.custom.TutorLectureAlreadyExistsException;
 import ch.ututor.model.Lecture;
 import ch.ututor.model.TutorLecture;
@@ -94,12 +93,6 @@ public class TutorServiceTest {
 	public void testHasNoLectures() {
 		setupEmptyTutorLectures();
 		assertFalse(tutorService.hasLectures(authenticatedUser));
-	}
-	
-	@Test(expected = NoLecturesFoundException.class)
-	public void testNoLecturesFoundException() {
-		setupEmptyTutorLectures();
-		tutorService.findLecturesByTutor(new User());
 	}
 	
 	@Test(expected = TutorLectureAlreadyExistsException.class)

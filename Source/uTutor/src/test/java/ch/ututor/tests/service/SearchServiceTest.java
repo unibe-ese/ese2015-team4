@@ -40,7 +40,7 @@ public class SearchServiceTest {
 			
 			when(tutorLectureDao.findByLectureNameLike(any(String.class), any(Sort.class))).thenReturn(dbLectures);
 			
-			List<TutorLecture> lectures = searchService.searchByLecture("lecture", null);
+			List<TutorLecture> lectures = searchService.searchByLecture("lecture", "tutor.price");
 			assertFalse(lectures.isEmpty());
 		}
 }

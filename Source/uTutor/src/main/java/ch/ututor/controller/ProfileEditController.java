@@ -50,13 +50,9 @@ public class ProfileEditController {
     	User user = authenticatedUserLoaderService.getAuthenticatedUser();
     	
     	if ( !result.hasErrors() ) {
-            try {
-            	authenticatedUserService.updateUserData( profileEditForm );
-            	FlashMessage.addMessage(redirectAttributes, "Profile successfully updated.", FlashMessage.Type.SUCCESS);
-            	model = new ModelAndView( "redirect:/user/profile" );
-            } catch ( CustomException e ) {
-            	model = ExceptionHelper.addException( e.getMessage() );
-            }
+            authenticatedUserService.updateUserData( profileEditForm );
+            FlashMessage.addMessage(redirectAttributes, "Profile successfully updated.", FlashMessage.Type.SUCCESS);
+            model = new ModelAndView( "redirect:/user/profile" );
         }
     	
     	model.addObject( "isTutor", user.getIsTutor() );

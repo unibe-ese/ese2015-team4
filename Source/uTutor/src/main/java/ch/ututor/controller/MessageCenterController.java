@@ -108,8 +108,6 @@ public class MessageCenterController {
         	return model;
         } catch( MessageNotFoundException e ) {
         	return ExceptionHelper.addException( e.getMessage() );
-        } catch( UserNotFoundException e ) {
-        	return ExceptionHelper.addException( e.getMessage() );
         }
     }
 	

@@ -42,16 +42,9 @@ public class ProfileViewController {
     public ModelAndView deleteLecture(	@RequestParam( "objectId" ) Long lectureId,
     	    												@RequestParam( value = "userId", required = false ) Long userId,
     	    												final RedirectAttributes redirectAttributes ) {
-    	try{
     		
-			tutorService.deleteTutorLecture( lectureId );
-			FlashMessage.addMessage(redirectAttributes, "Lecture successfully deleted.", FlashMessage.Type.SUCCESS);
-			
-    	}catch( CustomException e ){
-    		
-    		return createProfileActionException( e, userId );
-    		
-    	}
+    	tutorService.deleteTutorLecture( lectureId );
+		FlashMessage.addMessage(redirectAttributes, "Lecture successfully deleted.", FlashMessage.Type.SUCCESS);
     	return getActionRedirect( userId );
     	
     }
@@ -223,11 +216,7 @@ public class ProfileViewController {
     	if( user != null ) {
     		model.addObject( user );
     		if( user.getIsTutor() ) {
-    			try {
-    				model.addObject( "lectures", tutorService.findLecturesByTutor( user ) );
-    			} catch(CustomException e) {
-    				model = ExceptionHelper.addException( e.getMessage(), model );
-    			}
+    			model.addObject( "lectures", tutorService.findLecturesByTutor( user ) );
     		}
     		model.addObject( "timeSlotList", timeSlotService.getTimeSlotsByUser(user) );
     	}

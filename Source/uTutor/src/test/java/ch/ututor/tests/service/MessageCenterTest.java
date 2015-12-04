@@ -246,4 +246,12 @@ public class MessageCenterTest {
 		message = messageCenterService.setRead( message.getId() );
 		assertFalse( message.getIsRead() );
 	}
+	
+	@Test
+	public void getNumberOfNewMessagesForAuthenticatedUserTest(){
+		setUpMockAuthenticatedUser( lenny );
+		when( messageDao.countByReceiverAndIsRead( lenny, false ) ).thenReturn(3L);
+		Long numMessages = messageCenterService.getNumberOfNewMessagesForAuthenticatedUser();
+		assertEquals( numMessages.longValue(), 3L );
+	}
 }
