@@ -28,7 +28,7 @@ import ch.ututor.service.interfaces.UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration( locations = { "file:src/test/resources/messageCenterService.xml" } )
-public class MessageCenterTest {
+public class MessageCenterServiceTest {
 	@Autowired MessageDao messageDao;
 	@Autowired UserService userService;
 	@Autowired AuthenticatedUserLoaderService authenticatedUserLoaderService;

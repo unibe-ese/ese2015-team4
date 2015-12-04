@@ -7,10 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.hamcrest.Matchers.*;
 
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -31,10 +29,8 @@ import ch.ututor.model.TimeSlot;
 import ch.ututor.model.TutorLecture;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.TimeSlotDao;
-import ch.ututor.service.interfaces.AuthenticatedUserService;
 import ch.ututor.service.interfaces.TutorService;
 import ch.ututor.service.interfaces.UserService;
-import ch.ututor.utils.TimeHelper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration

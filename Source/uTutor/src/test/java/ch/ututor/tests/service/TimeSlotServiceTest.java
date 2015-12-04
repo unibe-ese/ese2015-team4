@@ -41,7 +41,6 @@ public class TimeSlotServiceTest {
 	private User user;
 	private User tutor;
 	private User student;
-	private TimeSlot timeslot;
 	
 	@Before
 	public void setupTimeSlotData(){
