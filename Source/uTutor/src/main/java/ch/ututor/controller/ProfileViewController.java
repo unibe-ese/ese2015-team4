@@ -11,10 +11,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ch.ututor.exceptions.CustomException;
 import ch.ututor.model.User;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
-import ch.ututor.service.interfaces.ExceptionService;
 import ch.ututor.service.interfaces.TimeSlotService;
 import ch.ututor.service.interfaces.TutorService;
 import ch.ututor.service.interfaces.UserService;
+import ch.ututor.utils.ExceptionHelper;
 import ch.ututor.utils.FlashMessage;
 
 @Controller
@@ -24,7 +24,6 @@ public class ProfileViewController {
 	@Autowired 	 private UserService userService;
 	@Autowired   private TutorService tutorService;
 	@Autowired   private TimeSlotService timeSlotService;
-	@Autowired   private ExceptionService exceptionService;
 	
 	/**
 	 * 	@return	ModelAndView of a user profile
@@ -34,79 +33,174 @@ public class ProfileViewController {
     	return createUserProfileView( userId );
     }
     
+    
     /**
-     *	@param action	Should be 'deleteLecture'
-     *	@return ModelAndView of the user's profile
-     *	@throws NumberFormatException if objectId is not a valid Long
+     * Handles the profile action for deleting a tutor's lecture
+     * @param lectureId	the id of the lecture which has to be deleted (posted as objectId)
      */
-    @RequestMapping( value = "/user/profile", method = RequestMethod.POST )
-    public ModelAndView handleProfileActions(	@RequestParam( "action" ) String action, 
-    												@RequestParam( "objectId" ) String objectIdString,
-    												@RequestParam( value = "userId", required = false ) Long userId,
-    												final RedirectAttributes redirectAttributes ) {
+    @RequestMapping( value = "/user/profile", method = RequestMethod.POST, params = "action=deleteLecture" )
+    public ModelAndView deleteLecture(	@RequestParam( "objectId" ) Long lectureId,
+    	    												@RequestParam( value = "userId", required = false ) Long userId,
+    	    												final RedirectAttributes redirectAttributes ) {
+    	try{
+    		
+			tutorService.deleteTutorLecture( lectureId );
+			FlashMessage.addMessage(redirectAttributes, "Lecture successfully deleted.", FlashMessage.Type.SUCCESS);
+			
+    	}catch( CustomException e ){
+    		
+    		return createProfileActionException( e, userId );
+    		
+    	}
+    	return getActionRedirect( userId );
     	
+    }
+    
+    /**
+     * Handles the profile action for request a tutor's time-slot
+     * @param timeSlotsId	the id of the time-slot which has to be requested (posted as objectId)
+     */
+    @RequestMapping( value = "/user/profile", method = RequestMethod.POST, params = "action=requestTimeSlot" )
+    public ModelAndView requestTimeSlot(	@RequestParam( "objectId" ) Long timeSlotId,
+    	    												@RequestParam( value = "userId", required = false ) Long userId,
+    	    												final RedirectAttributes redirectAttributes ) {
+    	try{
+    		
+    		timeSlotService.requestForTimeSlot( timeSlotId );
+			FlashMessage.addMessage(redirectAttributes, "Request successfully sent.", FlashMessage.Type.SUCCESS);
+			
+    	}catch( CustomException e ){
+    		
+    		return createProfileActionException( e, userId );
+    		
+    	}
+    	return getActionRedirect( userId );
     	
+    }
+    
+    /**
+     * Handles the profile action for deleting a tutor's time-slot
+     * @param timeSlotsId	the id of the time-slot which has to be deleted (posted as objectId)
+     */
+    @RequestMapping( value = "/user/profile", method = RequestMethod.POST, params = "action=deleteTimeSlot" )
+    public ModelAndView deleteTimeSlot(	@RequestParam( "objectId" ) Long timeSlotId,
+    	    												@RequestParam( value = "userId", required = false ) Long userId,
+    	    												final RedirectAttributes redirectAttributes ) {
+    	try{
+    		
+    		timeSlotService.deleteTimeSlot( timeSlotId );
+			FlashMessage.addMessage(redirectAttributes, "Time-slot successfully deleted.", FlashMessage.Type.SUCCESS);
+			
+    	}catch( CustomException e ){
+    		
+    		return createProfileActionException( e, userId );
+    		
+    	}
+    	return getActionRedirect( userId );
+    	
+    }
+
+    /**
+     * Handles the profile action for accepting a time-slot request
+     * @param timeSlotsId	the id of the requested time-slot which has to be accepted (posted as objectId)
+     */
+    @RequestMapping( value = "/user/profile", method = RequestMethod.POST, params = "action=acceptTimeSlot" )
+    public ModelAndView acceptTimeSlot(	@RequestParam( "objectId" ) Long timeSlotId,
+    	    												@RequestParam( value = "userId", required = false ) Long userId,
+    	    												final RedirectAttributes redirectAttributes ) {
+    	try{
+    		
+    		timeSlotService.acceptTimeSlotRequest( timeSlotId );
+			FlashMessage.addMessage(redirectAttributes, "Time-slot accepted.", FlashMessage.Type.INFO);
+			
+    	}catch( CustomException e ){
+    		
+    		return createProfileActionException( e, userId );
+
+    	}
+    	return getActionRedirect( userId );
+    	
+    }
+
+    /**
+     * Handles the profile action for rejecting a time-slot request
+     * @param timeSlotsId	the id of the requested time-slot which has to be rejected (posted as objectId)
+     */
+    @RequestMapping( value = "/user/profile", method = RequestMethod.POST, params = "action=rejectTimeSlot" )
+    public ModelAndView rejectTimeSlot(	@RequestParam( "objectId" ) Long timeSlotId,
+    	    												@RequestParam( value = "userId", required = false ) Long userId,
+    	    												final RedirectAttributes redirectAttributes ) {
+    	try{
+    		
+    		timeSlotService.rejectTimeSlotRequest( timeSlotId );
+			FlashMessage.addMessage(redirectAttributes, "Time-slot rejected.", FlashMessage.Type.INFO);
+			
+    	}catch( CustomException e ){
+    		
+    		return createProfileActionException( e, userId );
+    		
+    	}
+    	return getActionRedirect( userId );
+    	
+    }
+
+    /**
+     * Handles the profile action for rating a time-slot
+     * @param timeSlotIdRating	String containing the id of the time-slot which has to be rated (posted as objectId) and the rating value.
+     * 							Has to be in the format [timeSlotId]-[ratingValue] (e.g. "123-3")
+     */
+    @RequestMapping( value = "/user/profile", method = RequestMethod.POST, params = "action=rateTimeSlot" )
+    public ModelAndView rateTimeSlot(	@RequestParam( "objectId" ) String timeSlotIdRating,
+    	    												@RequestParam( value = "userId", required = false ) Long userId,
+    	    												final RedirectAttributes redirectAttributes ) {
+    	assert(timeSlotIdRating.contains("-"));
+    	
+    	Long timeSlotId = getTimeSlotIdFromString( timeSlotIdRating );
+    	Integer rating = getRatingFromString( timeSlotIdRating );
+    	
+    	try{
+    		
+    		timeSlotService.rateTimeSlot( timeSlotId, rating );
+			FlashMessage.addMessage(redirectAttributes, "Time-slot rated.", FlashMessage.Type.INFO);
+			
+    	}catch( CustomException e ){
+    		
+    		return createProfileActionException( e, userId );
+    		
+    	}
+    	return getActionRedirect( userId );
+    	
+    }
+    
+    
+    private Long getTimeSlotIdFromString( String timeSlotIdRating ){	
+   		try{
+   			String[] arr = timeSlotIdRating.split("-");
+   			return Long.parseLong(arr[0]);
+       	}catch( Exception e ){
+       		return null;
+       	}
+    }
+    
+    private Integer getRatingFromString( String timeSlotIdRating ){	
+   		try{
+   			String[] arr = timeSlotIdRating.split("-");
+   			return Integer.parseInt(arr[1]);
+       	}catch( Exception e ){
+       		return null;
+       	}
+    }
+    
+    private ModelAndView createProfileActionException( CustomException e, Long userId ){
+		ModelAndView model = createUserProfileView( userId );
+		return ExceptionHelper.addException( e.getMessage(), model );
+    }
+    
+    private ModelAndView getActionRedirect( Long userId ){
     	if( userId== null ){
     		userId=authenticatedUserLoaderService.getAuthenticatedUser().getId();
     	}
-    	ModelAndView model = new ModelAndView( "redirect:/user/profile/?userId=" + userId );
- 
-    	long objectId;
-    	int  rating = 0;
-    	
-    	if( objectIdString.contains("-") ){
-    		String[] arr = objectIdString.split("-");
-    		objectIdString = arr[0];
-    		try{
-        		rating = Integer.parseInt( arr[1] );
-        	}catch( NumberFormatException e ){
-        		return exceptionService.addException(e.getMessage());
-        	}
-    	}
-
-    	try{
-    		objectId = Long.parseLong( objectIdString );
-    	}catch( NumberFormatException e ){
-    		return exceptionService.addException(e.getMessage());
-    	}
-    	
-    	try{
-    		if( action.equals( "deleteLecture" ) ){
-    			
-    			tutorService.deleteTutorLecture( objectId );
-    			FlashMessage.addMessage(redirectAttributes, "Lecture successfully deleted.", FlashMessage.Type.SUCCESS);
-    			
-    		}else if( action.equals( "requestTimeSlot" ) ){
-    	
-    			timeSlotService.requestForTimeSlot( objectId );
-    			FlashMessage.addMessage(redirectAttributes, "Request successfully sent.", FlashMessage.Type.SUCCESS);
-    			
-    		}else if( action.equals( "deleteTimeSlot" ) ){
-    			
-    			timeSlotService.deleteTimeSlot( objectId );
-    			FlashMessage.addMessage(redirectAttributes, "Time-slot successfully deleted.", FlashMessage.Type.SUCCESS);
-    			
-    		}else if( action.equals( "acceptTimeSlot" ) ){
-    			
-    			timeSlotService.acceptTimeSlotRequest( objectId );
-    			FlashMessage.addMessage(redirectAttributes, "Time-slot accepted.", FlashMessage.Type.INFO);
-
-    		}else if( action.equals( "rejectTimeSlot" ) ){
-    			
-    			timeSlotService.rejectTimeSlotRequest( objectId );
-    			FlashMessage.addMessage(redirectAttributes, "Time-slot rejected.", FlashMessage.Type.INFO);
-    			
-    		}else if( action.equals( "rateTimeSlot" ) ){
-    			
-    			timeSlotService.rateTimeSlot( objectId, rating );
-    			FlashMessage.addMessage(redirectAttributes, "Time-slot rated.", FlashMessage.Type.INFO);
-    			
-    		}
-    	}catch( CustomException e ){
-    		model = createUserProfileView( userId );
-    		return exceptionService.addException(model, e.getMessage() );
-    	}
-    	return model;
+    	return new ModelAndView( "redirect:/user/profile/?userId=" + userId );
     }
     
     private ModelAndView createUserProfileView( Long userId ){
@@ -122,7 +216,7 @@ public class ProfileViewController {
     		try {
     			user = userService.load( userId );
     		} catch(CustomException e) {
-    			return exceptionService.addException( e.getMessage() );
+    			return ExceptionHelper.addException( e.getMessage() );
     		}
     	}
     	
@@ -132,7 +226,7 @@ public class ProfileViewController {
     			try {
     				model.addObject( "lectures", tutorService.findLecturesByTutor( user ) );
     			} catch(CustomException e) {
-    				model = exceptionService.addException( model, e.getMessage() );
+    				model = ExceptionHelper.addException( e.getMessage(), model );
     			}
     		}
     		model.addObject( "timeSlotList", timeSlotService.getTimeSlotsByUser(user) );

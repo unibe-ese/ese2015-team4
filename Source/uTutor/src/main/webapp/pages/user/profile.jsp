@@ -1,13 +1,12 @@
-<%@include file="../includes/header.jsp"%>
-<jsp:useBean id="now" class="java.util.Date"/>
+<%@include file="../partials/header.jsp"%>
 
 <c:if test="${ownProfile || user.isTutor}">
-	<%@include file="../includes/hidden-actions.jsp"%>
+	<%@include file="../partials/hidden-actions.jsp"%>
 </c:if>
 
 <h1><c:out value="${user.firstName}" /> <c:out value="${user.lastName}" /></h1>
 	
-<%@include file="../includes/exception.jsp"%>
+<%@include file="../partials/exception.jsp"%>
 
 <!-- BEGIN PROFIL DATA -->
 <div class="profile-data">
@@ -30,7 +29,7 @@
 	<!-- END PROFILE PICTURE -->
 	<!-- BEGIN USER DATA -->
 	<div class="float-left">
-		<div class="hashMap table" style="max-width:560px;overflow:hidden">
+		<div class="hashMap table profile-data-table">
 			<div class="row">
 				<div class="cell key">
 					First name
@@ -97,13 +96,13 @@
 					<div class="cell key">
 						Rating
 					</div>
-	    			<div class="cell value" style="font-weight:normal">
+	    			<div class="cell">
 	    				<c:set var="rating" value="${user.rating}"/>
-	    				<%@include file="../includes/rating.jsp"%>
+	    				<%@include file="../partials/rating.jsp"%>
 	    			</div>
 				</div>
 				<div class="row">
-					<div class="cell key multiline" style="padding-top:15px">
+					<div class="cell key multiline">
 						Description
 					</div>
 		<!-- BEGIN DESCRIPTION (don't add white-spaces inside the div!!!)  -->
@@ -132,6 +131,14 @@
 	</c:if>
 	
 	<c:if test="${user.isTutor}">
+	<!-- BEGIN AVAILABILITIES -->
+			<c:set var="timeSlotListSettingTitle" value="Availability" />
+			<c:set var="timeSlotListSettingStatus" value="AVAILABLE" />
+			<c:set var="timeSlotListSettingFuture" value="${true}" />
+			<c:set var="timeSlotListSettingPast" value="${false}" />
+			<%@include file="partials/timeslot-list.jsp"%>
+	<!-- END AVAILABILITIES -->	
+	<p></p>
 	<!-- BEGIN LECTURES -->
 		<h3>Lectures:</h3>	
 		<div class="list table striped">
@@ -166,14 +173,6 @@
 		</c:if>
 	<!-- END LECTURES -->
 	<p></p>
-	<!-- BEGIN AVAILABILITIES -->
-			<c:set var="timeSlotListSettingTitle" value="Availability" />
-			<c:set var="timeSlotListSettingStatus" value="AVAILABLE" />
-			<c:set var="timeSlotListSettingFuture" value="${true}" />
-			<c:set var="timeSlotListSettingPast" value="${false}" />
-			<%@include file="includes/timeslot-list.jsp"%>
-	<!-- END AVAILABILITIES -->	
-	<p></p>
 	</c:if>
 	
 	<c:if test="${ownProfile}">
@@ -182,7 +181,7 @@
 			<c:set var="timeSlotListSettingStatus" value="REQUESTED" />
 			<c:set var="timeSlotListSettingFuture" value="${true}" />
 			<c:set var="timeSlotListSettingPast" value="${false}" />
-			<%@include file="includes/timeslot-list.jsp"%>
+			<%@include file="partials/timeslot-list.jsp"%>
 	<!-- END REQUESTS -->
 	<p></p>
 	<!-- BOOKED -->
@@ -190,7 +189,7 @@
 			<c:set var="timeSlotListSettingStatus" value="ACCEPTED" />
 			<c:set var="timeSlotListSettingFuture" value="${true}" />
 			<c:set var="timeSlotListSettingPast" value="${false}" />
-			<%@include file="includes/timeslot-list.jsp"%>
+			<%@include file="partials/timeslot-list.jsp"%>
 	<!-- END BOOKED -->
 	<p></p>
 	<!-- HISTORY -->
@@ -198,10 +197,10 @@
 			<c:set var="timeSlotListSettingStatus" value="ACCEPTED" />
 			<c:set var="timeSlotListSettingFuture" value="${false}" />
 			<c:set var="timeSlotListSettingPast" value="${true}" />
-			<%@include file="includes/timeslot-list.jsp"%>
+			<%@include file="partials/timeslot-list.jsp"%>
 	<!-- END HISTORY -->
 	</c:if>
 </div>
 <!-- END PROFIL DATA -->
 
-<%@include file="../includes/footer.jsp"%>
+<%@include file="../partials/footer.jsp"%>

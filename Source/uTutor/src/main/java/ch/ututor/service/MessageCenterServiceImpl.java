@@ -14,6 +14,13 @@ import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.MessageCenterService;
 import ch.ututor.service.interfaces.UserService;
 
+/**
+ *	This class offers methods to display, send and delete messages. It can be used to get the
+ *	messages for a specific message center view (inbox, outbox or trash) for the authenticated 
+ *	user. Furthermore it offers operations to reply to received messages.   
+ *	 
+ */
+
 @Service
 public class MessageCenterServiceImpl implements MessageCenterService{
 
@@ -24,7 +31,7 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 	/**
 	 * Returns messages for the logged in user depending on the given view
 	 * 
-	 * @param view	should be not null. should be "inbox", "outbox" or "trash", otherwise messages for "inbox" are returned.  
+	 * @param view	should not be null. Should be "inbox", "outbox" or "trash", otherwise messages for "inbox" are returned.  
 	 */
 	public List<Message> getMessagesByView( String view ){
 		assert( view != null );
@@ -113,7 +120,7 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 	/**
 	 * Prefills the NewMessageForm as Reply to a message
 	 * 
-	 * @param replyToMessageId	The id of the message to which the reply is.
+	 * @param replyToMessageId		id of the message to which the reply is.
 	 */
 	public NewMessageForm prefillReplyMessageForm( long replyToMessageId ) {
 		Message message = messageDao.findById( replyToMessageId );
@@ -140,16 +147,32 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 		return sendMessage( message );
 	}
 	
+	/**
+	 *	@param message	should not be null
+	 */
 	public Message sendMessage( Message message ) {
+		assert( message!= null );
+		
 		messageDao.save( message );
 		return message;
 	}
 	
+	/**
+	 * @param newMessageForm	should not be null
+	 * @param user				sholud not be null
+	 */
 	private void prefillReceiverToMessageForm( NewMessageForm newMessageForm, User user ){
+		assert( newMessageForm != null );
+		assert( user != null );
+		
 		newMessageForm.setReceiverId( user.getId() );
 		newMessageForm.setReceiverDisplayName( user.getFirstName() + " " + user.getLastName() );
 	}
-
+	
+	/**
+	 *	Sets the read flag for the message passed as parameter (by id) if the currently logged in user
+	 *	is the receiver of the message
+	 */
 	public Message setRead(long messageId) {
 		Message message = messageDao.findById( messageId );
 		if( message != null ) {
@@ -160,5 +183,13 @@ public class MessageCenterServiceImpl implements MessageCenterService{
 			}
 		}
 		return message;
+	}
+	
+	/**
+	 *	Returns the number of unread messages of the authenticated user
+	 */
+	public Long getNumberOfNewMessagesForAuthenticatedUser() {
+		User user = authenticatedUserLoaderService.getAuthenticatedUser();
+		return messageDao.countByReceiverAndIsRead( user, false );
 	}
 }

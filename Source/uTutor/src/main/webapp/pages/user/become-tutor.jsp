@@ -1,11 +1,11 @@
-<%@include file="../includes/header.jsp"%>
+<%@include file="../partials/header.jsp"%>
 
 <div class="center">
 <!-- BEGIN BECOME TUTOR FORM -->
 	<form:form method="post" class="form-box" modelAttribute="becomeTutorForm" action="become-tutor" id="becomeTutorForm" autocomplete="off">
 		<h1>Become a tutor!</h1>	
 		
-		<%@include file="../includes/exception.jsp"%>
+		<%@include file="../partials/exception.jsp"%>
 		
 		<form:textarea path="description" id="field-description" placeholder="Describe yourself here..."></form:textarea>
 		<form:errors path="description" element="div" class="error"/>
@@ -15,7 +15,7 @@
 	    	<form:errors path="price" element="div" class="error"/>
 		</label>
 		
-		<%@include file="includes/add-lecture.jsp" %>
+		<%@include file="partials/add-lecture.jsp" %>
 		
 		<label>
 			<input type="submit" value="Become tutor!" />
@@ -24,4 +24,4 @@
 <!-- END BECOME TUTOR FORM -->
 </div>
 
-<%@include file="../includes/footer.jsp"%>
+<%@include file="../partials/footer.jsp"%>

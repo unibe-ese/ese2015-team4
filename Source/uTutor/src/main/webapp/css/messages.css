@@ -1,3 +1,12 @@
+#field-subject{
+	width:600px;
+}
+
+#field-message{
+	width:600px;
+	height:200px;
+}
+
 #message-center{
 	width: 960px;
 }
@@ -83,4 +92,36 @@
 	margin-top:10px;
 	text-align:center;
 	font-style:italic;
+}
+
+#new-messages.hidden{
+	visibility:hidden;
+	position:absolute;
+}
+
+#new-messages.show{
+	position:relative;
+	visibility:inherit;
+}
+
+#new-messages{
+	display:inline-block;
+	float:right;
+	margin-left:5px;
+	font-size:12px;
+	background-color:red;
+	padding:2px 5px 1px;
+	border:2px solid white;
+	border-radius:10px;
+	font-weight:bold;
+}
+
+.message-icon{
+	margin-left:5px;
+}
+
+.readed{
+	position:absolute;
+	right:25px;
+	top:5px
 }

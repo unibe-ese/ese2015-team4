@@ -1,6 +1,6 @@
-<%@include file="../includes/header.jsp"%>
+<%@include file="../partials/header.jsp"%>
 
-<%@include file="../includes/hidden-actions.jsp"%>
+<%@include file="../partials/hidden-actions.jsp"%>
 
 <c:choose>
 	<c:when test="${empty param.view}">
@@ -48,7 +48,7 @@
 							<strong><c:out value="${message.subject}"/></strong><br>
 							<i><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${message.dateAndTime}" /></i>
 							<c:if test="${message.isRead}">
-								<img class="action-icon" style="position:absolute;right:25px;top:5px" src="<%=request.getContextPath()%>/img/readed.png"/>
+								<img class="action-icon readed" src="<%=request.getContextPath()%>/img/readed.png"/>
 							</c:if>
 						</div>
 					</c:forEach>
@@ -114,11 +114,11 @@
 	<!-- BEGIN MESSAGE ACTIONS -->
 				<c:if test="${userId != message.sender.id}">
 					<a href="<%=request.getContextPath() %>/user/messagecenter/reply/?replyToMessageId=<c:out value="${message.id}"/>">
-						<img class="action-icon" style="margin-left:5px" src="<%=request.getContextPath()%>/img/reply.png" />
+						<img class="action-icon message-icon" src="<%=request.getContextPath()%>/img/reply.png" />
 					</a>
 				</c:if>
 				<c:if test="${view!='trash'}">
-					<img class="action-icon" style="margin-left:5px" src="<%=request.getContextPath()%>/img/delete.png" onClick="hiddenAction('delete',<c:out value="${message.id}"/>);" />
+					<img class="action-icon message-icon" src="<%=request.getContextPath()%>/img/delete.png" onClick="hiddenAction('delete',<c:out value="${message.id}"/>);" />
 				</c:if>
 	<!-- END MESSAGE ACTIONS -->
 			</div>
@@ -127,4 +127,5 @@
 	</c:if>
 	<div class="clear"></div>
 </div>
-<%@include file="../includes/footer.jsp"%>
+
+<%@include file="../partials/footer.jsp"%>

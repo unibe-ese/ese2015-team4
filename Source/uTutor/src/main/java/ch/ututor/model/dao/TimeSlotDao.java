@@ -12,11 +12,8 @@ import ch.ututor.model.User;
 public interface TimeSlotDao extends CrudRepository<TimeSlot, Long> {
 	
 	public TimeSlot findByBeginDateTimeAndTutor( Date date, User tutor );
-	
 	public List<TimeSlot> findByTutorOrStudentOrderByBeginDateTimeAsc( User tutor, User student );
-
 	public List<TimeSlot> findByTutorAndRatingNotNull( User tutor );
-	
 	public TimeSlot findById( long id );
 	
 	public TimeSlot findByTutorAndStudentAndBeginDateTime(User tutor, User student, Date beginDateTime);

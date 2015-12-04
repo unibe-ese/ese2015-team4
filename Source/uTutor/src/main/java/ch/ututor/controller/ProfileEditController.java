@@ -15,7 +15,7 @@ import ch.ututor.model.User;
 import ch.ututor.pojos.ProfileEditForm;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.AuthenticatedUserService;
-import ch.ututor.service.interfaces.ExceptionService;
+import ch.ututor.utils.ExceptionHelper;
 import ch.ututor.utils.FlashMessage;
 
 @Controller
@@ -23,7 +23,6 @@ public class ProfileEditController {
 	
 	@Autowired 	 private AuthenticatedUserLoaderService authenticatedUserLoaderService;
 	@Autowired 	 private AuthenticatedUserService authenticatedUserService;
-	@Autowired 	 private ExceptionService exceptionService;
 	
 	/**
 	 *	@return ModelAndView containing a form to update the profile data.
@@ -41,7 +40,7 @@ public class ProfileEditController {
      *  Updates the profile data based on the information entered in the profileEditForm
      * 
      *	@return	ModelAndView of the own profile if the update has succeeded.
-	 *			Otherwise a ModelAndView with a profile edit form containing error or exception messages.
+	 *			Otherwise ModelAndView with a profile edit form containing error or exception messages.
      */
     @RequestMapping( value = {"/user/profile/edit"}, method = RequestMethod.POST )
     public ModelAndView updateProfileData( 	@Valid ProfileEditForm profileEditForm, 
@@ -56,7 +55,7 @@ public class ProfileEditController {
             	FlashMessage.addMessage(redirectAttributes, "Profile successfully updated.", FlashMessage.Type.SUCCESS);
             	model = new ModelAndView( "redirect:/user/profile" );
             } catch ( CustomException e ) {
-            	model = exceptionService.addException( e.getMessage() );
+            	model = ExceptionHelper.addException( e.getMessage() );
             }
         }
     	

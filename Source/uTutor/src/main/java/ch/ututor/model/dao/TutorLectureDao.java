@@ -15,4 +15,5 @@ public interface TutorLectureDao extends CrudRepository<TutorLecture,Long> {
 	public TutorLecture findByTutorAndLecture( User tutor, Lecture lecture );
 	public TutorLecture findByTutorAndId( User tutor, Long tutorLectureId );
 	public List<TutorLecture> findByTutorOrderByLectureName( User tutor );
+	
 }

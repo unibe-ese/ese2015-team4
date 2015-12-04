@@ -14,10 +14,8 @@ import javax.imageio.stream.ImageOutputStream;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import ch.ututor.exceptions.custom.ProfilePictureException;
-import ch.ututor.model.User;
 import ch.ututor.service.interfaces.ProfilePictureService;
 
 /**
@@ -102,18 +100,5 @@ public class ProfilePictureServiceImpl implements ProfilePictureService{
 		g.dispose();
 	
 		return resizedImage;
-	}
-	
-	/**
-	 *	@param model	mustn't be null
-	 *	@param user		mustn't be null
-	 */
-	public ModelAndView addProfilePictureInfoToModel( ModelAndView model, User user ){
-		assert( model != null );
-		assert( user != null );
-		
-		model.addObject( "userId", user.getId() );
-    	model.addObject( "hasProfilePic", user.hasProfilePic() );
-    	return model;
 	}
 }

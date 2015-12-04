@@ -17,9 +17,9 @@ import ch.ututor.pojos.AddLectureForm;
 import ch.ututor.pojos.AddTimeslotsForm;
 import ch.ututor.pojos.BecomeTutorForm;
 import ch.ututor.service.interfaces.AuthenticatedUserService;
-import ch.ututor.service.interfaces.ExceptionService;
 import ch.ututor.service.interfaces.TimeSlotService;
 import ch.ututor.service.interfaces.TutorService;
+import ch.ututor.utils.ExceptionHelper;
 import ch.ututor.utils.FlashMessage;
 
 @Controller
@@ -28,10 +28,9 @@ public class TutorController {
 	@Autowired 	private TutorService tutorService;
 	@Autowired 	private TimeSlotService timeSlotService;
 	@Autowired 	private AuthenticatedUserService authenticatedUserService;
-	@Autowired	private ExceptionService exceptionService;
 	
 	/**
-	 * @return	A ModelAndView containing a BecomeTutorForm or a ModelAndView of the
+	 * @return	ModelAndView containing a BecomeTutorForm or ModelAndView of the
 	 * 			user's profile if he's already tutor.
 	 */
 	@RequestMapping( value = {"/user/become-tutor"}, method = RequestMethod.GET )
@@ -47,7 +46,7 @@ public class TutorController {
     }
 	
 	/**
-	 * @return	A ModelAndView with a redirect to the user's profile if he's already tutor or
+	 * @return	ModelAndView with a redirect to the user's profile if he's already tutor or
 	 * 			the become tutor process has ended successful. Else a ModelAndView to become tutor.
 	 */
 	@RequestMapping( value = {"/user/become-tutor"}, method = RequestMethod.POST )
@@ -66,7 +65,7 @@ public class TutorController {
 				FlashMessage.addMessage(redirectAttributes, "Account successfully upgraded to tutor.", FlashMessage.Type.SUCCESS);
 				return new ModelAndView( "redirect:/user/profile" );
 			} catch ( CustomException e ) {
-				model = exceptionService.addException( model, e.getMessage() );
+				model = ExceptionHelper.addException( e.getMessage(), model );
 			}
         }
 		
@@ -97,6 +96,7 @@ public class TutorController {
 	public ModelAndView addLecture(	@Valid AddLectureForm addLectureForm, 
 									BindingResult result, 
 									RedirectAttributes redirectAttributes) {
+		
 		if( !authenticatedUserService.getIsTutor() ) {
 			return new ModelAndView( "redirect:/user/become-tutor" );
 		}
@@ -107,7 +107,7 @@ public class TutorController {
 				tutorService.addTutorLecture( addLectureForm );
 				return new ModelAndView( "redirect:/user/profile" );
 			} catch ( CustomException e ) {
-				model = exceptionService.addException( model, e.getMessage() );
+				model = ExceptionHelper.addException( e.getMessage(), model );
 			}
 		}
 		
@@ -120,10 +120,12 @@ public class TutorController {
 	 * 			to become tutor is returned.
 	 */
 	@RequestMapping( value = {"/user/add-timeslots"}, method = RequestMethod.GET )
-    public ModelAndView displayAddTimeslotForm() {
+    public ModelAndView displayAddTimeslotsForm() {
+		
 		if( !authenticatedUserService.getIsTutor() ) {
 			return new ModelAndView( "redirect:/user/become-tutor" );
 		}
+		
 		ModelAndView model = new ModelAndView( "user/add-timeslots" );
 		model.addObject( "addTimeslotsForm", new AddTimeslotsForm() );
 		model.addObject( "possibleTimeslots", timeSlotService.getPossibleTimeslots());
@@ -140,6 +142,7 @@ public class TutorController {
 	public ModelAndView addTimeslots(	@Valid AddTimeslotsForm addTimeslotsForm, 
 									BindingResult result, 
 									RedirectAttributes redirectAttributes) {
+		
 		if( !authenticatedUserService.getIsTutor() ) {
 			return new ModelAndView( "redirect:/user/become-tutor" );
 		}
@@ -150,9 +153,9 @@ public class TutorController {
 				timeSlotService.addTimeSlots( addTimeslotsForm );
 				return new ModelAndView( "redirect:/user/profile" );
 			} catch ( CustomException e ) {
-				model = exceptionService.addException( model, e.getMessage() );
+				model = ExceptionHelper.addException( e.getMessage(), model );
 			} catch ( ParseException e ) {
-				model = exceptionService.addException( e.getMessage() );
+				model = ExceptionHelper.addException( e.getMessage() );
 			}
 		}
 		

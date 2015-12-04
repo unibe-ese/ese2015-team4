@@ -1,11 +1,11 @@
-<%@include file="../includes/header.jsp"%>
+<%@include file="../partials/header.jsp"%>
 
 <div class="center">
 <!-- BEGIN PROFILE EDIT FORM -->
 	<form:form method="post" class="form-box" modelAttribute="profileEditForm" id="profileEditForm" autocomplete="off">
 		<h1>Edit profile</h1>
 		
-		<%@include file="../includes/exception.jsp"%>
+		<%@include file="../partials/exception.jsp"%>
 		
 		<label>
 			<form:input path="firstName" id="field-firstName"/>
@@ -38,4 +38,4 @@
 <!-- END PROFILE EDIT FORM -->
 </div>
 
-<%@include file="../includes/footer.jsp"%>
+<%@include file="../partials/footer.jsp"%>

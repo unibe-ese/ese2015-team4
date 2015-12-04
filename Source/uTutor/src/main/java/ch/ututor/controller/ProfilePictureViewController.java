@@ -26,8 +26,9 @@ public class ProfilePictureViewController {
     /** 
      * Returns the profile picture of a user saved in the database or the default picture if no profile picture was set before.
      * 
-     * @url /img/user.jpg?userId=<code>user.id</code>
-     * @param userId	the unique id of the user for which the profile picture should be loaded
+     * @url 	/img/user.jpg?userId=<code>user.id</code>
+     * 
+     * @param userId		the unique id of the user for which the profile picture should be loaded
      * 
      * @return Byte-Array with the binary data of the profile picture (image/jpeg)
      * @throws IOException if default profile picture is not found/readable.

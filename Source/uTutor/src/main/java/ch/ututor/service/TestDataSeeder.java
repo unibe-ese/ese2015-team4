@@ -24,6 +24,7 @@ import ch.ututor.utils.TimeHelper;
 
 @Service
 public class TestDataSeeder implements InitializingBean {
+	
 	@Autowired
 	private UserDao userDao;
 	@Autowired

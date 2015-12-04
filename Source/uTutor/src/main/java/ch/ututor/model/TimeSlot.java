@@ -1,7 +1,6 @@
-/**
- * Represents one hour of tutor time
- *
- */
+ /**
+  * Represents one hour of tutor time
+  */
 
 package ch.ututor.model;
 
@@ -39,8 +38,8 @@ public class TimeSlot {
 	@ManyToOne
 	private User student;
 	
-	//Use of Integer instead of int because this can be null.
-	//We need null instead of 0 in DB for correct AVG calculation.
+	// Use of Integer instead of int because Integer can be null.
+	// null instead of 0 is needed in the database for correct AVG calculation.
 	private Integer rating;
 	
 	public long getId() {

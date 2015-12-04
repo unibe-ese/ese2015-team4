@@ -5,6 +5,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<jsp:useBean id="now" class="java.util.Date"/>
 <c:set var="contextUrl" value="${fn:replace(requestScope['javax.servlet.forward.request_uri'], pageContext.request.contextPath, '')}"/>
 
 <!DOCTYPE html>
@@ -19,6 +20,7 @@
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/table.css">
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/text.css">
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/flash-messages.css">
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/time-slot.css">
 	
 	<link rel="apple-touch-icon" sizes="57x57" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="<%=request.getContextPath()%>/favicon/apple-touch-icon-60x60.png">
@@ -39,6 +41,10 @@
 	<meta name="msapplication-TileColor" content="#da532c">
 	<meta name="msapplication-TileImage" content="<%=request.getContextPath()%>/favicon/mstile-144x144.png">
 	<meta name="theme-color" content="#ffffff">
+
+<sec:authorize access="isAuthenticated()">
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/new-message.js"></script>
+</sec:authorize>
 </head>
 
 <body>
@@ -47,7 +53,7 @@
 <!-- BEGIN HEADER -->
 			<a href="<%=request.getContextPath()%>"><img id="logo" src="<%=request.getContextPath()%>/img/logo.png"></a>
 	<!-- BEGIN SEARCH FORM -->
-			<form class="search-small" method="GET" action="<%=request.getContextPath()%>/search">
+			<form class="search-small<sec:authorize access='isAuthenticated()'> authenticated</sec:authorize>" method="GET" action="<%=request.getContextPath()%>/search">
 				<label>
 					<input type="text" name="query" placeholder="Search lecture">
 					<input type="submit">
@@ -62,24 +68,31 @@
 				<a href="<%=request.getContextPath()%>/signup" class="button">Sign up</a>
 		<!-- END NOT AUTHENTICATED ACTIONS -->
 				</sec:authorize>
-				<sec:authorize access="isAuthenticated()">
-		<!-- BEGIN AUTHENTICATED ACTIONS -->
-				<select style="max-width:250px;font-size:16px;height:48px;" onChange="var url=this.options[this.selectedIndex].value;if(url!=''){document.location.href='<%=request.getContextPath()%>'+url;}">
-					<option value=""><sec:authentication property="principal.username" /></option>
-					<option value="/user/profile">My profile</option>
-					<option value="/user/messagecenter">Message center</option>
-					<option value="/user/password">Change password</option>
-					<option value="/logout">Logout</option>
-				</select>
-		<!-- END AUTHENTICATED ACTIONS -->
-				</sec:authorize>
+				
 			</div>
 			<div class="clear"></div>
 <!--  END HEADER -->
 		</div>
 	</div>
+	
+	<!--  BEGIN NAVIGATION BAR -->
+		<sec:authorize access="isAuthenticated()">
+			<div id="nav-outer">
+				<div id="nav-inner">
+					<a href="<%=request.getContextPath()%>/user/profile" class="navigation<c:if test="${fn:contains(contextUrl, 'profile')}"> active</c:if>">My profile</a>
+					<a href="<%=request.getContextPath()%>/user/messagecenter" class="navigation<c:if test="${fn:contains(contextUrl, 'message')}"> active</c:if>">Message center<span id="new-messages" class="hidden"></span></a>
+					<a href="<%=request.getContextPath()%>/user/password" class="navigation<c:if test="${fn:contains(contextUrl, 'password')}"> active</c:if>">Change password</a>
+					<a href="<%=request.getContextPath()%>/logout" class="navigation logout">Logout</a>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</sec:authorize>
+		
+	<!--  END NAVIGATION BAR -->
+	
 	<div id="content-container">
 <!-- BEGIN CONTENT -->
+
 <c:if test="${flash_message!=null}">
 	<!-- BEGIN FLASH MESSAGE -->
 	<div class="flash ${flash_type}">

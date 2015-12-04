@@ -1,0 +1,12 @@
+.timeslot-profile-picture{
+	width:32px;
+	height:32px;
+	background-size:cover;
+	background-position:top center;
+	float:left;
+	margin-right:10px;
+}
+.timeslot-profile-name{
+	float:left;
+	margin-top:4px;
+}
