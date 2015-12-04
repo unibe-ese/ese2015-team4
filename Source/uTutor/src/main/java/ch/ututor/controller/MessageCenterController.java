@@ -49,30 +49,26 @@ public class MessageCenterController {
     }
 	
 	/**
-	 * General POST action handler
+	 * Delete message by id
 	 * 
-	 * @param actionString		should be "delete". No other action is handled.
-	 * @param objectIdString	should be the messageId of the message which should be deleted if action equals "delete"
+	 * @param messageId			the id of the message which should be deleted (posted as objectId).
 	 * @param viewString		the view which will be called after action handling
 	 * @param showString		the index of the message which will be displayed after action handling.
 	 * @return 					ModelAndView with a redirect to the message center.
 	 */
-	@RequestMapping( value="/user/messagecenter", method = RequestMethod.POST )
-	public ModelAndView messageCenterAction( 	@RequestParam( value = "action" ) String actionString,
-												@RequestParam( value = "objectId" ) String objectIdString,
+	@RequestMapping( value="/user/messagecenter", method = RequestMethod.POST, params = "action=delete" )
+	public ModelAndView deleteMessage( 	@RequestParam( value = "action" ) String actionString,
+												@RequestParam( value = "objectId" ) Long messageId,
 												@RequestParam( value = "view", required = false ) String viewString,
 												@RequestParam( value = "show", required = false ) String showString,
 												final RedirectAttributes redirectAttributes) {
 			
 		String action = messageCenterService.normalizeString( actionString );
-		long objectId = messageCenterService.normalizeLong( objectIdString );
 		String view = messageCenterService.normalizeView( viewString );
 		long show = messageCenterService.normalizeLong( showString );
 		
-		if( action.equals( "delete" ) ) {
-			messageCenterService.deleteMessage( objectId );
-			FlashMessage.addMessage(redirectAttributes, "Message successfully deleted.", FlashMessage.Type.SUCCESS);
-		}
+		messageCenterService.deleteMessage( messageId );
+		FlashMessage.addMessage(redirectAttributes, "Message successfully deleted.", FlashMessage.Type.SUCCESS);
 		
 		return new ModelAndView( "redirect:/user/messagecenter/?view=" + view + "&show=" + show );
 	}
