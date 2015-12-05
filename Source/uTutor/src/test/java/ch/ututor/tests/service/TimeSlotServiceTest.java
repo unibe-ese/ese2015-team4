@@ -140,44 +140,29 @@ public class TimeSlotServiceTest {
 		timeSlotList = timeSlotService.addTimeSlots(addTimeSlotsForm);
 	}
 	
-	private TimeSlot setUpTimeSlot(int days){
+	private void setupTimeSlotMock(int days){
 		TimeSlot timeSlot = new TimeSlot();
 		timeSlot.setStatus(TimeSlot.Status.AVAILABLE);
 		timeSlot.setTutor(tutor);
 		timeSlot.setBeginDateTime(TimeHelper.addDays(new Date(), days));
-		return timeSlot;
-	}
-	
-	@Test
-	public void testValidRequestForTimeslot(){
-		TimeSlot timeSlot = setUpTimeSlot(1);
-		
-		long anyIdNumber = 1;
 		
 		when( authenticatedUserLoaderService.getAuthenticatedUser() ).thenReturn(student);
 		when(timeSlotDao.findById(any(Long.class))).thenReturn(timeSlot);
 		when(messageCenterService.sendMessage(any(Message.class))).then(returnsFirstArg());
-		
-		timeSlot = timeSlotService.requestForTimeSlot(anyIdNumber);
-		
+	}
+	
+	@Test
+	public void testValidRequestForTimeslot(){
+		setupTimeSlotMock(1);
+		TimeSlot timeSlot = timeSlotService.requestForTimeSlot(1L);
 		assertEquals(TimeSlot.Status.REQUESTED, timeSlot.getStatus());
 		assertEquals(student, timeSlot.getStudent());
 	}
 	
 	@Test(expected = TimeSlotException.class)
 	public void testInvalidRequestTimeslotIsInThePast(){
-		TimeSlot timeSlot = setUpTimeSlot(-1);
-		
-		long anyIdNumber = 1;
-		
-		when( authenticatedUserLoaderService.getAuthenticatedUser() ).thenReturn(student);
-		when(timeSlotDao.findById(any(Long.class))).thenReturn(timeSlot);
-		when(messageCenterService.sendMessage(any(Message.class))).then(returnsFirstArg());
-		
-		timeSlot = timeSlotService.requestForTimeSlot(anyIdNumber);
-		
-		assertEquals(TimeSlot.Status.REQUESTED, timeSlot.getStatus());
-		assertEquals(student, timeSlot.getStudent());
+		setupTimeSlotMock(-1);
+		timeSlotService.requestForTimeSlot(1L);
 	}
 	
 	@Test(expected = TimeSlotException.class)
