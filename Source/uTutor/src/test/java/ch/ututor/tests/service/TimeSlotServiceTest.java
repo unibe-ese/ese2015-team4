@@ -140,12 +140,17 @@ public class TimeSlotServiceTest {
 		timeSlotList = timeSlotService.addTimeSlots(addTimeSlotsForm);
 	}
 	
-	@Test
-	public void testValidRequestForTimeslot(){
+	private TimeSlot setUpTimeSlot(int days){
 		TimeSlot timeSlot = new TimeSlot();
 		timeSlot.setStatus(TimeSlot.Status.AVAILABLE);
 		timeSlot.setTutor(tutor);
-		timeSlot.setBeginDateTime(TimeHelper.addDays(new Date(), 1));
+		timeSlot.setBeginDateTime(TimeHelper.addDays(new Date(), days));
+		return timeSlot;
+	}
+	
+	@Test
+	public void testValidRequestForTimeslot(){
+		TimeSlot timeSlot = setUpTimeSlot(1);
 		
 		long anyIdNumber = 1;
 		
@@ -161,10 +166,7 @@ public class TimeSlotServiceTest {
 	
 	@Test(expected = TimeSlotException.class)
 	public void testInvalidRequestTimeslotIsInThePast(){
-		TimeSlot timeSlot = new TimeSlot();
-		timeSlot.setStatus(TimeSlot.Status.AVAILABLE);
-		timeSlot.setTutor(tutor);
-		timeSlot.setBeginDateTime(TimeHelper.addDays(new Date(), -1));
+		TimeSlot timeSlot = setUpTimeSlot(-1);
 		
 		long anyIdNumber = 1;
 		
