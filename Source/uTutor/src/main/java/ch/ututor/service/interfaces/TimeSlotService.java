@@ -13,6 +13,8 @@ public interface TimeSlotService {
 	
 	public List<TimeSlot> getTimeSlotsByUser(User user);
 	
+	public List<TimeSlot> getTimeSlotsByTutorAndState(User tutor, TimeSlot.Status status, Boolean ascending);
+	
 	public List<String> getPossibleTimeslots();
 	
 	public TimeSlot requestForTimeSlot( long timeSlotId );

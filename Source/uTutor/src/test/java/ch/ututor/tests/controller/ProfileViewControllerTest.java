@@ -28,7 +28,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import ch.ututor.model.TimeSlot;
 import ch.ututor.model.TutorLecture;
 import ch.ututor.model.User;
-import ch.ututor.model.dao.TimeSlotDao;
+import ch.ututor.service.interfaces.TimeSlotService;
 import ch.ututor.service.interfaces.TutorService;
 import ch.ututor.service.interfaces.UserService;
 
@@ -45,7 +45,7 @@ public class ProfileViewControllerTest {
 	@Autowired private WebApplicationContext wac;
 	@Autowired private UserService userService;
 	@Autowired private TutorService tutorService;
-	@Autowired private TimeSlotDao timeSlotDao;
+	@Autowired private TimeSlotService timeSlotService;
 	
 	private MockMvc mockMvc;
 	
@@ -124,7 +124,7 @@ public class ProfileViewControllerTest {
 	@WithMockUser(username="fred.weasley@hogwarts.com",roles={"USER"})
 	public void testSendTimeSlotRequest() throws Exception{
 		User user = userService.load("percy.weasley@hogwarts.com");
-		List<TimeSlot> timeslots = timeSlotDao.findByTutorAndStatusOrderByBeginDateTimeDesc(user, TimeSlot.Status.AVAILABLE);
+		List<TimeSlot> timeslots = timeSlotService.getTimeSlotsByTutorAndState(user, TimeSlot.Status.AVAILABLE, false);
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "requestTimeSlot")
 					.param("objectId", "" + timeslots.get(0).getId()))
@@ -144,7 +144,7 @@ public class ProfileViewControllerTest {
 	@WithMockUser(username="fred.weasley@hogwarts.com",roles={"USER"})
 	public void testSendTimeSlotRequestNotSuccessfullState() throws Exception{
 		User user = userService.load("percy.weasley@hogwarts.com");
-		List<TimeSlot> timeslots = timeSlotDao.findByTutorAndStatusOrderByBeginDateTimeDesc(user, TimeSlot.Status.REQUESTED);
+		List<TimeSlot> timeslots = timeSlotService.getTimeSlotsByTutorAndState(user, TimeSlot.Status.REQUESTED, false);
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "requestTimeSlot")
 					.param("objectId", "" + timeslots.get(0).getId()))
@@ -156,7 +156,7 @@ public class ProfileViewControllerTest {
 	@WithMockUser(username="fred.weasley@hogwarts.com",roles={"USER"})
 	public void testSendTimeSlotRequestNotSuccessfullPast() throws Exception{
 		User user = userService.load("percy.weasley@hogwarts.com");
-		List<TimeSlot> timeslots = timeSlotDao.findByTutorAndStatusOrderByBeginDateTimeAsc(user, TimeSlot.Status.AVAILABLE);
+		List<TimeSlot> timeslots = timeSlotService.getTimeSlotsByTutorAndState(user, TimeSlot.Status.AVAILABLE, true);
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "requestTimeSlot")
 					.param("objectId", "" + timeslots.get(0).getId()))
@@ -168,7 +168,7 @@ public class ProfileViewControllerTest {
 	@WithMockUser(username="percy.weasley@hogwarts.com",roles={"USER"})
 	public void testDeleteTimeSlot() throws Exception{
 		User user = userService.load("percy.weasley@hogwarts.com");
-		List<TimeSlot> timeslots = timeSlotDao.findByTutorAndStatusOrderByBeginDateTimeDesc(user, TimeSlot.Status.AVAILABLE);
+		List<TimeSlot> timeslots = timeSlotService.getTimeSlotsByTutorAndState(user, TimeSlot.Status.AVAILABLE, false);
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "deleteTimeSlot")
 					.param("objectId", "" + timeslots.get(0).getId()))
@@ -188,7 +188,7 @@ public class ProfileViewControllerTest {
 	@WithMockUser(username="percy.weasley@hogwarts.com",roles={"USER"})
 	public void testDeleteTimeSlotNotSuccessfull() throws Exception{
 		User user = userService.load("percy.weasley@hogwarts.com");
-		List<TimeSlot> timeslots = timeSlotDao.findByTutorAndStatusOrderByBeginDateTimeDesc(user, TimeSlot.Status.REQUESTED);
+		List<TimeSlot> timeslots = timeSlotService.getTimeSlotsByTutorAndState(user, TimeSlot.Status.REQUESTED, false);
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "deleteTimeSlot")
 					.param("objectId", "" + timeslots.get(0).getId()))
@@ -200,7 +200,7 @@ public class ProfileViewControllerTest {
 	@WithMockUser(username="percy.weasley@hogwarts.com",roles={"USER"})
 	public void testAcceptTimeSlot() throws Exception{
 		User user = userService.load("percy.weasley@hogwarts.com");
-		List<TimeSlot> timeslots = timeSlotDao.findByTutorAndStatusOrderByBeginDateTimeDesc(user, TimeSlot.Status.REQUESTED);
+		List<TimeSlot> timeslots = timeSlotService.getTimeSlotsByTutorAndState(user, TimeSlot.Status.REQUESTED, false);
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "acceptTimeSlot")
 					.param("objectId", "" + timeslots.get(0).getId()))
@@ -222,7 +222,7 @@ public class ProfileViewControllerTest {
 	@WithMockUser(username="percy.weasley@hogwarts.com",roles={"USER"})
 	public void testAcceptTimeSlotNotSuccessfullState() throws Exception{
 		User user = userService.load("percy.weasley@hogwarts.com");
-		List<TimeSlot> timeslots = timeSlotDao.findByTutorAndStatusOrderByBeginDateTimeDesc(user, TimeSlot.Status.ACCEPTED);
+		List<TimeSlot> timeslots = timeSlotService.getTimeSlotsByTutorAndState(user, TimeSlot.Status.ACCEPTED, false);
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "acceptTimeSlot")
 					.param("objectId", "" + timeslots.get(0).getId()))
@@ -234,7 +234,7 @@ public class ProfileViewControllerTest {
 	@WithMockUser(username="percy.weasley@hogwarts.com",roles={"USER"})
 	public void testAcceptTimeSlotNotSuccessfullPast() throws Exception{
 		User user = userService.load("percy.weasley@hogwarts.com");
-		List<TimeSlot> timeslots = timeSlotDao.findByTutorAndStatusOrderByBeginDateTimeAsc(user, TimeSlot.Status.REQUESTED);
+		List<TimeSlot> timeslots = timeSlotService.getTimeSlotsByTutorAndState(user, TimeSlot.Status.REQUESTED, true);
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "acceptTimeSlot")
 					.param("objectId", "" + timeslots.get(0).getId()))
@@ -246,7 +246,7 @@ public class ProfileViewControllerTest {
 	@WithMockUser(username="percy.weasley@hogwarts.com",roles={"USER"})
 	public void testRejectTimeSlot() throws Exception{
 		User user = userService.load("percy.weasley@hogwarts.com");
-		List<TimeSlot> timeslots = timeSlotDao.findByTutorAndStatusOrderByBeginDateTimeDesc(user, TimeSlot.Status.REQUESTED);
+		List<TimeSlot> timeslots = timeSlotService.getTimeSlotsByTutorAndState(user, TimeSlot.Status.REQUESTED, false);
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "rejectTimeSlot")
 					.param("objectId", "" + timeslots.get(0).getId() ))
@@ -268,7 +268,7 @@ public class ProfileViewControllerTest {
 	@WithMockUser(username="percy.weasley@hogwarts.com",roles={"USER"})
 	public void testRejectTimeSlotNotSuccessfull() throws Exception{
 		User user = userService.load("percy.weasley@hogwarts.com");
-		List<TimeSlot> timeslots = timeSlotDao.findByTutorAndStatusOrderByBeginDateTimeDesc(user, TimeSlot.Status.AVAILABLE);
+		List<TimeSlot> timeslots = timeSlotService.getTimeSlotsByTutorAndState(user, TimeSlot.Status.AVAILABLE, false);
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "rejectTimeSlot")
 					.param("objectId", "" + timeslots.get(0).getId() ))
@@ -280,7 +280,7 @@ public class ProfileViewControllerTest {
 	@WithMockUser(username="ginevra.weasley@hogwarts.com",roles={"USER"})
 	public void testRateTimeSlot() throws Exception{
 		User user = userService.load("percy.weasley@hogwarts.com");
-		List<TimeSlot> timeslots = timeSlotDao.findByTutorAndStatusOrderByBeginDateTimeAsc(user, TimeSlot.Status.ACCEPTED);
+		List<TimeSlot> timeslots = timeSlotService.getTimeSlotsByTutorAndState(user, TimeSlot.Status.ACCEPTED, true);
 		this.mockMvc.perform(post("/user/profile")
 				.param("action", "rateTimeSlot")
 				.param("objectId", "" + timeslots.get(0).getId() +"-1" ))
@@ -310,7 +310,7 @@ public class ProfileViewControllerTest {
 	@WithMockUser(username="ginevra.weasley@hogwarts.com",roles={"USER"})
 	public void testRateTimeSlotNotSuccessfullFuture() throws Exception{
 		User user = userService.load("percy.weasley@hogwarts.com");
-		List<TimeSlot> timeslots = timeSlotDao.findByTutorAndStatusOrderByBeginDateTimeDesc(user, TimeSlot.Status.ACCEPTED);
+		List<TimeSlot> timeslots = timeSlotService.getTimeSlotsByTutorAndState(user, TimeSlot.Status.ACCEPTED, false);
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "rateTimeSlot")
 					.param("objectId", "" + timeslots.get(0).getId() +"-1" ))
@@ -322,7 +322,7 @@ public class ProfileViewControllerTest {
 	@WithMockUser(username="ginevra.weasley@hogwarts.com",roles={"USER"})
 	public void testRateTimeSlotNotSuccessfullInvalidRating() throws Exception{
 		User user = userService.load("percy.weasley@hogwarts.com");
-		List<TimeSlot> timeslots = timeSlotDao.findByTutorAndStatusOrderByBeginDateTimeAsc(user, TimeSlot.Status.ACCEPTED);
+		List<TimeSlot> timeslots = timeSlotService.getTimeSlotsByTutorAndState(user, TimeSlot.Status.ACCEPTED, true);
 		this.mockMvc.perform(post("/user/profile")
 					.param("action", "rateTimeSlot")
 					.param("objectId", "" + timeslots.get(0).getId() +"-0" ))

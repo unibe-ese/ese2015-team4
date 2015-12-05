@@ -13,6 +13,7 @@ import ch.ututor.exceptions.custom.InvalidDateException;
 import ch.ututor.exceptions.custom.TimeSlotException;
 import ch.ututor.model.Message;
 import ch.ututor.model.TimeSlot;
+import ch.ututor.model.TimeSlot.Status;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.TimeSlotDao;
 import ch.ututor.pojos.AddTimeslotsForm;
@@ -255,5 +256,15 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 			rating = total / timeSlots.size();
 		}
 		return rating;
+	}
+
+	
+	@Override
+	public List<TimeSlot> getTimeSlotsByTutorAndState(User tutor, Status status, Boolean ascending) {
+		if(ascending){
+			return timeSlotDao.findByTutorAndStatusOrderByBeginDateTimeAsc(tutor, status);
+		}else{
+			return timeSlotDao.findByTutorAndStatusOrderByBeginDateTimeDesc(tutor, status);
+		}
 	}
 }
