@@ -20,6 +20,9 @@ import ch.ututor.exceptions.custom.ProfilePictureException;
 import ch.ututor.service.interfaces.ProfilePictureService;
 import ch.ututor.utils.MultipartFileMocker;
 
+/**
+* Tests class {@link ch.ututor.service.ProfilePictureServiceImpl}
+*/
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"file:src/test/resources/profilePictureService.xml"})
 public class ProfilePictureServiceTest {

@@ -26,6 +26,9 @@ import ch.ututor.model.User;
 import ch.ututor.service.interfaces.MessageCenterService;
 import ch.ututor.service.interfaces.UserService;
 
+/**
+* Tests class {@link ch.ututor.controller.MessageCenterController}
+*/
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = {

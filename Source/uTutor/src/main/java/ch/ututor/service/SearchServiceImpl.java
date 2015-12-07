@@ -45,7 +45,7 @@ public class SearchServiceImpl implements SearchService {
 		}
 		
 		Sort.Direction sortDirection = Sort.Direction.DESC;
-		if(sortString == "tutor.price"){
+		if(sortString.equals("tutor.price")){
 			sortDirection = Sort.Direction.ASC;
 		}
 		

@@ -10,16 +10,10 @@ import ch.ututor.pojos.BecomeTutorForm;
 public interface TutorService {
 	
 	public User becomeTutor( BecomeTutorForm becomeTutorForm );
-	
 	public TutorLecture addTutorLecture(AddLectureForm addLectureForm);
-	
 	public List<TutorLecture> findLecturesByTutor( User tutor );
-	
 	public void deleteTutorLecture( Long lectureId );
-	
 	public User updateTutorRating( User tutor, Integer rating );
-	
 	public boolean hasLectures( User tutor );
-	
 	public BecomeTutorForm preFillBecomeTutorForm( BecomeTutorForm becomeTutorForm );
 }

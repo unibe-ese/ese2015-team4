@@ -23,6 +23,9 @@ import ch.ututor.model.User;
 import ch.ututor.service.interfaces.UserService;
 import ch.ututor.utils.MultipartFileMocker;
 
+/**
+* Tests class {@link ch.ututor.controller.ProfilePictureViewController}
+*/
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = {

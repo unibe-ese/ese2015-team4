@@ -12,14 +12,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.ututor.exceptions.CustomException;
 import ch.ututor.pojos.SignUpForm;
-import ch.ututor.service.interfaces.SignupService;
+import ch.ututor.service.interfaces.SignUpService;
 import ch.ututor.utils.ExceptionHelper;
 import ch.ututor.utils.FlashMessage;
 
 @Controller
 public class SignUpController {
     
-	@Autowired	private SignupService signupService;
+	@Autowired	private SignUpService signupService;
 	
 	@RequestMapping( value = "/signup", method = RequestMethod.GET )
 	public ModelAndView displaySignUpForm() {

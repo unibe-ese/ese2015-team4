@@ -23,5 +23,4 @@ public class MultipartFileMocker {
 	    FileInputStream input = new FileInputStream( file );
 	    return new MockMultipartFile( "picture", file.getName(), type, IOUtils.toByteArray(input) );
 	}
-	
 }

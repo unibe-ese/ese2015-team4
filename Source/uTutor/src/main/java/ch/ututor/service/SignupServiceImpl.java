@@ -8,10 +8,10 @@ import ch.ututor.exceptions.custom.UserAlreadyExistsException;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
 import ch.ututor.pojos.SignUpForm;
-import ch.ututor.service.interfaces.SignupService;
+import ch.ututor.service.interfaces.SignUpService;
 
 @Service
-public class SignupServiceImpl implements SignupService {
+public class SignUpServiceImpl implements SignUpService {
 	
 	@Autowired   private UserDao userDao;
 
@@ -45,5 +45,4 @@ public class SignupServiceImpl implements SignupService {
 		
 		return userDao.save( user );
 	}
-	
 }

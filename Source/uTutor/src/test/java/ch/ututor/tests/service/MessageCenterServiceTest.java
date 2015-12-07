@@ -26,6 +26,9 @@ import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.MessageCenterService;
 import ch.ututor.service.interfaces.UserService;
 
+/**
+* Tests class {@link ch.ututor.service.MessageCenterServiceImpl}
+*/
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration( locations = { "file:src/test/resources/messageCenterService.xml" } )
 public class MessageCenterServiceTest {

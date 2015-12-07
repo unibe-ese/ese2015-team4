@@ -27,6 +27,9 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.AdditionalAnswers.*;
 
+/**
+* Tests class {@link ch.ututor.service.TimeSlotServiceImpl}
+*/
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"file:src/test/resources/timeSlotService.xml"})
 public class TimeSlotServiceTest {
@@ -79,7 +82,6 @@ public class TimeSlotServiceTest {
 		assertEquals(posTimeSlot.get(0), "06:00 - 06:59");
 	}
 	
-	//TODO: Ab 24.12.15 ist der Test ungültig
 	@Test
 	public void testValidAddTimeSlots() throws ParseException{
 		timeSlotList = timeSlotService.addTimeSlots(addTimeSlotsForm);

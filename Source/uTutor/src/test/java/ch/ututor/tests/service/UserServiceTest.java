@@ -17,6 +17,9 @@ import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
 import ch.ututor.service.interfaces.UserService;
 
+/**
+* Tests class {@link ch.ututor.service.UserServiceImpl}
+*/
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"file:src/test/resources/userService.xml"})
 public class UserServiceTest {

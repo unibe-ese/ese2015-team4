@@ -13,17 +13,20 @@ import ch.ututor.exceptions.custom.UserAlreadyExistsException;
 import ch.ututor.model.User;
 import ch.ututor.model.dao.UserDao;
 import ch.ututor.pojos.SignUpForm;
-import ch.ututor.service.interfaces.SignupService;
+import ch.ututor.service.interfaces.SignUpService;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.AdditionalAnswers.*;
 
+/**
+* Tests class {@link ch.ututor.service.SignUpServiceImpl}
+*/
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"file:src/test/resources/signupService.xml"})
-public class SignupServiceTest {
+@ContextConfiguration(locations={"file:src/test/resources/signUpService.xml"})
+public class SignUpServiceTest {
 	
-	@Autowired SignupService signupService;
+	@Autowired SignUpService signUpService;
 	@Autowired UserDao userDao;
 	private SignUpForm signUpForm;
 	
@@ -42,7 +45,7 @@ public class SignupServiceTest {
 	@Test
 	public void testCreateUserAccountSuccessfull(){
 		
-		User user = signupService.createUserAccount(signUpForm);
+		User user = signUpService.createUserAccount(signUpForm);
 		
 		assertEquals("Harry", user.getFirstName());
 		assertEquals("Potter", user.getLastName());
@@ -53,12 +56,12 @@ public class SignupServiceTest {
 	@Test(expected = PasswordRepetitionException.class)
 	public void testPasswordRepetitionException(){
 		signUpForm.setPasswordRepeat("Irgendwas");
-		signupService.createUserAccount(signUpForm);
+		signUpService.createUserAccount(signUpForm);
 	}
 	
 	@Test(expected = UserAlreadyExistsException.class)
 	public void testUserAlreadyExistsException(){
 		when(userDao.findByUsername(any(String.class))).thenReturn(new User());
-		signupService.createUserAccount(signUpForm);
+		signUpService.createUserAccount(signUpForm);
 	}
 }

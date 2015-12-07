@@ -22,6 +22,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import ch.ututor.model.User;
 import ch.ututor.service.interfaces.UserService;
 
+/**
+* Tests class {@link ch.ututor.controller.ProfilePictureEditController}
+*/
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = {

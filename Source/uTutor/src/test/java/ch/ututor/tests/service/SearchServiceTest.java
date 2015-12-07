@@ -19,6 +19,9 @@ import ch.ututor.model.TutorLecture;
 import ch.ututor.model.dao.TutorLectureDao;
 import ch.ututor.service.interfaces.SearchService;
 
+/**
+* Tests class {@link ch.ututor.service.SearchServiceImpl}
+*/
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"file:src/test/resources/searchService.xml"})
 public class SearchServiceTest {

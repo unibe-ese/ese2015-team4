@@ -30,6 +30,9 @@ import ch.ututor.pojos.BecomeTutorForm;
 import ch.ututor.service.interfaces.AuthenticatedUserLoaderService;
 import ch.ututor.service.interfaces.TutorService;
 
+/**
+* Tests class {@link ch.ututor.service.TutorServiceImpl}
+*/
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"file:src/test/resources/tutorService.xml"})
 public class TutorServiceTest {
@@ -172,7 +175,8 @@ public class TutorServiceTest {
 	}
 	
 	private void setupBecomeTutorForm() {
-		becomeTutorForm.setDescription("Hermione Jean Granger (b. 19 September, 1979) was an English Muggle-born witch and the only daughter of Mr and Mrs Granger, both dentists in London.");
+		becomeTutorForm.setDescription("Hermione Jean Granger (b. 19 September, 1979) was an English Muggle-born witch and the "
+				+ "only daughter of Mr and Mrs Granger, both dentists in London.");
 		becomeTutorForm.setPrice("50.0");
 		becomeTutorForm.setLecture("Defense Against the Dark Arts");
 		becomeTutorForm.setGrade(6.0f);

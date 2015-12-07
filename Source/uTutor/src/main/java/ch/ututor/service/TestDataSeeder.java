@@ -97,7 +97,8 @@ private void createTimeslots(User tutor, User student, Status status, Date begin
 				"Weasley",
 				"fred.weasley@hogwarts.com",
 				"maraudersmap",
-				"Fred Weasley (1 April, 1978 – 2 May, 1998) was a pure-bloodwizard, a son of Arthur Weasley and Molly Weasley (née Prewett), brother to Bill, Charlie, Percy, Ron, and Ginny Weasley, and twin brother to George Weasley.",
+				"Fred Weasley (1 April, 1978 – 2 May, 1998) was a pure-bloodwizard, a son of Arthur Weasley and Molly Weasley "
+				+ "(née Prewett), brother to Bill, Charlie, Percy, Ron, and Ginny Weasley, and twin brother to George Weasley.",
 				29.9F);
 		user = userDao.save(user);
 		createTutorLecture(user, lectures.get(0), 4.5F);
@@ -107,7 +108,8 @@ private void createTimeslots(User tutor, User student, Status status, Date begin
 				"Weasley",
 				"george.weasley@hogwarts.com",
 				"weasleyswizardwheezes",
-				"George Weasley (b. 1 April, 1978) was a pure-blood wizard, son ofArthur Weasley and Molly Weasley (née Prewett), brother of Bill, Charlie,Percy, Ron, Ginny, and twin brother of the late Fred Weasley.",
+				"George Weasley (b. 1 April, 1978) was a pure-blood wizard, son ofArthur Weasley and Molly Weasley (née Prewett), "
+				+ "brother of Bill, Charlie,Percy, Ron, Ginny, and twin brother of the late Fred Weasley.",
 				29.9F);
 		user = userDao.save(user);
 		createTutorLecture(user, lectures.get(1), 5F);

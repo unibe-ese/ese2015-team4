@@ -32,6 +32,9 @@ import ch.ututor.service.interfaces.TimeSlotService;
 import ch.ututor.service.interfaces.TutorService;
 import ch.ututor.service.interfaces.UserService;
 
+/**
+* Tests class {@link ch.ututor.controller.ProfilePictureViewController}
+*/
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = {

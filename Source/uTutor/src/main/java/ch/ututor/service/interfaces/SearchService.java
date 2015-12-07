@@ -6,4 +6,5 @@ import java.util.List;
 public interface SearchService {
 	
 	public List<TutorLecture> searchByLecture(String query, String sortAttribute);
+	
 }

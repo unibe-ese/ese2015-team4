@@ -6,6 +6,7 @@ import ch.ututor.model.Message;
 import ch.ututor.pojos.NewMessageForm;
 
 public interface MessageCenterService {
+	
 	public List<Message> getMessagesByView(String view);
 	public long normalizeLong(String longString);
 	public String normalizeString(String string);
@@ -17,4 +18,5 @@ public interface MessageCenterService {
 	public Message sendMessage(Message message);
 	public Message setRead(long messageId);
 	public Long getNumberOfNewMessagesForAuthenticatedUser();
+	
 }
