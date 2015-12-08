@@ -130,7 +130,7 @@ public class ProfileViewControllerTest {
 		User tutor = userService.load("percy.weasley@hogwarts.com");
 		List<TimeSlot> timeslots = timeSlotService.getTimeSlotsByTutorAndState(tutor, TimeSlot.Status.AVAILABLE, false);
 		postTimeSlotAction("requestTimeSlot", student.getId(), "Request successfully sent.", timeslots.get(0).getId()+"");
-		checkProfile(6, tutor, TimeSlot.Status.REQUESTED, null);
+		checkProfile(1, tutor, TimeSlot.Status.REQUESTED, null);
 	}
 	
 	@Test

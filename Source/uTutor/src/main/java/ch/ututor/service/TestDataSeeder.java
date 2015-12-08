@@ -140,9 +140,9 @@ private void createTimeslots(User tutor, User student, Status status, Date begin
 		createTutorLecture(tutor, lectures.get(6), 4.5F);
 		createTutorLecture(tutor, lectures.get(7), 4F);
 		createTimeslots(tutor, null, TimeSlot.Status.AVAILABLE, TimeHelper.addDays(new Date(), -3), null);
-		createTimeslots(tutor, null, TimeSlot.Status.REQUESTED, TimeHelper.addDays(new Date(), -2), null);
+		createTimeslots(tutor, user, TimeSlot.Status.REQUESTED, TimeHelper.addDays(new Date(), -2), null);
 		createTimeslots(tutor, null, TimeSlot.Status.AVAILABLE, TimeHelper.addDays(new Date(), 1), null);
-		createTimeslots(tutor, null, TimeSlot.Status.REQUESTED, TimeHelper.addDays(new Date(), 2), null);
+		createTimeslots(tutor, user, TimeSlot.Status.REQUESTED, TimeHelper.addDays(new Date(), 2), null);
 		createTimeslots(tutor, user, TimeSlot.Status.ACCEPTED, TimeHelper.addDays(new Date(), 3), null);
 		createTimeslots(tutor, user, TimeSlot.Status.ACCEPTED, TimeHelper.addDays(new Date(), -1), null);
 	}
