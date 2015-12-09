@@ -55,7 +55,7 @@ public class TimeSlotServiceTest {
 		timeSlots.add("08:00 - 08:59");
 		
 		addTimeSlotsForm = new AddTimeslotsForm();
-		addTimeSlotsForm.setDate("2015-12-24");
+		addTimeSlotsForm.setDate("2035-12-24");
 		addTimeSlotsForm.setTimeslots(timeSlots);
 		
 		when(timeSlotDao.save(any(TimeSlot.class))).then(returnsFirstArg());
@@ -91,7 +91,7 @@ public class TimeSlotServiceTest {
 		assertTrue(!timeSlotList.isEmpty());
 		assertEquals(timeSlotList.size(), 1);
 		assertEquals(timeSlot.getStatus(), TimeSlot.Status.AVAILABLE);
-		assertEquals(timeSlot.getBeginDateTime().toString(), "Thu Dec 24 08:00:00 CET 2015");
+		assertEquals(timeSlot.getBeginDateTime().toString(), "Mon Dec 24 08:00:00 CET 2035");
 		assertEquals(timeSlot.getStudent(), null);
 		assertEquals(timeSlot.getTutor(), user);
 	}

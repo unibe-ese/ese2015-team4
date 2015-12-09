@@ -216,7 +216,7 @@ public class ProfileViewControllerTest {
 		List<TimeSlot> timeslots = timeSlotService.getTimeSlotsByTutorAndState(tutor, TimeSlot.Status.ACCEPTED, true);
 		postTimeSlotAction("rateTimeSlot", student.getId(), "Time-slot rated.", timeslots.get(0).getId()+"-1");
 		postTimeSlotAction("rateTimeSlot", student.getId(), "Time-slot rated.", timeslots.get(0).getId()+"-5");		
-		checkProfile(2, tutor, TimeSlot.Status.ACCEPTED, 5);
+		checkProfile(4, tutor, TimeSlot.Status.ACCEPTED, 5);
 	}
 	
 	@Test
