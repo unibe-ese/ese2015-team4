@@ -79,7 +79,7 @@
 		<sec:authorize access="isAuthenticated()">
 			<div id="nav-outer">
 				<div id="nav-inner">
-					<a href="<%=request.getContextPath()%>/user/profile" class="navigation<c:if test="${fn:contains(contextUrl, 'profile')}"> active</c:if>">My profile</a>
+					<a href="<%=request.getContextPath()%>/user/profile" class="navigation<c:if test="${fn:contains(contextUrl, 'profile') && ownProfile}"> active</c:if>">My profile</a>
 					<a href="<%=request.getContextPath()%>/user/messagecenter" class="navigation<c:if test="${fn:contains(contextUrl, 'message')}"> active</c:if>">Message center<span id="new-messages" class="hidden"></span></a>
 					<a href="<%=request.getContextPath()%>/user/password" class="navigation<c:if test="${fn:contains(contextUrl, 'password')}"> active</c:if>">Change password</a>
 					<a href="<%=request.getContextPath()%>/logout" class="navigation logout">Logout</a>
